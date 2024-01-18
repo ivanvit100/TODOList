@@ -22,7 +22,15 @@ export class TaskList {
         this.tasks = this.tasks.filter((t) => t !== task);
     }
     getTasks() {
-        return this.tasks;
+        return this.tasks.sort((a, b) => {
+            if (a.lvl !== b.lvl) {
+                return b.lvl - a.lvl;
+            }
+            if (a.date && b.date) {
+                return a.date.getTime() - b.date.getTime();
+            }
+            return a.name.localeCompare(b.name);
+        });
     }
     getTask(name) {
         return this.tasks.find((t) => t.name === name);
@@ -42,7 +50,7 @@ export class TaskManager {
         this.lists = this.lists.filter((l) => l !== list);
     }
     getLists() {
-        return this.lists;
+        return this.lists.sort((a, b) => a.name.localeCompare(b.name));
     }
     getList(name) {
         return this.lists.find((l) => l.name === name);

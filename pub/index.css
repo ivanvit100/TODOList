@@ -1,76 +1,194 @@
-html{
-    font-family: 'PT Sans', sans-serif;
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Source Code Pro', monospace;
+/*Main styles*/
+html {
+  font-family: "PT Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-family: "Source Code Pro", monospace;
 }
+.dark{
+  filter: invert(.9) !important;
+}
+
+/*Modal auth*/
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    width: min(350px, 95vw);
-    position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: min(350px, 95vw);
+  position: relative;
 }
-.modal-input{
-    width: 80%;
-    margin: 20px auto;
-    display: block;
-    position: relative;
-    height: 30px;
-    padding: 0 10px;
-    border: 1px solid #a4a4a4;
-    border-radius: 5px;
+.modal-input {
+  width: 80%;
+  margin: 20px auto;
+  display: block;
+  position: relative;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid #a4a4a4;
+  border-radius: 5px;
 }
 .modal-title {
-    font-size: 25px;
-    font-weight: bold;
-    font-stretch: expanded;
-    margin: 10px 20px 20px 25px;
-    padding-bottom: 8px;
-    width: 30%;
-    border-bottom: 3px solid #007bff;
+  font-size: 25px;
+  font-weight: bold;
+  font-stretch: expanded;
+  margin: 10px 20px 20px 25px;
+  padding-bottom: 8px;
+  width: 30%;
+  border-bottom: 3px solid #007bff;
 }
-.modal-decorate{
-    font-weight: bold;
-    font-size: 8px;
-    transform: rotate(-90deg);
-    position: absolute;
-    display: block;
-    width: 52px;
-    top: 42px;
-    left: 10px;
+.modal-decorate {
+  font-weight: bold;
+  font-size: 8px;
+  transform: rotate(-90deg);
+  position: absolute;
+  display: block;
+  width: 52px;
+  top: 42px;
+  left: 10px;
 }
-.modal-github{
-    text-decoration: none;
-    outline: none;
-    position: absolute;
-    right: 45px;
-    top: 35px;
+.modal-github {
+  text-decoration: none;
+  outline: none;
+  position: absolute;
+  right: 45px;
+  top: 35px;
 }
 .modal-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 3px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 0 25px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 0 25px;
 }
 .modal-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 .modal-button:active {
-    background-color: #004080;
+  background-color: #004080;
+}
+
+/*Task manager*/
+#app {
+  display: grid;
+  grid-template-columns: 40px calc(100vw - 40px);
+  height: 100vh;
+}
+.app-body {
+  display: grid;
+  grid-template-columns: 25% 30% 45%;
+  background-color: #f7f7f7;
+  position: relative;
+  top: -10px;
+}
+.app-body > div {
+  border-left: 1px solid #a4a4a4;
+  padding: 20px;
+}
+.header {
+  background-color: #eee;
+  position: relative;
+  top: -10px;
+  right: 10px;
+  width: 50px;
+}
+.taskmanager, .tasklist {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 5px;
+  width: calc(100% - 40px);
+  margin: 0 auto;
+}
+.inner-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+.inner-header-title {
+  font-size: 20px;
+}
+.new-interface {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.new-interface input {
+  flex-grow: 1;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+.new-interface button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.new-interface button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+#manager, #list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+.tasklist li, .taskmanager li {
+  margin-bottom: 10px;
+}
+li button {
+  background-color: transparent;
+  color: #1e1e1e;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-bottom: 3px solid #007bff;
+}
+.notification {
+  background-color: #007bff;
+  color: #eee;
+  border-radius: 50%;
+  padding: 2px 5px;
+  float: right;
+  width: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+li button:hover {
+  background-color: #007bff;
+}
+#list-name {
+  font-weight: bolder;
+  font-size: larger;
+}
+hr {
+  color: #999;
+  margin: 20px 0;
+}
+#new-tasklist-id{
+  display: grid;
+  grid-template-columns: 45% 45% 8%;
+  grid-row-gap: 15px;
 }
