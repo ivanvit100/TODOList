@@ -1,0 +1,6 @@
+{
+    "data": [ 
+        {"name": "Морковка", "description": "Для Кролика :)", "lvl": "3", "date": "2024-06-01", "done": false},
+        {"name": "Грейпфрут", "description": "0_0", "lvl": "1", "date": "2024-08-03", "done": false}
+    ]
+}

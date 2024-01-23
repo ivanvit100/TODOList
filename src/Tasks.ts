@@ -7,6 +7,7 @@ export class Task {
   constructor(
     name: string,
     description: string,
+    done: boolean = false,
     date: Date | null = null,
     lvl: number = 0
   ) {

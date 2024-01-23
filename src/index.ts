@@ -7,9 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   taskManager.addList(taskList);
   let task: Task | undefined;
   const newTask = document.querySelector("#new-task") as HTMLButtonElement;
-  const newTaskList = document.querySelector(
-    "#new-tasklist"
-  ) as HTMLButtonElement;
+  const newTaskList = document.querySelector("#new-tasklist") as HTMLButtonElement;
 
   function updateManagerUI() {
     //Обновление списка списков задач (левая часть)
@@ -37,7 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
     //Обновление информации о задаче (правая часть)
     const taskUI = document.querySelector("#task") as HTMLDivElement;
     if (!taskList) throw new Error(`[updateTaskUI]: Task not found`);
-    taskUI.innerHTML = `<h2>${task!.name}</h2><p>${task!.description}</p>`;
+    taskUI.innerHTML = `<div class="task-view">
+    <div class="inner-header" id="task-title">
+      <span class="inner-header-title">${task!.name}</span>
+    </div>
+    <p class="task-description">${task!.description}</p>
+  </div>
+  <div class="task-bottom">
+      <div class="task-icons">
+        <img src="./pub/icons/edit.png" alt="Редактировать" class="task-icon">
+        <img src="./pub/icons/delete.png" alt="Удалить" class="task-icon">
+      </div>
+      <div class="task-details">
+        <span class="task-importance">Уровень важности: ${task!.lvl}</span>
+        <span class="task-deadline">Срок выполнения: ${task!.date}</span>
+      </div>
+      <div class="task-tag">
+        <span class="tag">${taskList!.name}</span>
+      </div>
+    </div>`;
   }
 
   (window as any).changeTaskList = function (name: string) {
@@ -75,6 +91,70 @@ document.addEventListener("DOMContentLoaded", () => {
     taskManager!.addList(taskListN);
     updateManagerUI();
   });
+
+  //Вход в систему
+  const modal = document.querySelector("#modal-enter") as HTMLButtonElement;
+  modal.addEventListener("click", () => auth());
+  async function auth() {
+    try {
+      const login = document.querySelector("#modal-login") as HTMLInputElement;
+      const password = document.querySelector("#modal-password") as HTMLInputElement;
+      if(login.value.trim() === "" || password.value.trim() === ""){
+        throw new Error(`[auth]: Login or password is empty`);
+      }
+      const response = await fetch('https://vigilant-carnival-7xg7w7jp6v73rww5-5000.app.github.dev/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          login: login,
+          password: password
+        })
+      });
+  
+      if (!response.ok)
+        throw new Error(`[auth]: HTTP Error (${response.status})`);
+      const data = await response.json();
+      console.log(data);
+      getTaskList();
+    } catch (error: any) {
+      console.error(`[auth]: ${error.message}`);
+    }
+  }
+  //Получение списка задач
+  async function getTaskList() {
+    try{
+      const response = await fetch('https://vigilant-carnival-7xg7w7jp6v73rww5-5000.app.github.dev/api/getTaskList', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          taskList: "Продукты"
+        })
+      });
+      const data = await response.json();
+      interface TaskInt {
+        name: string;
+        done: string;
+        description: string;
+        date: Date | null;
+        lvl: number;
+      }
+      taskList = new TaskList(data.name);
+      taskManager.addList(taskList);
+      let ar = data.data.data;
+      for(let i = 0; i < ar.length; i++){
+        let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);
+        taskList?.addTask(newTask);
+        console.log(newTask);
+      }
+      updateListUI();
+    } catch (error: any) {
+      console.error(`[auth]: ${error.message}`);
+    }
+  }
 });
 
 let theme = true;

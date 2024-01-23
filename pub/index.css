@@ -4,6 +4,9 @@ html {
   font-family: "Roboto", sans-serif;
   font-family: "Source Code Pro", monospace;
 }
+button{
+  transition: all 0.1s ease-in-out;
+}
 .dark{
   filter: invert(.9) !important;
 }
@@ -178,6 +181,7 @@ li button {
 }
 li button:hover {
   background-color: #007bff;
+  color: #eee;
 }
 #list-name {
   font-weight: bolder;
@@ -191,4 +195,53 @@ hr {
   display: grid;
   grid-template-columns: 45% 45% 8%;
   grid-row-gap: 15px;
+}
+
+/*Task*/
+#task{
+  height: 100vh;
+  position: relative;
+}
+.task-icon{
+  height: 30px;
+  width: auto;
+  margin-left: 15px;
+}
+.task-bottom{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.task-title {
+  font-family: "PT Sans", sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.task-description {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.task-icons {
+  display: flex;
+  justify-content: flex-end;
+}
+.edit-task, .delete-task {
+  cursor: pointer;
+  margin-left: 10px;
+}
+.task-details {
+  font-family: "Source Code Pro", monospace;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.task-importance, .task-deadline {
+  display: block;
+}
+.task-tag {
+  font-family: "Source Code Pro", monospace;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  padding: 5px;
+  border-radius: 3px;
 }
