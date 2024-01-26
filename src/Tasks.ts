@@ -71,4 +71,7 @@ export class TaskManager {
   getList(name: string) {
     return this.lists.find((l) => l.name === name);
   }
+  findList(list: string) {
+    return this.lists.find((l) => l.name === list);
+  }
 }

@@ -1,0 +1,9 @@
+{
+    "data": [ 
+        {"name": "Обновление", "description": "Обновление списка задач", "lvl": "1", "date": null, "done": false},
+        {"name": "Отметка", "description": "Реализовать возможность отмечать задачи выполненными", "lvl": "2", "date": null, "done": false},
+        {"name": "Удаление", "description": "Возможность удалять задачи и листы", "lvl": "1", "date": null, "done": false},
+        {"name": "Параметры", "description": "Реализовать добавление приоритета и даты к задачам при создании через интерфейс", "lvl": "2", "date": null, "done": false},
+        {"name": "Редактирование", "description": "Редактирование задачи", "lvl": "1", "date": null, "done": false}
+    ]
+}
