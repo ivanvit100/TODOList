@@ -35,12 +35,41 @@ document.addEventListener("DOMContentLoaded", () => {
       req.saveTaskList();
     }
   };
+  (window as any).done = function () {
+    //
+    if (!UI.getTask()) throw new Error(`[done]: Task not found`);
+    else{
+      UI.getTask()!.doneTask();
+      req.saveTaskList();
+    }
+  };
 
   newTask.addEventListener("click", () => {
     //Добаваление новой задачи
     const name = document.querySelector("#task-name") as HTMLInputElement;
     const description = document.querySelector("#task-description") as HTMLInputElement;
-    const taskN = new Task(name.value, description.value);
+    const lvl = document.querySelector("#task-lvl") as HTMLInputElement;
+    const date = document.querySelector("#task-date") as HTMLInputElement;
+    let dateVal : Date | undefined = undefined;
+    try{
+      if (date.value.trim() !== "") {
+        const [day, month, year] = date.value.split(".");
+        dateVal = new Date(`${year}-${month}-${day}`);
+        if (dateVal.toString() === "Invalid Date") {
+          UI.notification("Неверный формат даты", "error")
+          throw new Error(`[newTask]: Invalid Date`);
+        }
+      }
+    } catch (error: any) {
+      UI.notification("Неверный формат даты", "error")
+      throw new Error(`[newTask]: ${error.message}`);
+    }
+    const lvlVal = parseInt(lvl.value);
+    if (isNaN(lvlVal) && lvl.value.trim() !== "") {
+      UI.notification("Уровень приоритета должен быть числом", "error")
+      throw new Error(`[newTask]: lvl is NaN`);
+    }
+    const taskN = new Task(name.value, description.value, false, dateVal, isNaN(lvlVal) ? 0 : lvlVal);
     if (!UI.getTaskList()) throw new Error(`[newTask]: TaskList not found`);
     else{
       UI.getTaskList()!.addTask(taskN);

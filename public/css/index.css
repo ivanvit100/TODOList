@@ -169,6 +169,10 @@ li button {
   text-align: left;
   border-bottom: 3px solid #007bff;
 }
+li button:hover {
+  background-color: #007bff;
+  color: #eee;
+}
 .notification {
   background-color: #007bff;
   color: #eee;
@@ -179,9 +183,14 @@ li button {
   text-align: center;
   font-weight: bold;
 }
-li button:hover {
-  background-color: #007bff;
-  color: #eee;
+.done{
+  background-color: #626262;
+}
+li button:has(.done) {
+  border-bottom-color: #626262;
+}
+li button:hover:has(.done) {
+  background-color: #626262;
 }
 #list-name {
   font-weight: bolder;

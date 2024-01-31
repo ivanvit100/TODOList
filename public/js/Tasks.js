@@ -1,13 +1,16 @@
 export class Task {
     constructor(name, description, done = false, date = null, lvl = 0) {
         this.name = name;
-        this.done = false;
+        this.done = done;
         this.description = description;
         this.date = date;
         this.lvl = lvl;
     }
     changeName(name) {
         this.name = name;
+    }
+    doneTask() {
+        this.done = !this.done;
     }
 }
 export class TaskList {
@@ -23,12 +26,12 @@ export class TaskList {
     }
     getTasks() {
         return this.tasks.sort((a, b) => {
-            if (a.lvl !== b.lvl) {
+            if (a.done !== b.done)
+                return a.done ? 1 : -1;
+            if (a.lvl !== b.lvl)
                 return b.lvl - a.lvl;
-            }
-            if (a.date && b.date) {
+            if (a.date && b.date)
                 return a.date.getTime() - b.date.getTime();
-            }
             return a.name.localeCompare(b.name);
         });
     }

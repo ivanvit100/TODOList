@@ -12,13 +12,16 @@ export class Task {
     lvl: number = 0
   ) {
     this.name = name;
-    this.done = false;
+    this.done = done;
     this.description = description;
     this.date = date;
     this.lvl = lvl;
   }
   changeName(name: string) {
     this.name = name;
+  }
+  doneTask() {
+    this.done = !this.done;
   }
 }
 
@@ -37,12 +40,13 @@ export class TaskList {
   }
   getTasks() {
     return this.tasks.sort((a, b) => {
-      if (a.lvl !== b.lvl) {
+      if (a.done !== b.done) //Выполненные внизу
+        return a.done ? 1 : -1;
+      if (a.lvl !== b.lvl) //Самые срочные сверху
         return b.lvl - a.lvl;
-      }
-      if (a.date && b.date) {
+      //TODO: fix date format
+      if (a.date && b.date) //Самые ранние сверху
         return a.date.getTime() - b.date.getTime();
-      }
       return a.name.localeCompare(b.name);
     });
   }

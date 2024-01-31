@@ -63,6 +63,7 @@ export class Request {
             });
             const data = await response.json();
             this.UI.notification(data.message, data.status);
+            this.UI.setTask(undefined);
             this.UI.updateTaskUI();
             this.UI.updateListUI();
         } catch (error: any) {
