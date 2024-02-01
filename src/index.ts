@@ -11,13 +11,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //Добавление функций в глобальную область видимости
   //Предназначены для вызова из HTML
+  (window as any).editTask = function (name: string) {
+    //Смена списка задач
+    let description = document.querySelector("#task-description-edit") as HTMLTextAreaElement;
+    if (description === null)
+      UI.editTaskUI();
+    else{
+      console.log(description.value);
+      UI.updateTaskUI();
+    }
+    if (!UI.getTaskList())
+      throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
+    else
+    UI.updateListUI();
+  };
   (window as any).changeTaskList = function (name: string) {
     //Смена списка задач
     UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
     if (!UI.getTaskList())
       throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
-    else
-    UI.updateListUI();
+    else UI.updateListUI();
   };
   (window as any).changeTask = function (name: string) {
     //Смена задачи

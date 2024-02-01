@@ -10,6 +10,23 @@ export class Request {
         this.password = "";
         this.UI = UI;
     }
+    //Отправка запроса на сервер
+    async response(path: string, data: object){
+        const response = await fetch(path, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok)
+            throw new Error(`[response]: HTTP Error (${response.status})`);
+        else{
+            const data = await response.json();
+            data.message && this.UI.notification(data.message, data.status);
+            return data;
+        }
+    }
     //Вход в систему
     async auth() {
         try {
@@ -21,26 +38,15 @@ export class Request {
                 this.UI.notification("Заполните поля", "error");
                 throw new Error(`Login or password is empty`);
             }
-            const response = await fetch('/api/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    login: this.login,
-                    password: this.password
-                })
-            });
-            if (!response.ok)
-                throw new Error(`[auth]: HTTP Error (${response.status})`);
-            else{
-                const data = await response.json();
-                this.UI.notification(data.message, data.status);
-                if(data.status === "success"){
-                    const hide = document.querySelector(".modal") as HTMLDivElement;
-                    hide.style.display = "none";
-                    this.getTaskListList();
-                }
+            const body = {
+                login: this.login,
+                password: this.password
+            }
+            const data = await this.response('/api/auth', body);
+            if(data.status === "success"){
+                const hide = document.querySelector(".modal") as HTMLDivElement;
+                hide.style.display = "none";
+                this.getTaskListList();
             }
         } catch (error: any) {
             console.error(`[auth]: ${error.message}`);
@@ -49,20 +55,13 @@ export class Request {
     //Сохранение списка задач
     async saveTaskList() {
         try{
-            const response = await fetch('/api/saveTaskList', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    login: this.login,
-                    password: this.password,
-                    taskList: this.UI.getTaskList()?.name,
-                    data: {"data": this.UI.getTaskList()?.getTasks()}
-                })
-            });
-            const data = await response.json();
-            this.UI.notification(data.message, data.status);
+            const body = {
+                login: this.login,
+                password: this.password,
+                taskList: this.UI.getTaskList()?.name,
+                data: {"data": this.UI.getTaskList()?.getTasks()}
+            }
+            await this.response('/api/saveTaskList', body);
             this.UI.setTask(undefined);
             this.UI.updateTaskUI();
             this.UI.updateListUI();
@@ -73,17 +72,11 @@ export class Request {
     //Получение списка списков задач
     async getTaskListList() {
         try{
-            const response = await fetch('/api/getTaskListList', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    login: this.login,
-                    password: this.password
-                })
-            });
-            const data = await response.json();
+            const body = {
+                login: this.login,
+                password: this.password
+            }
+            const data = await this.response('/api/getTaskListList', body);
             for(let i = 0; i < data.data.length; i++){
                 let tl = new TaskList(data.data[i]);
                 this.UI.getTaskManager().addList(tl);
@@ -98,18 +91,12 @@ export class Request {
     //Получение списка задач
     async getTaskList(name: string = "default") {
         try{
-            const response = await fetch('/api/getTaskList', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    taskList: name,
-                    login: this.login,
-                    password: this.password
-                })
-            });
-            const data = await response.json();
+            const body = {
+                taskList: name,
+                login: this.login,
+                password: this.password
+            }
+            const data = await this.response('/api/getTaskList', body);
             let ar = data.data.data;
             for(let i = 0; i < ar.length; i++){
                 let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);

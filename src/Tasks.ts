@@ -39,15 +39,17 @@ export class TaskList {
     this.tasks = this.tasks.filter((t) => t !== task);
   }
   getTasks() {
-    return this.tasks.sort((a, b) => {
+    let list = this.tasks.sort((a, b) => {
+      return b.lvl - a.lvl;
+    });
+    return list.sort((a, b) => {
       if (a.done !== b.done) //Выполненные внизу
         return a.done ? 1 : -1;
-      if (a.lvl !== b.lvl) //Самые срочные сверху
-        return b.lvl - a.lvl;
-      //TODO: fix date format
-      if (a.date && b.date) //Самые ранние сверху
-        return a.date.getTime() - b.date.getTime();
-      return a.name.localeCompare(b.name);
+      //Сортировка по дате выполнения
+      const dateA = new Date(a.date as unknown as string);
+      const dateB = new Date(b.date as unknown as string);
+      const dateComparison = dateB.getTime() - dateA.getTime();
+      return dateComparison;
     });
   }
   getTask(name: string) {

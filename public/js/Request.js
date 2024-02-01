@@ -14,6 +14,24 @@ export class Request {
         this.password = "";
         this.UI = UI;
     }
+    response(path, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield fetch(path, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok)
+                throw new Error(`[response]: HTTP Error (${response.status})`);
+            else {
+                const data = yield response.json();
+                data.message && this.UI.notification(data.message, data.status);
+                return data;
+            }
+        });
+    }
     auth() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -25,26 +43,15 @@ export class Request {
                     this.UI.notification("Заполните поля", "error");
                     throw new Error(`Login or password is empty`);
                 }
-                const response = yield fetch('/api/auth', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        login: this.login,
-                        password: this.password
-                    })
-                });
-                if (!response.ok)
-                    throw new Error(`[auth]: HTTP Error (${response.status})`);
-                else {
-                    const data = yield response.json();
-                    this.UI.notification(data.message, data.status);
-                    if (data.status === "success") {
-                        const hide = document.querySelector(".modal");
-                        hide.style.display = "none";
-                        this.getTaskListList();
-                    }
+                const body = {
+                    login: this.login,
+                    password: this.password
+                };
+                const data = yield this.response('/api/auth', body);
+                if (data.status === "success") {
+                    const hide = document.querySelector(".modal");
+                    hide.style.display = "none";
+                    this.getTaskListList();
                 }
             }
             catch (error) {
@@ -56,20 +63,13 @@ export class Request {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield fetch('/api/saveTaskList', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        login: this.login,
-                        password: this.password,
-                        taskList: (_a = this.UI.getTaskList()) === null || _a === void 0 ? void 0 : _a.name,
-                        data: { "data": (_b = this.UI.getTaskList()) === null || _b === void 0 ? void 0 : _b.getTasks() }
-                    })
-                });
-                const data = yield response.json();
-                this.UI.notification(data.message, data.status);
+                const body = {
+                    login: this.login,
+                    password: this.password,
+                    taskList: (_a = this.UI.getTaskList()) === null || _a === void 0 ? void 0 : _a.name,
+                    data: { "data": (_b = this.UI.getTaskList()) === null || _b === void 0 ? void 0 : _b.getTasks() }
+                };
+                yield this.response('/api/saveTaskList', body);
                 this.UI.setTask(undefined);
                 this.UI.updateTaskUI();
                 this.UI.updateListUI();
@@ -82,17 +82,11 @@ export class Request {
     getTaskListList() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield fetch('/api/getTaskListList', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        login: this.login,
-                        password: this.password
-                    })
-                });
-                const data = yield response.json();
+                const body = {
+                    login: this.login,
+                    password: this.password
+                };
+                const data = yield this.response('/api/getTaskListList', body);
                 for (let i = 0; i < data.data.length; i++) {
                     let tl = new TaskList(data.data[i]);
                     this.UI.getTaskManager().addList(tl);
@@ -110,18 +104,12 @@ export class Request {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield fetch('/api/getTaskList', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        taskList: name,
-                        login: this.login,
-                        password: this.password
-                    })
-                });
-                const data = yield response.json();
+                const body = {
+                    taskList: name,
+                    login: this.login,
+                    password: this.password
+                };
+                const data = yield this.response('/api/getTaskList', body);
                 let ar = data.data.data;
                 for (let i = 0; i < ar.length; i++) {
                     let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);

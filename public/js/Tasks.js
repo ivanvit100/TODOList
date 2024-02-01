@@ -25,14 +25,16 @@ export class TaskList {
         this.tasks = this.tasks.filter((t) => t !== task);
     }
     getTasks() {
-        return this.tasks.sort((a, b) => {
+        let list = this.tasks.sort((a, b) => {
+            return b.lvl - a.lvl;
+        });
+        return list.sort((a, b) => {
             if (a.done !== b.done)
                 return a.done ? 1 : -1;
-            if (a.lvl !== b.lvl)
-                return b.lvl - a.lvl;
-            if (a.date && b.date)
-                return a.date.getTime() - b.date.getTime();
-            return a.name.localeCompare(b.name);
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            const dateComparison = dateB.getTime() - dateA.getTime();
+            return dateComparison;
         });
     }
     getTask(name) {

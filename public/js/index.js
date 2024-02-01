@@ -6,6 +6,19 @@ document.addEventListener("DOMContentLoaded", () => {
     let req = new Request(UI);
     const newTask = document.querySelector("#new-task");
     const newTaskList = document.querySelector("#new-tasklist");
+    window.editTask = function (name) {
+        let description = document.querySelector("#task-description-edit");
+        if (description === null)
+            UI.editTaskUI();
+        else {
+            console.log(description.value);
+            UI.updateTaskUI();
+        }
+        if (!UI.getTaskList())
+            throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
+        else
+            UI.updateListUI();
+    };
     window.changeTaskList = function (name) {
         UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
         if (!UI.getTaskList())

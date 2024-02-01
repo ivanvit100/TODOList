@@ -54,7 +54,7 @@ export class Interface {
         else {
             const date = new Date(this.task.date);
             let formattedDate = "Бессрочно";
-            if (date !== undefined && date !== null) {
+            if (date && date.getTime()) {
                 const day = date.getDate();
                 const month = date.getMonth() + 1;
                 const year = date.getFullYear();
@@ -69,7 +69,7 @@ export class Interface {
             <div class="task-bottom">
                 <div class="task-icons">
                     <button onclick="done()" class="task-icon"><img src="./pub/icons/done.png" alt="Отметить"></button>
-                    <button onclick="" class="task-icon"><img src="./pub/icons/edit.png" alt="Редактировать"></button>
+                    <button onclick="editTask()" class="task-icon"><img src="./pub/icons/edit.png" alt="Редактировать"></button>
                     <button onclick="deleteTask()" class="task-icon"><img src="./pub/icons/delete.png" alt="Удалить"></button>
                 </div>
                 <div class="task-details">
@@ -81,6 +81,38 @@ export class Interface {
                 </div>
             </div>`;
         }
+    }
+    editTaskUI() {
+        var _a, _b;
+        const taskUI = document.querySelector("#task");
+        const date = new Date((_a = this.task) === null || _a === void 0 ? void 0 : _a.date);
+        let formattedDate = "Бессрочно";
+        if (date && date.getTime()) {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            formattedDate = `${day}.${month}.${year}`;
+        }
+        taskUI.innerHTML = `<div class="task-view">
+                <div class="inner-header ${((_b = this.task) === null || _b === void 0 ? void 0 : _b.done) ? "done" : ""}" id="task-title">
+                    <span class="inner-header-title">${this.task.name}</span>
+                </div>
+                <textarea id="task-description-edit"></textarea>
+            </div>
+            <div class="task-bottom">
+                <div class="task-icons">
+                    <button onclick="editTask()" class="task-icon"><img src="./pub/icons/edit.png" alt="Сохранить"></button>
+                </div>
+                <div class="task-details">
+                    <span class="task-importance">Уровень важности: ${this.task.lvl}</span>
+                    <span class="task-deadline">Срок выполнения: ${formattedDate}</span>
+                </div>
+                <div class="task-tag">
+                    <span class="tag">${this.taskList.name}</span>
+                </div>
+            </div>`;
+        const description = document.querySelector("#task-description-edit");
+        description.innerText = this.task.description;
     }
     getTask() {
         return this.task;
