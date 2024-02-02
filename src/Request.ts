@@ -23,8 +23,19 @@ export class Request {
             throw new Error(`[response]: HTTP Error (${response.status})`);
         else{
             const data = await response.json();
-            data.message && this.UI.notification(data.message, data.status);
+            console.log(data, typeof data.message == "string");
+            typeof data.message == "string" && this.UI.notification(data.message, data.status);
             return data;
+        }
+    }
+    //Запрос конфига
+    async getConfig() {
+        const data = await this.response('/api/config', {});
+        if (data.status === "success" && data["message"]["color-date-alert"]) {
+            let link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = './public/css/color-date-alert.css';
+            document.head.appendChild(link);
         }
     }
     //Вход в систему
@@ -77,11 +88,11 @@ export class Request {
                 password: this.password
             }
             const data = await this.response('/api/getTaskListList', body);
-            for(let i = 0; i < data.data.length; i++){
-                let tl = new TaskList(data.data[i]);
+            for(let i = 0; i < data.message.length; i++){
+                let tl = new TaskList(data.message[i]);
                 this.UI.getTaskManager().addList(tl);
                 this.UI.setTaskList(tl);
-                await this.getTaskList(data.data[i]);
+                await this.getTaskList(data.message[i]);
             }
             this.UI.updateManagerUI();
         } catch (error: any) {
@@ -97,7 +108,7 @@ export class Request {
                 password: this.password
             }
             const data = await this.response('/api/getTaskList', body);
-            let ar = data.data.data;
+            let ar = data.message.data;
             for(let i = 0; i < ar.length; i++){
                 let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);
                 this.UI.getTaskList()?.addTask(newTask);
@@ -105,5 +116,15 @@ export class Request {
         } catch (error: any) {
             console.error(`[getTaskList]: ${error.message}`);
         }
+    }
+    //Удаление листа
+    async deleteList(name: string) {
+        const body = {
+            login: this.login,
+            password: this.password,
+            taskList: name
+        }
+        const data = await this.response('/api/deleteList', body);
+        return data.message === "success";
     }
 }

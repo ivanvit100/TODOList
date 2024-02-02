@@ -2,8 +2,8 @@
     "todo": {
         "enabled": true,
         "web": true,
+        "color-date-alert": true,
         "login": "asd",
-        "password": "asd",
-        "host": "https://vigilant-carnival-7xg7w7jp6v73rww5-5000.app.github.dev"
+        "password": "asd"
     }
 }

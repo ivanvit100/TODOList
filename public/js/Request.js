@@ -27,8 +27,20 @@ export class Request {
                 throw new Error(`[response]: HTTP Error (${response.status})`);
             else {
                 const data = yield response.json();
-                data.message && this.UI.notification(data.message, data.status);
+                console.log(data, typeof data.message == "string");
+                typeof data.message == "string" && this.UI.notification(data.message, data.status);
                 return data;
+            }
+        });
+    }
+    getConfig() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = yield this.response('/api/config', {});
+            if (data.status === "success" && data["message"]["color-date-alert"]) {
+                let link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = './public/css/color-date-alert.css';
+                document.head.appendChild(link);
             }
         });
     }
@@ -87,11 +99,11 @@ export class Request {
                     password: this.password
                 };
                 const data = yield this.response('/api/getTaskListList', body);
-                for (let i = 0; i < data.data.length; i++) {
-                    let tl = new TaskList(data.data[i]);
+                for (let i = 0; i < data.message.length; i++) {
+                    let tl = new TaskList(data.message[i]);
                     this.UI.getTaskManager().addList(tl);
                     this.UI.setTaskList(tl);
-                    yield this.getTaskList(data.data[i]);
+                    yield this.getTaskList(data.message[i]);
                 }
                 this.UI.updateManagerUI();
             }
@@ -110,7 +122,7 @@ export class Request {
                     password: this.password
                 };
                 const data = yield this.response('/api/getTaskList', body);
-                let ar = data.data.data;
+                let ar = data.message.data;
                 for (let i = 0; i < ar.length; i++) {
                     let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);
                     (_a = this.UI.getTaskList()) === null || _a === void 0 ? void 0 : _a.addTask(newTask);
@@ -119,6 +131,17 @@ export class Request {
             catch (error) {
                 console.error(`[getTaskList]: ${error.message}`);
             }
+        });
+    }
+    deleteList(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const body = {
+                login: this.login,
+                password: this.password,
+                taskList: name
+            };
+            const data = yield this.response('/api/deleteList', body);
+            return data.message === "success";
         });
     }
 }

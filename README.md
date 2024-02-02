@@ -55,9 +55,9 @@ Example of config structure:
     "todo": {
         "enabled": true, /*For use as part of Skizo: whether to include the module functionality in the overall build*/
         "web": true, /*Whether to include the web interface*/
+        "color-date-alert": true, /*Whether to include styles for expired date of task notification*/
         "login": "login", /*User loging to protect your data*/
-        "password": "password", /*User password to protect your data*/
-        "host": "http://localhost:5000" /*Host to run the web interface on (in development)*/
+        "password": "password" /*User password to protect your data*/
     }
 }
 ```

@@ -1,0 +1,13 @@
+/*
+# Description: This fragment contains color indication of tasks with expiration date
+# Import: The file is included in the build if the user has enabled the colorDate parameter in the config
+# This file is part of the "Todo" module for "Skizo" project
+# Author: ivanvit100 @ GitHub
+# Licence: MIT
+*/
+.date{
+    background-color: sandybrown;
+}
+.expired{
+    background-color: #dc3545;
+}

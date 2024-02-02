@@ -1,4 +1,12 @@
-/*Main styles*/
+/*
+# Description: This fragment contains main styles of the "Todo" module
+# This file is part of the "Todo" module for "Skizo" project
+# Author: ivanvit100 @ GitHub
+# Licence: MIT
+*/
+
+@import url('modal.css');
+
 html {
   font-family: "PT Sans", sans-serif;
   font-family: "Roboto", sans-serif;
@@ -7,84 +15,42 @@ html {
 button{
   transition: all 0.1s ease-in-out;
 }
+input, textarea{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  flex-grow: 1;
+  color: #333;
+}
+textarea {
+  resize: none;
+}
+hr {
+  color: #999;
+  margin: 20px 0;
+}
+li button {
+  background-color: transparent;
+  color: #1e1e1e;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-bottom: 3px solid #007bff;
+}
+li button:hover {
+  background-color: #007bff;
+  color: #eee;
+}
 .dark{
   filter: invert(.9) !important;
 }
 
-/*Modal auth*/
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  width: min(350px, 95vw);
-  position: relative;
-}
-.modal-input {
-  width: 80%;
-  margin: 20px auto;
-  display: block;
-  position: relative;
-  height: 30px;
-  padding: 0 10px;
-  border: 1px solid #a4a4a4;
-  border-radius: 5px;
-}
-.modal-title {
-  font-size: 25px;
-  font-weight: bold;
-  font-stretch: expanded;
-  margin: 10px 20px 20px 25px;
-  padding-bottom: 8px;
-  width: 30%;
-  border-bottom: 3px solid #007bff;
-}
-.modal-decorate {
-  font-weight: bold;
-  font-size: 8px;
-  transform: rotate(-90deg);
-  position: absolute;
-  display: block;
-  width: 52px;
-  top: 42px;
-  left: 10px;
-}
-.modal-github {
-  text-decoration: none;
-  outline: none;
-  position: absolute;
-  right: 45px;
-  top: 35px;
-}
-.modal-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 3px;
-  background-color: #007bff;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  margin: 0 25px;
-}
-.modal-button:hover {
-  background-color: #0056b3;
-}
-.modal-button:active {
-  background-color: #004080;
-}
-
 /*Task manager*/
+/*TODO: more files*/
 #app {
   display: grid;
   grid-template-columns: 40px calc(100vw - 40px);
@@ -122,6 +88,7 @@ button{
   color: #fff;
   padding: 10px;
   border-radius: 5px;
+  position: relative;
 }
 .inner-header-title {
   font-size: 20px;
@@ -131,12 +98,12 @@ button{
   justify-content: space-between;
   margin-top: 20px;
 }
-.new-interface input {
-  flex-grow: 1;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
+#task-description {
+  grid-column: 2;
+  grid-row: 1/3;
+}
+#task-lvl{
+  margin-right: 0;
 }
 .new-interface button {
   background-color: #007bff;
@@ -158,21 +125,6 @@ button{
 .tasklist li, .taskmanager li {
   margin-bottom: 10px;
 }
-li button {
-  background-color: transparent;
-  color: #1e1e1e;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  border-bottom: 3px solid #007bff;
-}
-li button:hover {
-  background-color: #007bff;
-  color: #eee;
-}
 .notification {
   background-color: #007bff;
   color: #eee;
@@ -184,7 +136,7 @@ li button:hover {
   font-weight: bold;
 }
 .done{
-  background-color: #626262;
+  background-color: #626262 !important;
 }
 li button:has(.done) {
   border-bottom-color: #626262;
@@ -196,83 +148,23 @@ li button:hover:has(.done) {
   font-weight: bolder;
   font-size: larger;
 }
-hr {
-  color: #999;
-  margin: 20px 0;
-}
 #new-tasklist-id{
   display: grid;
   grid-template-columns: 45% 45% 8%;
   grid-row-gap: 15px;
 }
-
-/*Alert*/
-.notification-msg{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 100;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  padding: 0 20px;
-  border-radius: 5px;
-  background-color: #007bff85;
-  color: #eee;
-}
-.success{
-  background-color: #28a74585;
-}
-.error{
-  background-color: #dc354585;
-}
-
-/*Task*/
-#task{
-  height: 100vh;
-  position: relative;
-}
-.task-icon{
+.list-icon img, .list-icon{
+  width: 30px;
   height: 30px;
-  width: auto;
-  margin-left: 15px;
 }
-.task-bottom{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-.task-title {
-  font-family: "PT Sans", sans-serif;
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-.task-description {
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-.task-icons {
-  display: flex;
-  justify-content: flex-end;
-}
-.edit-task, .delete-task {
+.list-icon {
+  background-color: transparent;
+  display: inline;
   cursor: pointer;
-  margin-left: 10px;
-}
-.task-details {
-  font-family: "Source Code Pro", monospace;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-.task-importance, .task-deadline {
-  display: block;
-}
-.task-tag {
-  font-family: "Source Code Pro", monospace;
-  font-size: 14px;
-  background-color: #f0f0f0;
-  padding: 5px;
-  border-radius: 3px;
+  filter: invert(1);
+  border: none;
+  position: absolute;
+  right: 15px;
+  top: 0;
+  transform: translateY(25%);
 }

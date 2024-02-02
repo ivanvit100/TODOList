@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/public/css/index.css" />
+    <link rel="stylesheet" href="/public/css/Task.css" media="print" onload="this.media='all'">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -38,13 +39,15 @@
           <div class="inner-header">
             <span class="inner-header-title">Список задач</span>
             <span id="list-name"></span>
+            <button onclick="deleteList()" class="list-icon">
+              <img src="./public/icons/delete.png" alt="Удалить">
+            </button>
           </div>
           <div id="new-tasklist-id" class="new-interface">
             <input type="text" id="task-name" placeholder="Задача" />
-            <input type="text" id="task-description" placeholder="Описание" />
-            <div class="space"></div>
-            <input type="text" id="task-lvl" placeholder="Приоритет" />
-            <input type="text" id="task-date" placeholder="Дата" />
+            <textarea id="task-description" placeholder="Описание"></textarea>
+            <input type="number" id="task-lvl" placeholder="0" />
+            <input type="date" id="task-date" placeholder="11.11.2216" />
             <button id="new-task">-></button>
           </div>
           <hr>

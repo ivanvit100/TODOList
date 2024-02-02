@@ -9,19 +9,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const newTask = document.querySelector("#new-task") as HTMLButtonElement;
   const newTaskList = document.querySelector("#new-tasklist") as HTMLButtonElement;
 
+  req.getConfig();
+
   //Добавление функций в глобальную область видимости
   //Предназначены для вызова из HTML
-  (window as any).editTask = function (name: string) {
-    //Смена списка задач
+  (window as any).editTask = function (nameTask: string) {
+    //Редактирование задачи
+    let name = document.querySelector("#task-name-edit") as HTMLInputElement;
     let description = document.querySelector("#task-description-edit") as HTMLTextAreaElement;
+    let lvl = document.querySelector("#task-lvl-edit") as HTMLInputElement;
+    let date = document.querySelector("#task-date-edit") as HTMLInputElement;
     if (description === null)
       UI.editTaskUI();
     else{
-      console.log(description.value);
-      UI.updateTaskUI();
+      try{
+        UI.getTask()!.name = name.value;
+        UI.getTask()!.description = description.value;
+        UI.getTask()!.lvl = parseInt(lvl.value);
+        if (date.value.trim() !== "") {
+          const [day, month, year] = date.value.split(".");
+          UI.getTask()!.date = new Date(`${year}-${month}-${day}`);
+        }
+        UI.updateTaskUI();
+        req.saveTaskList();
+      } catch (error: any) {
+        UI.notification("Возникла ошибка при редактировании", "error");
+        UI.updateListUI();
+        throw new Error(`[editTask]: ${error.message}`);
+      }
     }
     if (!UI.getTaskList())
-      throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
+      throw new Error(`[changeTaskList]: TaskList with name ${nameTask} not found`);
     else
     UI.updateListUI();
   };
@@ -40,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       UI.updateTaskUI();
     }
   };
-  (window as any).deleteTask = function () {
+  (window as any).deleteTask = async function () {
     //Удаление задачи
     if (!UI.getTask()) throw new Error(`[deleteTask]: Task not found`);
     else{
@@ -48,7 +66,15 @@ document.addEventListener("DOMContentLoaded", () => {
       req.saveTaskList();
     }
   };
-  (window as any).done = function () {
+  (window as any).deleteList = async function () {
+    //Удаление листа
+    if (!UI.getTaskList()) throw new Error(`[deleteList]: List not found`);
+    else{
+      const name = UI.getTaskList()!.name;
+      await req.deleteList(name) && UI.getTaskManager().removeList(UI.getTaskList()!);
+    }
+  };
+  (window as any).done = async function () {
     //
     if (!UI.getTask()) throw new Error(`[done]: Task not found`);
     else{

@@ -11,6 +11,13 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+
+# TODO: Add config validation
+# TODO: Add alternative way to save settings
+# TODO: Add logging
+# TODO: Add sessions
+
+
 # Load config
 # Input: config.json
 # Output: user = {
@@ -20,18 +27,31 @@ CORS(app)
 #   'password': string,
 #   'host': string
 # }
-# TODO: Add config validation
-# TODO: Add alternative way to save settings
 with open('config.json', 'r') as file:
     data = json.load(file)
 user = data['todo']
 
-# Main page
+# Function to send index.html to the client
 # Input: /
 # Output: index.html (from /public)
 @app.route('/')
 def home():
     return send_from_directory('./public', 'index.html')
+
+# Function to send config to the client
+# Automatically excludes login and password from issuance
+# Input: none
+# Output: status: string, message: object
+@app.route('/api/config', methods=['POST'])
+def getConfig():
+    data = user.copy()
+    data.pop('login', None)
+    data.pop('password', None)
+    response = {
+        'status': 'success',
+        'message': data
+    }
+    return jsonify(response)
 
 # Main user authentification
 # Called by the client for the purpose of initial verification 
@@ -68,7 +88,7 @@ def getTaskList():
             data = json.load(file)
         response = {
             'status': 'success',
-            'data': data
+            'message': data
         }
     else:
         response = {
@@ -89,7 +109,7 @@ def getTaskListList():
         data = [os.path.splitext(file)[0] for file in files if file.endswith('.json')]
         response = {
             'status': 'success',
-            'data': data
+            'message': data
         }
     else:
         response = {
@@ -120,6 +140,33 @@ def saveTaskList():
         }
     return jsonify(response)
 
+# Function to delete taskList
+# Its will delete /server/taskManager/{taskList}.json
+# Input: login: string, password: string, taskList: string
+# Output: status: string, message: string
+@app.route('/api/deleteList', methods=['POST'])
+def deleteList():
+    data = request.get_json()
+    if data['login'] == user['login'] and data['password'] == user['password']:
+        taskList = data['taskList']
+        try:
+            os.remove(f"./server/taskManager/{taskList}.json")
+            response = {
+                'status': 'success',
+                'message': 'Удаление успешно'
+            }
+        except Exception:
+            response = {
+                'status': 'error',
+                'message': 'Ошибка удаления'
+            }
+    else:
+        response = {
+            'status': 'error',
+            'message': 'Неверный логин или пароль'
+        }
+    return jsonify(response)
+
 # Redirecting links for public files (css, js, icons etc) 
 # Will be used if the web interface is enabled
 # Input: filename: string
@@ -137,7 +184,7 @@ if user['web']:
 @app.route('/<path:path>')
 def catch_all(path):
     if not user['web']:
-        return 'Вы попали на URL: /%s' % path
+        return f'Вы попали на URL: {path}'
     else:
         return send_from_directory('./public/', '404.html')
 
