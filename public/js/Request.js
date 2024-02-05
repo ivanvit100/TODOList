@@ -27,7 +27,6 @@ export class Request {
                 throw new Error(`[response]: HTTP Error (${response.status})`);
             else {
                 const data = yield response.json();
-                console.log(data, typeof data.message == "string");
                 typeof data.message == "string" && this.UI.notification(data.message, data.status);
                 return data;
             }

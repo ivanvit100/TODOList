@@ -60,8 +60,5 @@ export class TaskManager {
     getList(name) {
         return this.lists.find((l) => l.name === name);
     }
-    findList(list) {
-        return this.lists.find((l) => l.name === list);
-    }
 }
 //# sourceMappingURL=Tasks.js.map

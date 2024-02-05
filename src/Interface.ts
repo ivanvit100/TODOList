@@ -1,3 +1,8 @@
+// Description: File with classes and methods for working with the interface
+// This file is part of the "Todo" module for "Skizo" project
+// Author: ivanvit100 @ GitHub
+// Licence: MIT
+
 import { Task, TaskList, TaskManager } from "./Tasks.js";
 
 export class Interface {
@@ -10,8 +15,15 @@ export class Interface {
         this.taskList = undefined;
         this.task = undefined;
     }
+    // Function for getting the due date of the task
+    // Input: task - the task for which you want to get the date
+    // Output: formattedDate - the date in the format "dd.mm.yyyy"
+    //         date - the date in the Date format
+    //         If the task is not found, an error is thrown
+    //         If the date is not set, the "noDate" constant is returned
+    // The function is necessary in order to display the date correctly in 
+    // the interface, so it is placed in the Interface class, not the Task class
     getDate(task: Task){
-        //Получение даты
         if(!task) throw new Error(`[getDate]: Task not found`);
         const date = new Date(task.date as unknown as string);
         let formattedDate = Interface.noDate;
@@ -23,8 +35,12 @@ export class Interface {
         }
         return {formattedDate, date};
     }
+    // Function for send notification about operation state
+    // Input: message - the message to be displayed
+    //        type - the type of the message (info, error, success)
+    // Output: none
     notification(message: string, type: string = "info") {
-        //Вывод уведомления
+        console.log(`[${type}]: ${message}`);
         const notification = document.createElement('div');
         notification.classList.add('notification-msg', type);
         notification.textContent = message;
@@ -33,8 +49,12 @@ export class Interface {
             notification.remove();
         }, 2000);
     }
+    // Function for updating the interface of the task manager
+    // This method affects the column with the TaskLists output 
+    // (left side for desktop interface)
+    // Input: none
+    // Output: none
     updateManagerUI() {
-        //Обновление списка списков задач (левая часть)
         const managerUI = document.querySelector("#manager") as HTMLUListElement;
         managerUI.innerHTML = "";
         for (let taskList of this.taskManager.getLists())
@@ -45,8 +65,12 @@ export class Interface {
                 taskList.getTasks().length
             }</span></button></li>`;
     }
+    // Function for updating the interface of the task list
+    // This method affects the column with the Tasks output 
+    // (center column for desktop interface)
+    // Input: none
+    // Output: none
     updateListUI() {
-        //Обновление списка задач (центральная часть)
         const listUI = document.querySelector("#list") as HTMLUListElement;
         listUI.innerHTML = "";
         if (!this.taskList) throw new Error(`[updateListUI]: TaskList not found`);
@@ -64,8 +88,12 @@ export class Interface {
             this.updateManagerUI();
         }
     }
+    // Function for updating the interface of the task
+    // This method affects the column with the Task description output 
+    // (right side for desktop interface)
+    // Input: none
+    // Output: none
     updateTaskUI() {
-        //Обновление информации о задаче (правая часть)
         const taskUI = document.querySelector("#task") as HTMLDivElement;
         if (!this.taskList || !this.task) {
             taskUI.innerHTML = `
@@ -106,6 +134,10 @@ export class Interface {
             </div>`;
         }
     }
+    // Function for updating the interface of the task
+    // This method adds a task editing interface 
+    // Input: none
+    // Output: none
     editTaskUI() {
         //Редактирование задачи
         const taskUI = document.querySelector("#task") as HTMLDivElement;
@@ -131,23 +163,42 @@ export class Interface {
         const description = document.querySelector("#task-description-edit") as HTMLTextAreaElement;
         description.innerText = this.task!.description;
     }
+    // Function for getting the active task
+    // Input: none
+    // Output: active Task object
     getTask(){
         return this.task;
     }
+    // Function for getting the active task list
+    // Input: none
+    // Output: active TaskList object
     getTaskList(){
         return this.taskList;
     }
+    // Function for getting the active task manager
+    // Input: none
+    // Output: active TaskManager object
     getTaskManager(){
         return this.taskManager;
     }
+    // Function for setting new task as active
+    // Input: task - the Task to be set as active
+    // Output: none
     setTask(task: Task | undefined){
         this.task = task;
     }
+    // Function for setting new task list as active
+    // Input: taskList - the TaskList to be set as active
+    // Output: none
     setTaskList(taskList: TaskList | undefined){
         this.taskList = taskList;
     }
 }
 
+// Function for changing theme of the interface
+// Calling from the window object by clicking button
+// Input: none
+// Output: none
 let theme = true;
 (window as any).switchTheme = function () {
     //Смена темы

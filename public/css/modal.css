@@ -76,3 +76,24 @@
 .modal-button:active {
     background-color: #004080;
 }
+
+.notification-msg{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding: 0 20px;
+    border-radius: 5px;
+    background-color: #007bff85;
+    color: #eee;
+  }
+  .success{
+    background-color: #28a74585;
+  }
+  .error{
+    background-color: #dc354585;
+  }

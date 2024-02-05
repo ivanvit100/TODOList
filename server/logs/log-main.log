@@ -1,0 +1,26 @@
+INFO:root:[2024-02-05 17:07:17.857928][setup]: App strtarted with config {'enabled': True, 'web': True, 'color-date-alert': True, 'lang': 'ru', 'rewrite-config': True, 'login': 'asd', 'password': 'asd'}
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 110-390-495
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/css/index.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/js/Tasks.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/js/index.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/icons/delete.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/css/modal.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/js/Interface.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:19] "GET /public/js/Request.js HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "[36mGET /public/js/Request.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "[36mGET /public/js/index.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "[36mGET /public/js/Interface.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "GET /public/css/Task.css HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "[36mGET /public/js/Tasks.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "POST /api/config HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "GET /public/css/color-date-alert.css HTTP/1.1" 200 -
+WARNING:root:[2024-02-05 17:07:20.531075][path]: Unlnown path "favicon.ico" catched
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:20] "GET /favicon.ico HTTP/1.1" 200 -
+WARNING:root:[2024-02-05 17:07:21.726766][auth]: New authentification success
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:21] "POST /api/auth HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:21] "POST /api/getTaskListList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:21] "POST /api/getTaskList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:22] "POST /api/getTaskList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [05/Feb/2024 17:07:22] "POST /api/getTaskList HTTP/1.1" 200 -

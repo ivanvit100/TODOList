@@ -1,0 +1,10 @@
+{
+    "auth-success": "Data uploaded",
+    "auth-error": "Invalid login or password",
+    "file-error": "Error reading file",
+    "save-success": "Data saved",
+    "save-error": "Error saving",
+    "delete-success": "Data deleted",
+    "delete-error": "Error deleting",
+    "unknoown-url": "You have reached URL:"
+}

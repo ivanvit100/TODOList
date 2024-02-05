@@ -19,6 +19,7 @@ export class Interface {
         return { formattedDate, date };
     }
     notification(message, type = "info") {
+        console.log(`[${type}]: ${message}`);
         const notification = document.createElement('div');
         notification.classList.add('notification-msg', type);
         notification.textContent = message;

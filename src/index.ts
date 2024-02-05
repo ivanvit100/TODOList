@@ -1,9 +1,18 @@
+// Description: Main web script for the "Todo" module
+// This file is part of the "Todo" module for "Skizo" project
+// Author: ivanvit100 @ GitHub
+// Licence: MIT
+
 import { Task, TaskList } from "./Tasks.js";
 import { Interface } from "./Interface.js";
 import { Request } from "./Request.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  //Запуск приложения
+  // Start application
+  // Initialization of the main classes 
+  // and selection of the main elements
+  // Request config file from server to 
+  // load the necessary styles and scripts
   let UI = new Interface();
   let req = new Request(UI);
   const newTask = document.querySelector("#new-task") as HTMLButtonElement;
@@ -11,10 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   req.getConfig();
 
-  //Добавление функций в глобальную область видимости
-  //Предназначены для вызова из HTML
+  // Function what called when user click on "edit" button
+  // This function open interface for editing task
+  // or save changes if task already edited
+  // Input: nameTask - name of the task
+  // Output: none
   (window as any).editTask = function (nameTask: string) {
-    //Редактирование задачи
     let name = document.querySelector("#task-name-edit") as HTMLInputElement;
     let description = document.querySelector("#task-description-edit") as HTMLTextAreaElement;
     let lvl = document.querySelector("#task-lvl-edit") as HTMLInputElement;
@@ -43,39 +54,59 @@ document.addEventListener("DOMContentLoaded", () => {
     else
     UI.updateListUI();
   };
+
+  // Function what called when user click on different TaskList in TaskManager
+  // This function change current TaskList and update UI
+  // Input: name - name of the TaskList
+  // Output: none
   (window as any).changeTaskList = function (name: string) {
-    //Смена списка задач
     UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
     if (!UI.getTaskList())
       throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
     else UI.updateListUI();
   };
+
+  // Function what called when user click on different Task in TaskList
+  // This function change current Task and update UI
+  // Input: name - name of the Task
+  // Output: none
   (window as any).changeTask = function (name: string) {
-    //Смена задачи
     if (!UI.getTaskList()) throw new Error(`[changeTask]: TaskList not found`);
     else{
       UI.setTask(UI.getTaskList()!.getTasks().find((t) => t.name === name));
       UI.updateTaskUI();
     }
   };
+
+  // Function what called when user click on "delete" button in Task UI
+  // This function delete current Task and update UI
+  // Input: none
+  // Output: none
   (window as any).deleteTask = async function () {
-    //Удаление задачи
     if (!UI.getTask()) throw new Error(`[deleteTask]: Task not found`);
     else{
       UI.getTaskList()!.removeTask(UI.getTask()!);
       req.saveTaskList();
     }
   };
+
+  // Function what called when user click on "delete" button in TaskList UI
+  // This function delete current TaskList and update UI
+  // Input: none
+  // Output: none
   (window as any).deleteList = async function () {
-    //Удаление листа
     if (!UI.getTaskList()) throw new Error(`[deleteList]: List not found`);
     else{
       const name = UI.getTaskList()!.name;
       await req.deleteList(name) && UI.getTaskManager().removeList(UI.getTaskList()!);
     }
   };
+
+  // Function what called when user click on "done" button in Task UI
+  // This function mark current Task as done (or not) and update UI
+  // Input: none
+  // Output: none
   (window as any).done = async function () {
-    //
     if (!UI.getTask()) throw new Error(`[done]: Task not found`);
     else{
       UI.getTask()!.doneTask();
@@ -83,8 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Function what called when user create new Task
+  // This function create new Task and update UI
+  // Input: none
+  // Output: none
   newTask.addEventListener("click", () => {
-    //Добаваление новой задачи
     const name = document.querySelector("#task-name") as HTMLInputElement;
     const description = document.querySelector("#task-description") as HTMLInputElement;
     const lvl = document.querySelector("#task-lvl") as HTMLInputElement;
@@ -116,8 +150,12 @@ document.addEventListener("DOMContentLoaded", () => {
       req.saveTaskList();
     }
   });
+
+  // Function what called when user create new TaskList
+  // This function create new TaskList and update UI
+  // Input: none
+  // Output: none
   newTaskList.addEventListener("click", () => {
-    //Добаваление нвого списка задач
     const name = document.querySelector("#tasklist-name") as HTMLInputElement;
     const taskListN = new TaskList(name.value);
     UI.getTaskManager()!.addList(taskListN);
@@ -125,6 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
     req.saveTaskList();
   });
 
+  // Function what called when user click on "enter" button in modal window
+  // This function send request to server for authentication
+  // and load TaskLists from server 
+  // Input: none
+  // Output: none
   const modal = document.querySelector("#modal-enter") as HTMLButtonElement;
   modal.addEventListener("click", () => req.auth());
 });

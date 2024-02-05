@@ -1,3 +1,9 @@
+// Description: File with class for working with requests to the server
+// All methods are asynchronous and use the fetch API
+// This file is part of the "Todo" module for "Skizo" project
+// Author: ivanvit100 @ GitHub
+// Licence: MIT
+
 import { Task, TaskList } from "./Tasks.js";
 import { Interface } from "./Interface.js";
 
@@ -10,7 +16,12 @@ export class Request {
         this.password = "";
         this.UI = UI;
     }
-    //Отправка запроса на сервер
+    // Function for sending a request to the server
+    // Also displays a notification if the request has correct message
+    // Input: path - the path to the api method
+    //        data - the data to be sent to the server
+    // Output: json object with the server response
+    //         If the request fails, an error is thrown
     async response(path: string, data: object){
         const response = await fetch(path, {
             method: 'POST',
@@ -23,12 +34,14 @@ export class Request {
             throw new Error(`[response]: HTTP Error (${response.status})`);
         else{
             const data = await response.json();
-            console.log(data, typeof data.message == "string");
             typeof data.message == "string" && this.UI.notification(data.message, data.status);
             return data;
         }
     }
-    //Запрос конфига
+    // Function for getting the configuration from the server
+    // Executes scripts that depend on the contents of the config
+    // Input: none
+    // Output: none
     async getConfig() {
         const data = await this.response('/api/config', {});
         if (data.status === "success" && data["message"]["color-date-alert"]) {
@@ -38,7 +51,10 @@ export class Request {
             document.head.appendChild(link);
         }
     }
-    //Вход в систему
+    // Function for user authentication
+    // TaskList and TaskManager are loaded only after successful authentication
+    // Input: none
+    // Output: none
     async auth() {
         try {
             const loginInp = document.querySelector("#modal-login") as HTMLInputElement;
@@ -63,7 +79,9 @@ export class Request {
             console.error(`[auth]: ${error.message}`);
         }
     }
-    //Сохранение списка задач
+    // Function for saving current TaskList to the server
+    // Input: none
+    // Output: none
     async saveTaskList() {
         try{
             const body = {
@@ -80,7 +98,10 @@ export class Request {
             console.error(`[saveTaskList]: ${error.message}`);
         }
     }
-    //Получение списка списков задач
+    // Function for getting the list of TaskLists
+    // Used to load the TaskManager and refill the TaskLists
+    // Input: none
+    // Output: none
     async getTaskListList() {
         try{
             const body = {
@@ -99,7 +120,10 @@ export class Request {
             console.error(`[getTaskListList]: ${error.message}`);
         }
     }
-    //Получение списка задач
+    // Function for getting the contents of the TaskList
+    // Called from this.getTaskListList()
+    // Input: name - the name of the TaskList
+    // Output: none
     async getTaskList(name: string = "default") {
         try{
             const body = {
@@ -117,7 +141,10 @@ export class Request {
             console.error(`[getTaskList]: ${error.message}`);
         }
     }
-    //Удаление листа
+    // Function for getting the contents of the TaskList
+    // Called from this.getTaskListList()
+    // Input: name - the name of the TaskList
+    // Output: status of the operation
     async deleteList(name: string) {
         const body = {
             login: this.login,

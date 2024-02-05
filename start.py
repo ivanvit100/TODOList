@@ -5,38 +5,79 @@
 
 import os
 import json
+import logging
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 
 
-# TODO: Add config validation
 # TODO: Add alternative way to save settings
-# TODO: Add logging
 # TODO: Add sessions
 
 
-# Load config
+# Load config or create new one
 # Input: config.json
 # Output: user = {
 #   'enabled': bool,
 #   'web': bool,
+#   'color-date-alert': bool,
+#   'lang': string,
+#   'rewrite-config': bool,
 #   'login': string,
-#   'password': string,
-#   'host': string
+#   'password': string
 # }
-with open('config.json', 'r') as file:
-    data = json.load(file)
-user = data['todo']
+try:
+    with open('config.json', 'r') as file:
+        data = json.load(file)
+    user = data['todo']
+    if ['enabled', 'web', 'color-date-alert', 'lang', 'rewrite-config', 'login', 'password'] != list(user.keys()):
+        raise Exception
+except Exception:
+    user = {
+        'enabled': True,
+        'web': True,
+        'color-date-alert': True,
+        'lang': 'ru',
+        'rewrite-config': True,
+        'login': 'admin',
+        'password': 'admin'
+    }
+    with open('config.json', 'w') as file:
+        json.dump({'todo': user}, file)
+    logging.error(f'[{datetime.now()}][setup]: Error reading config file, default settings are used')
+
+# Load language file
+# If the file is not found, the default language will be used
+# Default language is "ru"
+# Input: /server/langs/lang.{user["lang"]}.json
+# Output: lang = {...}
+try:
+    with open(f'./server/langs/lang.{user["lang"]}.json', 'r') as file:
+        lang = json.load(file)
+except Exception:
+    with open('/server/langs/lang.ru.json', 'r') as file:
+        lang = json.load(file)
+    logging.error(f'[{datetime.now()}][setup]: Error reading lang file, default settings are used')
+
+# Logging settings
+# Will rewrite the log file with every start of the server
+# or creating new log file on every launch
+logging.basicConfig(filename=f'./server/logs/log{not user["rewrite-config"] and "-" + str(datetime.now().date()) or "-main"}.log',
+                    level=logging.INFO,
+                    filemode='w' if user['rewrite-config'] else 'a')
+logging.info(f'[{datetime.now()}][setup]: App strtarted with config {user}')
 
 # Function to send index.html to the client
+# Will be used if the web interface is enabled
 # Input: /
 # Output: index.html (from /public)
-@app.route('/')
-def home():
-    return send_from_directory('./public', 'index.html')
+if user['web']:
+    @app.route('/')
+    def home():
+        return send_from_directory('./public', 'index.html')
 
 # Function to send config to the client
 # Automatically excludes login and password from issuance
@@ -67,13 +108,14 @@ def auth():
     if data['login'] == user['login'] and data['password'] == user['password']:
         response = {
             'status': 'success',
-            'message': 'Данные загружаются'
+            'message': lang['auth-success']
         }
     else:
         response = {
             'status': 'error',
-            'message': 'Неверный логин или пароль'
+            'message': lang['auth-error']
         }
+    logging.warning(f'[{datetime.now()}][auth]: New authentification {response["status"]}')
     return jsonify(response)
 
 # Get data of taskList (array of tasks)
@@ -84,17 +126,25 @@ def auth():
 def getTaskList():
     requestData = request.get_json()
     if requestData["login"] == user['login'] and requestData["password"] == user['password']:
-        with open(f'./server/taskManager/{requestData["taskList"]}.json', 'r') as file:
-            data = json.load(file)
-        response = {
-            'status': 'success',
-            'message': data
-        }
+        try:
+            with open(f'./server/taskManager/{requestData["taskList"]}.json', 'r') as file:
+                data = json.load(file)
+            response = {
+                'status': 'success',
+                'message': data
+            }
+        except Exception:
+            logging.error(f'[{datetime.now()}][getTaskList]: Error reading file "{requestData["taskList"]}.json"')
+            response = {
+                'status': 'error',
+                'message': lang['file-error']
+            }
     else:
         response = {
             'status': 'error',
-            'message': 'Неверный логин или пароль'
+            'message': lang['auth-error']
         }
+        logging.warning(f'[{datetime.now()}][getTaskList]: Error authentification')
     return jsonify(response)
 
 # Get list of taskLists (array of taskLists)
@@ -106,16 +156,24 @@ def getTaskListList():
     requestData = request.get_json()
     if requestData["login"] == user['login'] and requestData["password"] == user['password']:
         files = os.listdir('./server/taskManager')
-        data = [os.path.splitext(file)[0] for file in files if file.endswith('.json')]
-        response = {
-            'status': 'success',
-            'message': data
-        }
+        try:
+            data = [os.path.splitext(file)[0] for file in files if file.endswith('.json')]
+            response = {
+                'status': 'success',
+                'message': data
+            }
+        except Exception:
+            logging.error(f'[{datetime.now()}][getTaskListList]: Error reading files')
+            response = {
+                'status': 'error',
+                'message': lang['file-error']
+            }
     else:
         response = {
             'status': 'error',
-            'message': 'Неверный логин или пароль'
+            'message': lang['auth-error']
         }
+        logging.warning(f'[{datetime.now()}][getTaskListList]: Error authentification')
     return jsonify(response)
 
 # Save data of taskList (array of tasks)
@@ -127,17 +185,25 @@ def getTaskListList():
 def saveTaskList():
     requestData = request.get_json()
     if requestData["login"] == user['login'] and requestData["password"] == user['password']:
-        with open(f'./server/taskManager/{requestData["taskList"]}.json', 'w') as file:
-            json.dump(requestData["data"], file)
-        response = {
-            'status': 'success',
-            'message': 'Данные сохранены'
-        }
+        try:
+            with open(f'./server/taskManager/{requestData["taskList"]}.json', 'w') as file:
+                json.dump(requestData["data"], file)
+                response = {
+                    'status': 'success',
+                    'message': lang['save-success']
+                }
+        except Exception:
+            logging.error(f'[{datetime.now()}][saveTaskList]: Error saving file "{requestData["taskList"]}.json"')
+            response = {
+                'status': 'error',
+                'message': lang['save-error']
+            }
     else:
         response = {
             'status': 'error',
-            'message': 'Неверный логин или пароль'
+            'message': lang['auth-error']
         }
+        logging.warning(f'[{datetime.now()}][saveTaskList]: Error authentification')
     return jsonify(response)
 
 # Function to delete taskList
@@ -153,18 +219,20 @@ def deleteList():
             os.remove(f"./server/taskManager/{taskList}.json")
             response = {
                 'status': 'success',
-                'message': 'Удаление успешно'
+                'message': lang['delete-success']
             }
         except Exception:
+            logging.error(f'[{datetime.now()}][deleteList]: Error deleting file "{taskList}.json"')
             response = {
                 'status': 'error',
-                'message': 'Ошибка удаления'
+                'message': lang['delete-error']
             }
     else:
         response = {
             'status': 'error',
-            'message': 'Неверный логин или пароль'
+            'message': lang['auth-error']
         }
+        logging.warning(f'[{datetime.now()}][deleteList]: Error authentification')
     return jsonify(response)
 
 # Redirecting links for public files (css, js, icons etc) 
@@ -174,7 +242,11 @@ def deleteList():
 if user['web']:
     @app.route('/public/<path:filename>')
     def custom_static(filename):
-        return send_from_directory('./public/', filename)
+        try:
+            return send_from_directory('./public/', filename)
+        except Exception:
+            logging.error(f'[{datetime.now()}][path]: Error reading file "{filename}"')
+            return send_from_directory('./public/', '404.html')
 
 # Redirecting unknown links
 # Input: path: string
@@ -183,8 +255,9 @@ if user['web']:
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
+    logging.warning(f'[{datetime.now()}][path]: Unlnown path "{path}" catched')
     if not user['web']:
-        return f'Вы попали на URL: {path}'
+        return f'{lang["unknown-url"]} {path}'
     else:
         return send_from_directory('./public/', '404.html')
 

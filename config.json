@@ -1,9 +1,11 @@
 {
     "todo": {
-        "enabled": true,
-        "web": true,
-        "color-date-alert": true,
-        "login": "asd",
+        "enabled": true, 
+        "web": true, 
+        "color-date-alert": true, 
+        "lang": "ru", 
+        "rewrite-config": true, 
+        "login": "asd", 
         "password": "asd"
     }
 }
