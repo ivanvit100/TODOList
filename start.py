@@ -6,17 +6,14 @@
 import os
 import json
 import logging
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, session
 from flask_cors import CORS
 from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 
-
 # TODO: Add alternative way to save settings
-# TODO: Add sessions
-
 
 # Load config or create new one
 # Input: config.json
@@ -27,14 +24,16 @@ CORS(app)
 #   'lang': string,
 #   'rewrite-config': bool,
 #   'login': string,
-#   'password': string
+#   'password': string,
+#   'key': string
 # }
 try:
     with open('config.json', 'r') as file:
         data = json.load(file)
     user = data['todo']
-    if ['enabled', 'web', 'color-date-alert', 'lang', 'rewrite-config', 'login', 'password'] != list(user.keys()):
+    if ['enabled', 'web', 'color-date-alert', 'lang', 'rewrite-config', 'login', 'password', 'key'] != list(user.keys()):
         raise Exception
+    app.secret_key = user['key']
 except Exception:
     user = {
         'enabled': True,
@@ -43,7 +42,8 @@ except Exception:
         'lang': 'ru',
         'rewrite-config': True,
         'login': 'admin',
-        'password': 'admin'
+        'password': 'admin',
+        'key': 'secret'
     }
     with open('config.json', 'w') as file:
         json.dump({'todo': user}, file)
@@ -90,6 +90,7 @@ def getConfig():
     data.pop('password', None)
     response = {
         'status': 'success',
+        'login': session['login'] if 'login' in session else False,
         'message': data
     }
     return jsonify(response)
@@ -106,6 +107,7 @@ def getConfig():
 def auth():
     data = request.get_json()
     if data['login'] == user['login'] and data['password'] == user['password']:
+        session['login'] = data['login']
         response = {
             'status': 'success',
             'message': lang['auth-success']
@@ -113,7 +115,7 @@ def auth():
     else:
         response = {
             'status': 'error',
-            'message': lang['auth-error']
+            'message': app.secret_key#lang['auth-error']
         }
     logging.warning(f'[{datetime.now()}][auth]: New authentification {response["status"]}')
     return jsonify(response)
@@ -125,7 +127,7 @@ def auth():
 @app.route('/api/getTaskList', methods=['POST'])
 def getTaskList():
     requestData = request.get_json()
-    if requestData["login"] == user['login'] and requestData["password"] == user['password']:
+    if 'login' in session and session['login'] == session['login']:
         try:
             with open(f'./server/taskManager/{requestData["taskList"]}.json', 'r') as file:
                 data = json.load(file)
@@ -153,8 +155,7 @@ def getTaskList():
 # login and password are used for additional verification
 @app.route('/api/getTaskListList', methods=['POST'])
 def getTaskListList():
-    requestData = request.get_json()
-    if requestData["login"] == user['login'] and requestData["password"] == user['password']:
+    if 'login' in session and session['login'] == session['login']:
         files = os.listdir('./server/taskManager')
         try:
             data = [os.path.splitext(file)[0] for file in files if file.endswith('.json')]
@@ -184,7 +185,7 @@ def getTaskListList():
 @app.route('/api/saveTaskList', methods=['POST'])
 def saveTaskList():
     requestData = request.get_json()
-    if requestData["login"] == user['login'] and requestData["password"] == user['password']:
+    if 'login' in session and session['login'] == session['login']:
         try:
             with open(f'./server/taskManager/{requestData["taskList"]}.json', 'w') as file:
                 json.dump(requestData["data"], file)
@@ -213,7 +214,7 @@ def saveTaskList():
 @app.route('/api/deleteList', methods=['POST'])
 def deleteList():
     data = request.get_json()
-    if data['login'] == user['login'] and data['password'] == user['password']:
+    if 'login' in session and session['login'] == session['login']:
         taskList = data['taskList']
         try:
             os.remove(f"./server/taskManager/{taskList}.json")

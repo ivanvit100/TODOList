@@ -41,6 +41,12 @@ export class Request {
                 link.href = './public/css/color-date-alert.css';
                 document.head.appendChild(link);
             }
+            if (data.login) {
+                const hide = document.querySelector(".modal");
+                hide.style.display = "none";
+                this.login = data.login;
+                this.getTaskListList();
+            }
         });
     }
     auth() {
@@ -75,8 +81,6 @@ export class Request {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const body = {
-                    login: this.login,
-                    password: this.password,
                     taskList: (_a = this.UI.getTaskList()) === null || _a === void 0 ? void 0 : _a.name,
                     data: { "data": (_b = this.UI.getTaskList()) === null || _b === void 0 ? void 0 : _b.getTasks() }
                 };
@@ -93,11 +97,7 @@ export class Request {
     getTaskListList() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const body = {
-                    login: this.login,
-                    password: this.password
-                };
-                const data = yield this.response('/api/getTaskListList', body);
+                const data = yield this.response('/api/getTaskListList', {});
                 for (let i = 0; i < data.message.length; i++) {
                     let tl = new TaskList(data.message[i]);
                     this.UI.getTaskManager().addList(tl);
@@ -116,9 +116,7 @@ export class Request {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const body = {
-                    taskList: name,
-                    login: this.login,
-                    password: this.password
+                    taskList: name
                 };
                 const data = yield this.response('/api/getTaskList', body);
                 let ar = data.message.data;
@@ -135,8 +133,6 @@ export class Request {
     deleteList(name) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = {
-                login: this.login,
-                password: this.password,
                 taskList: name
             };
             const data = yield this.response('/api/deleteList', body);

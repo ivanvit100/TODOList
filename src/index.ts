@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const newTaskList = document.querySelector("#new-tasklist") as HTMLButtonElement;
 
   req.getConfig();
-
+  
   // Function what called when user click on "edit" button
   // This function open interface for editing task
   // or save changes if task already edited

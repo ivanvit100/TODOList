@@ -50,6 +50,12 @@ export class Request {
             link.href = './public/css/color-date-alert.css';
             document.head.appendChild(link);
         }
+        if(data.login){
+            const hide = document.querySelector(".modal") as HTMLDivElement;
+            hide.style.display = "none";
+            this.login = data.login;
+            this.getTaskListList();
+        }
     }
     // Function for user authentication
     // TaskList and TaskManager are loaded only after successful authentication
@@ -85,8 +91,6 @@ export class Request {
     async saveTaskList() {
         try{
             const body = {
-                login: this.login,
-                password: this.password,
                 taskList: this.UI.getTaskList()?.name,
                 data: {"data": this.UI.getTaskList()?.getTasks()}
             }
@@ -104,11 +108,7 @@ export class Request {
     // Output: none
     async getTaskListList() {
         try{
-            const body = {
-                login: this.login,
-                password: this.password
-            }
-            const data = await this.response('/api/getTaskListList', body);
+            const data = await this.response('/api/getTaskListList', {});
             for(let i = 0; i < data.message.length; i++){
                 let tl = new TaskList(data.message[i]);
                 this.UI.getTaskManager().addList(tl);
@@ -127,9 +127,7 @@ export class Request {
     async getTaskList(name: string = "default") {
         try{
             const body = {
-                taskList: name,
-                login: this.login,
-                password: this.password
+                taskList: name
             }
             const data = await this.response('/api/getTaskList', body);
             let ar = data.message.data;
@@ -147,8 +145,6 @@ export class Request {
     // Output: status of the operation
     async deleteList(name: string) {
         const body = {
-            login: this.login,
-            password: this.password,
             taskList: name
         }
         const data = await this.response('/api/deleteList', body);

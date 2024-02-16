@@ -72,13 +72,16 @@ export class Interface {
         else {
             const { formattedDate, date } = this.getDate(this.task);
             const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
+            const regex = new RegExp("https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$");
             taskUI.innerHTML = `<div class="task-view">
                 <div class="inner-header ${this.task.done ? "done" : ""}
                 ${dateABS < 7 ? "expired" : dateABS < 31 ? "date" : ""}" 
                 id="task-title">
                     <span class="inner-header-title">${this.task.name}</span>
                 </div>
-                <p class="task-description">${this.task.description}</p>
+                <p class="task-description">${regex.test(this.task.description) ?
+                "<iframe height='1000'  width='800' src='" + this.task.description + "'></iframe>" :
+                this.task.description}</p>
             </div>
             <div class="task-bottom">
                 <div class="task-icons">

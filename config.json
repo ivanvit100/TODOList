@@ -1,11 +1,1 @@
-{
-    "todo": {
-        "enabled": true, 
-        "web": true, 
-        "color-date-alert": true, 
-        "lang": "ru", 
-        "rewrite-config": true, 
-        "login": "asd", 
-        "password": "asd"
-    }
-}
+{"todo": {"enabled": true, "web": true, "color-date-alert": true, "lang": "ru", "rewrite-config": true, "login": "asd", "password": "asd", "key": "your secret key"}}

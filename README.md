@@ -53,7 +53,7 @@ Example of config structure:
 
 ```json
 {
-    /*TODO app settings*/
+    /*App settings*/
     "todo": {
         "enabled": true, /*For use as part of Skizo: whether to include the module functionality in the overall build*/
         "web": true, /*Whether to include the web interface*/
@@ -61,7 +61,8 @@ Example of config structure:
         "lang": "ru", /*Language of the interface*/
         "rewrite-config": true, /*Whether to overwrite log file*/
         "login": "login", /*User loging to protect your data*/
-        "password": "password" /*User password to protect your data*/
+        "password": "password", /*User password to protect your data*/
+        "key": "key" /*Secret key to hash password*/
     }
 }
 ```
@@ -79,7 +80,6 @@ Here you can see a list of changes expected in upcoming commits:
 - Splitting index.css into several components
 - Error pages
 - Using DB
-- Session
 - Add translation files
 
 ## 💼 Usage
