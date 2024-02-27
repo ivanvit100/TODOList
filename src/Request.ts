@@ -56,6 +56,7 @@ export class Request {
             this.login = data.login;
             this.getTaskListList();
         }
+        this.UI.setLang(data.message.lang);
     }
     // Function for user authentication
     // TaskList and TaskManager are loaded only after successful authentication

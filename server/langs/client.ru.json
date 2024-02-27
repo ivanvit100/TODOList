@@ -1,0 +1,14 @@
+{
+    "taskManager": "Менеджер задач",
+    "taskList": "Список задач",
+    "taskView": "Просмотр задачи",
+    "taskViewDescription": "Выберите задачу для просмотра деталей",
+    "lvl": "Уровень важности",
+    "date": "Срок выполнения",
+    "defaultdate": "Бессрочно",
+    "editTask": "Редактирование задачи",
+    "createListPlaceholder": "Название списка",
+    "createTaskPlaceholder": "Название задачи",
+    "descriptionPlaceholder": "Описание задачи",
+    "deleteAltText": "Удалить список"
+}

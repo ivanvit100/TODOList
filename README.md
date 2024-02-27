@@ -7,10 +7,12 @@ This repository contains the TODO List module for the [Skizo](https://github.com
 ## 🌐 Features
 
 The TODO List module allows users to manage their tasks effectively. It provides functionalities to create, update, delete, and view tasks. Basically may contains only one user. All user tasks protected by password.
+HTML/CSS support: style and structure your notes.
+Browser mode: some links inserted as task descriptions can be opened and viewed directly from the application's web interface.
 
-In development: possibility to use HTML and direct links to resources, Telegram bot functionality.
+In development: possibility to use HTML, Telegram bot functionality.
 
-There are plans to add multi-user capability, different encryption and data storage methods.
+There are plans to add multi-user capability, different encryption methods.
 
 ## 📥 Installation
 
@@ -75,16 +77,14 @@ Here you can see a list of changes expected in upcoming commits:
 - Mobile version
 - Telegram bot functionality
 - Integration to Skizo project
-- Mode of viewing links in the task interface
 - Work with HTML and CSS in task UI
-- Splitting index.css into several components
 - Error pages
-- Using DB
-- Add translation files
 
 ## 💼 Usage
 
-Once the module is enabled in the configuration, you can start using the TODO List through the Skizo project's web interface or with Your Telegram bot.
+1. Install it
+2. Change configuration file
+3. Start Skizo app OR launch start.py
 
 ---
 

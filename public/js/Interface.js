@@ -1,9 +1,21 @@
 import { TaskManager } from "./Tasks.js";
 export class Interface {
     constructor() {
+        this.lang = {};
         this.taskManager = new TaskManager();
         this.taskList = undefined;
         this.task = undefined;
+    }
+    setLang(lang) {
+        this.lang = lang;
+        document.querySelector("#manager-title").textContent = lang["taskManager"];
+        document.querySelector("#list-title").textContent = lang["taskList"];
+        document.querySelector("#task-title").textContent = lang["taskView"];
+        document.querySelector(".task-description").textContent = lang["taskViewDescription"];
+        document.querySelector("#tasklist-name").placeholder = lang["createListPlaceholder"];
+        document.querySelector("#task-name").placeholder = lang["createTaskPlaceholder"];
+        document.querySelector("#task-description").placeholder = lang["descriptionPlaceholder"];
+        document.querySelector(".list-icon img").alt = lang["deleteAltText"];
     }
     getDate(task) {
         if (!task)
@@ -62,9 +74,9 @@ export class Interface {
                 <div id="task">
                     <div class="task-view">
                         <div class="inner-header" id="task-title">
-                        <span class="inner-header-title">Просмотр задачи</span>
+                        <span class="inner-header-title">${this.lang["taskView"]}</span>
                     </div>
-                    <p class="task-description">Выберите задачу для просмотра деталей</p>
+                    <p class="task-description">${this.lang["taskViewDescription"]}</p>
                 </div>
             </div>`;
             console.error(`[updateTaskUI]: Task not found`);
@@ -90,8 +102,8 @@ export class Interface {
                     <button onclick="deleteTask()" class="task-icon"><img src="./public/icons/delete.png" alt="Удалить"></button>
                 </div>
                 <div class="task-details">
-                    <span class="task-importance">Уровень важности: ${this.task.lvl}</span>
-                    <span class="task-deadline">Срок выполнения: ${formattedDate}</span>
+                    <span class="task-importance">${this.lang["lvl"]}: ${this.task.lvl}</span>
+                    <span class="task-deadline">${this.lang["date"]}: ${formattedDate}</span>
                 </div>
                 <div class="task-tag">
                     <span class="tag">${this.taskList.name}</span>
@@ -105,7 +117,7 @@ export class Interface {
         const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
         taskUI.innerHTML = `<div class="task-view">
                 <div class="inner-header done" id="task-title">
-                    <span class="inner-header-title">Редактирование задачи <b>${this.task.name}</b></span>
+                    <span class="inner-header-title">${this.lang["editTask"]} <b>${this.task.name}</b></span>
                 </div>
                 <input type="text" id="task-name-edit" value="${this.task.name}">
                 <textarea id="task-description-edit"></textarea>
@@ -139,7 +151,6 @@ export class Interface {
         this.taskList = taskList;
     }
 }
-Interface.noDate = "Бессрочно";
 let theme = true;
 window.switchTheme = function () {
     const body = document.querySelector("body");

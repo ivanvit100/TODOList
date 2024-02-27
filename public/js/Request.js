@@ -47,6 +47,7 @@ export class Request {
                 this.login = data.login;
                 this.getTaskListList();
             }
+            this.UI.setLang(data.message.lang);
         });
     }
     auth() {

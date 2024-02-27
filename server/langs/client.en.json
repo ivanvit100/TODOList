@@ -1,0 +1,14 @@
+{
+    "taskManager": "Task manager",
+    "taskList": "Task list",
+    "taskView": "Task details",
+    "taskViewDescription": "Select a task to view details",
+    "lvl": "Importance level",
+    "date": "Deadline",
+    "defaultdate": "Indefinitely",
+    "editTask": "Task editing",
+    "createListPlaceholder": "List name",
+    "createTaskPlaceholder": "Task name",
+    "descriptionPlaceholder": "Task description",
+    "deleteAltText": "Delete list"
+}

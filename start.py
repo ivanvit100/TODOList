@@ -13,8 +13,6 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
-# TODO: Add alternative way to save settings
-
 # Load config or create new one
 # Input: config.json
 # Output: user = {
@@ -57,9 +55,13 @@ except Exception:
 try:
     with open(f'./server/langs/lang.{user["lang"]}.json', 'r') as file:
         lang = json.load(file)
+    with open(f'./server/langs/client.{user["lang"]}.json', 'r') as file:
+        clientLang = json.load(file)
 except Exception:
     with open('/server/langs/lang.ru.json', 'r') as file:
         lang = json.load(file)
+    with open('./server/langs/client.ru.json', 'r') as file:
+        clientLang = json.load(file)
     logging.error(f'[{datetime.now()}][setup]: Error reading lang file, default settings are used')
 
 # Logging settings
@@ -85,9 +87,10 @@ if user['web']:
 # Output: status: string, message: object
 @app.route('/api/config', methods=['POST'])
 def getConfig():
-    data = user.copy()
-    data.pop('login', None)
-    data.pop('password', None)
+    data = {
+        'color-date-alert': user['color-date-alert'],
+        'lang': clientLang
+    }
     response = {
         'status': 'success',
         'login': session['login'] if 'login' in session else False,
