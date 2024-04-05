@@ -1,50 +1,27 @@
-INFO:root:[2024-02-25 15:46:35.099616][setup]: App strtarted with config {'enabled': True, 'web': True, 'color-date-alert': True, 'lang': 'ru', 'rewrite-config': True, 'login': 'asd', 'password': 'asd', 'key': 'your secret key'}
+INFO:root:[2024-04-04 15:01:35.287177][setup]: App strtarted with config {'enabled': True, 'web': True, 'color-date-alert': True, 'lang': 'ru', 'rewrite-config': True, 'login': 'asd', 'password': 'asd', 'key': 'your secret key'}
 WARNING:werkzeug: * Debugger is active!
-INFO:werkzeug: * Debugger PIN: 122-908-268
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:37] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:37] "GET /public/css/index.css HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:37] "GET /public/icons/delete.png HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:37] "GET /public/js/Tasks.js HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:37] "GET /public/js/index.js HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:37] "GET /public/css/modal.css HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "GET /public/js/Interface.js HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "GET /public/js/Request.js HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "GET /public/css/Task.css HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "POST /api/config HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "GET /public/css/status.css HTTP/1.1" 200 -
-WARNING:root:[2024-02-25 15:46:38.407665][path]: Unlnown path "favicon.ico" catched
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "GET /favicon.ico HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "GET /public/css/color-date-alert.css HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "POST /api/getTaskListList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "POST /api/getTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "POST /api/getTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:46:38] "POST /api/getTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/icons/delete.png HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/js/index.js HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/js/Tasks.js HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/css/index.css HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/js/Request.js HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/css/modal.css HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/js/Interface.js HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/css/Task.css HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "POST /api/config HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/css/status.css HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "[36mGET /public/css/color-date-alert.css HTTP/1.1[0m" 304 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:38] "POST /api/getTaskListList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:39] "POST /api/getTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:39] "POST /api/getTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 15:57:39] "POST /api/getTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:08:04] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:09:05] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:11:32] "GET / HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:16:56] "GET /public/icons/done.png HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:16:56] "GET /public/icons/edit.png HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:38:40] "POST /api/saveTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:38:46] "POST /api/saveTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:39:30] "POST /api/saveTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:39:37] "POST /api/saveTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:41:39] "POST /api/saveTaskList HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:41:40] "GET /public/icons/done.png HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:41:40] "GET /public/icons/edit.png HTTP/1.1" 200 -
-INFO:werkzeug:127.0.0.1 - - [25/Feb/2024 16:41:43] "POST /api/saveTaskList HTTP/1.1" 200 -
+INFO:werkzeug: * Debugger PIN: 885-102-197
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET / HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/css/index.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/js/Tasks.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/js/index.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/icons/todo.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/icons/delete.png HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/css/modal.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/js/Interface.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/js/Request.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/css/Task.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:38] "[36mGET /public/js/Tasks.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "[36mGET /public/js/Interface.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "[36mGET /public/js/Request.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "[36mGET /public/css/status.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "POST /api/config HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "[36mGET /public/js/index.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "[36mGET /public/css/color-date-alert.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "POST /api/getTaskListList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "POST /api/getTaskList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:39] "POST /api/getTaskList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:40] "[36mGET /public/js/Request.js.map HTTP/1.1[0m" 304 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:40] "POST /api/getTaskList HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:43] "GET /public/icons/done.png HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [04/Apr/2024 15:01:43] "GET /public/icons/edit.png HTTP/1.1" 200 -

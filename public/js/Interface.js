@@ -16,6 +16,15 @@ export class Interface {
         document.querySelector("#task-name").placeholder = lang["createTaskPlaceholder"];
         document.querySelector("#task-description").placeholder = lang["descriptionPlaceholder"];
         document.querySelector(".list-icon img").alt = lang["deleteAltText"];
+        try {
+            document.querySelector(".modal-title").textContent = lang["modalTitle"];
+            document.querySelector("#modal-enter").textContent = lang["modalEnter"];
+            document.querySelector("#modal-login").placeholder = lang["login"];
+            document.querySelector("#modal-password").placeholder = lang["password"];
+        }
+        catch (e) {
+            console.warn(`[setLang]: Modal not found`);
+        }
     }
     getDate(task) {
         if (!task)

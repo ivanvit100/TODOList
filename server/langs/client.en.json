@@ -10,5 +10,9 @@
     "createListPlaceholder": "List name",
     "createTaskPlaceholder": "Task name",
     "descriptionPlaceholder": "Task description",
-    "deleteAltText": "Delete list"
+    "deleteAltText": "Delete list",
+    "modalTitle": "ENTRY",
+    "modalEnter": "Enter",
+    "login": "Login",
+    "password": "Password"
 }

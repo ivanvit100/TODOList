@@ -130,7 +130,7 @@ def auth():
 @app.route('/api/getTaskList', methods=['POST'])
 def getTaskList():
     requestData = request.get_json()
-    if 'login' in session and session['login'] == session['login']:
+    if 'login' in session and session['login'] == user['login']:
         try:
             with open(f'./server/taskManager/{requestData["taskList"]}.json', 'r') as file:
                 data = json.load(file)

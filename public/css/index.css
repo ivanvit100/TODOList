@@ -71,3 +71,8 @@ li button:hover {
   right: 10px;
   width: 50px;
 }
+.header-title-text img{
+  width: 80%;
+  background-color: #007bff;
+  padding: 10%;
+}

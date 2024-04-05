@@ -10,5 +10,9 @@
     "createListPlaceholder": "Название списка",
     "createTaskPlaceholder": "Название задачи",
     "descriptionPlaceholder": "Описание задачи",
-    "deleteAltText": "Удалить список"
+    "deleteAltText": "Удалить список",
+    "modalTitle": "ВХОД",
+    "modalEnter": "Войти",
+    "login": "Логин",
+    "password": "Пароль"
 }

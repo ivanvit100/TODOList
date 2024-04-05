@@ -71,14 +71,16 @@ Example of config structure:
 
 ## ❗️ Future changes
 
-Here you can see a list of changes expected in upcoming commits:
+Here you can see a list of TODO changes expected in upcoming commits:
 
 - New interface design
 - Mobile version
 - Telegram bot functionality
 - Integration to Skizo project
-- Work with HTML and CSS in task UI
 - Error pages
+- json to jsonl
+- Sort task on server
+- Send one task instead of a full dump
 
 ## 💼 Usage
 

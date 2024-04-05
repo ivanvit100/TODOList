@@ -132,6 +132,7 @@ export class Request {
             }
             const data = await this.response('/api/getTaskList', body);
             let ar = data.message.data;
+            console.log(data);
             for(let i = 0; i < ar.length; i++){
                 let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);
                 this.UI.getTaskList()?.addTask(newTask);

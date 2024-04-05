@@ -5,8 +5,6 @@
 
 import { Task, TaskList, TaskManager } from "./Tasks.js";
 
-//TODO: Add multilanguage support
-
 export class Interface {
     private task: Task | undefined;
     private taskList: TaskList | undefined;
@@ -32,6 +30,14 @@ export class Interface {
         (document.querySelector("#task-name") as HTMLInputElement).placeholder = lang["createTaskPlaceholder"];
         (document.querySelector("#task-description") as HTMLInputElement).placeholder = lang["descriptionPlaceholder"];
         (document.querySelector(".list-icon img") as HTMLImageElement).alt = lang["deleteAltText"];
+        try{
+            document.querySelector(".modal-title")!.textContent = lang["modalTitle"];
+            document.querySelector("#modal-enter")!.textContent = lang["modalEnter"];
+            (document.querySelector("#modal-login") as HTMLInputElement).placeholder = lang["login"];
+            (document.querySelector("#modal-password") as HTMLInputElement).placeholder = lang["password"];
+        } catch(e){
+            console.warn(`[setLang]: Modal not found`);
+        }
     }
     // Function for getting the due date of the task
     // Input: task - the task for which you want to get the date
