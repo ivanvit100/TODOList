@@ -1,3 +1,2 @@
-qt.o
-.qmake.stash
-commands.txt
+node_modules
+package-lock.json
