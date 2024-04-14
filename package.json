@@ -4,12 +4,12 @@
     "description": "Web interface written in TypeScript with a server-side component built using Flask",
     "main": "electron.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron --trace-warnings ."
     },
     "keywords": [],
     "author": "ivanvit100",
     "license": "MIT",
     "devDependencies": {
-        "electron": "^1.8.8"
+        "electron": "^29.3.0"
     }
 }
