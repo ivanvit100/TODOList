@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/public/css/index.css" />
-    <link rel="stylesheet" href="/public/css/Task.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/Task.css" media="print" onload="this.media='all'">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,7 +17,7 @@
     <div id="app">
       <div class="header">
         <div class="header-title">
-          <span class="header-title-text"><img src="./public/icons/todo.png"></span>
+          <span class="header-title-text"><img src="./icons/todo.png"></span>
         </div>
         <button onclick="switchTheme()" id="switch">C</button>
       </div>
@@ -40,7 +40,7 @@
             <span class="inner-header-title" id="list-title"></span>
             <span id="list-name"></span>
             <button onclick="deleteList()" class="list-icon">
-              <img src="./public/icons/delete.png">
+              <img src="./icons/delete.png">
             </button>
           </div>
           <div id="new-tasklist-id" class="new-interface">
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-    <script type="module" src="/public/js/Tasks.js"></script>
-    <script type="module" src="/public/js/index.js"></script>
+    <script type="module" src="./js/Tasks.js"></script>
+    <script type="module" src="./js/index.js"></script>
   </body>
 </html>

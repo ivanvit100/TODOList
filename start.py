@@ -9,6 +9,7 @@ import logging
 from flask import Flask, request, jsonify, send_from_directory, session
 from flask_cors import CORS
 from datetime import datetime
+import subprocess
 
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +18,6 @@ CORS(app)
 # Input: config.json
 # Output: user = {
 #   'enabled': bool,
-#   'web': bool,
 #   'color-date-alert': bool,
 #   'lang': string,
 #   'rewrite-config': bool,
@@ -29,13 +29,12 @@ try:
     with open('config.json', 'r') as file:
         data = json.load(file)
     user = data['todo']
-    if ['enabled', 'web', 'color-date-alert', 'lang', 'rewrite-config', 'login', 'password', 'key'] != list(user.keys()):
+    if ['enabled', 'color-date-alert', 'lang', 'rewrite-config', 'login', 'password', 'key'] != list(user.keys()):
         raise Exception
     app.secret_key = user['key']
 except Exception:
     user = {
         'enabled': True,
-        'web': True,
         'color-date-alert': True,
         'lang': 'ru',
         'rewrite-config': True,
@@ -76,10 +75,9 @@ logging.info(f'[{datetime.now()}][setup]: App strtarted with config {user}')
 # Will be used if the web interface is enabled
 # Input: /
 # Output: index.html (from /public)
-if user['web']:
-    @app.route('/')
-    def home():
-        return send_from_directory('./public', 'index.html')
+@app.route('/')
+def home():
+    return send_from_directory('./public', 'index.html')
 
 # Function to send config to the client
 # Automatically excludes login and password from issuance
@@ -93,7 +91,7 @@ def getConfig():
     }
     response = {
         'status': 'success',
-        'login': session['login'] if 'login' in session else False,
+        'login': True if 'login' in session and not session['login'] else session.get('login', False),
         'message': data
     }
     return jsonify(response)
@@ -115,10 +113,15 @@ def auth():
             'status': 'success',
             'message': lang['auth-success']
         }
+    elif data['login'] == "" or data['password'] == "":
+        response = {
+            'status': 'info',
+            'message': lang['empty-login']
+        }
     else:
         response = {
             'status': 'error',
-            'message': app.secret_key#lang['auth-error']
+            'message': lang['auth-error']
         }
     logging.warning(f'[{datetime.now()}][auth]: New authentification {response["status"]}')
     return jsonify(response)
@@ -260,10 +263,9 @@ if user['web']:
 @app.route('/<path:path>')
 def catch_all(path):
     logging.warning(f'[{datetime.now()}][path]: Unlnown path "{path}" catched')
-    if not user['web']:
-        return f'{lang["unknown-url"]} {path}'
-    else:
-        return send_from_directory('./public/', '404.html')
+    return send_from_directory('./public/', '404.html')
 
 if __name__ == '__main__':
+    dir_path = os.path.dirname("/home/ivanvit/Git/TODOList_Skizo/start.sh")
+    subprocess.check_call(["/bin/sh", "/home/ivanvit/Git/TODOList_Skizo/start.sh"], cwd=dir_path)
     app.run(debug=True)

@@ -15,6 +15,7 @@ export class Request {
         this.login = "";
         this.password = "";
         this.UI = UI;
+        this.check();
     }
     // Function for sending a request to the server
     // Also displays a notification if the request has correct message
@@ -23,7 +24,7 @@ export class Request {
     // Output: json object with the server response
     //         If the request fails, an error is thrown
     async response(path: string, data: object){
-        const response = await fetch(path, {
+        const response = await fetch(`http://127.0.0.1:3000${path}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ export class Request {
         if (data.status === "success" && data["message"]["color-date-alert"]) {
             let link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = './public/css/color-date-alert.css';
+            link.href = './css/color-date-alert.css';
             document.head.appendChild(link);
         }
         if(data.login){
@@ -58,20 +59,12 @@ export class Request {
         }
         this.UI.setLang(data.message.lang);
     }
-    // Function for user authentication
+    // Function for check login and password
     // TaskList and TaskManager are loaded only after successful authentication
     // Input: none
     // Output: none
-    async auth() {
+    public async check(){
         try {
-            const loginInp = document.querySelector("#modal-login") as HTMLInputElement;
-            const passwordInp = document.querySelector("#modal-password") as HTMLInputElement;
-            this.login = loginInp.value.trim();
-            this.password = passwordInp.value.trim();
-            if(this.login === "" || this.password === ""){
-                this.UI.notification("Заполните поля", "error");
-                throw new Error(`Login or password is empty`);
-            }
             const body = {
                 login: this.login,
                 password: this.password
@@ -81,6 +74,26 @@ export class Request {
                 const hide = document.querySelector(".modal") as HTMLDivElement;
                 hide.style.display = "none";
                 this.getTaskListList();
+            }
+        } catch(e: any) {
+            console.error(`[check]: ${e.message}`);
+        }
+    }
+    // Function for user authentication
+    // TaskList and TaskManager are loaded only after successful authentication
+    // Input: none
+    // Output: none
+    public async auth() {
+        try {
+            const loginInp = document.querySelector("#modal-login") as HTMLInputElement;
+            const passwordInp = document.querySelector("#modal-password") as HTMLInputElement;
+            this.login = loginInp.value.trim();
+            this.password = passwordInp.value.trim();
+            if(this.login === "" || this.password === ""){
+                this.UI.notification("Заполните поля", "error");
+                throw new Error(`Login or password is empty`);
+            }else{
+                this.check();
             }
         } catch (error: any) {
             console.error(`[auth]: ${error.message}`);

@@ -6,5 +6,6 @@
     "save-error": "Ошибка сохранения",
     "delete-success": "Данные удалены",
     "delete-error": "Ошибка удаления",
-    "unknoown-url": "Вы попали на URL:"
+    "unknoown-url": "Вы попали на URL:",
+    "empty-login": "Авторизуйтесь"
 }

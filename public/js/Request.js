@@ -13,10 +13,11 @@ export class Request {
         this.login = "";
         this.password = "";
         this.UI = UI;
+        this.check();
     }
     response(path, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(path, {
+            const response = yield fetch(`http://127.0.0.1:3000${path}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -38,7 +39,7 @@ export class Request {
             if (data.status === "success" && data["message"]["color-date-alert"]) {
                 let link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.href = './public/css/color-date-alert.css';
+                link.href = './css/color-date-alert.css';
                 document.head.appendChild(link);
             }
             if (data.login) {
@@ -48,6 +49,25 @@ export class Request {
                 this.getTaskListList();
             }
             this.UI.setLang(data.message.lang);
+        });
+    }
+    check() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const body = {
+                    login: this.login,
+                    password: this.password
+                };
+                const data = yield this.response('/api/auth', body);
+                if (data.status === "success") {
+                    const hide = document.querySelector(".modal");
+                    hide.style.display = "none";
+                    this.getTaskListList();
+                }
+            }
+            catch (e) {
+                console.error(`[check]: ${e.message}`);
+            }
         });
     }
     auth() {
@@ -61,15 +81,8 @@ export class Request {
                     this.UI.notification("Заполните поля", "error");
                     throw new Error(`Login or password is empty`);
                 }
-                const body = {
-                    login: this.login,
-                    password: this.password
-                };
-                const data = yield this.response('/api/auth', body);
-                if (data.status === "success") {
-                    const hide = document.querySelector(".modal");
-                    hide.style.display = "none";
-                    this.getTaskListList();
+                else {
+                    this.check();
                 }
             }
             catch (error) {
@@ -78,8 +91,8 @@ export class Request {
         });
     }
     saveTaskList() {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
             try {
                 const body = {
                     taskList: (_a = this.UI.getTaskList()) === null || _a === void 0 ? void 0 : _a.name,
@@ -112,9 +125,9 @@ export class Request {
             }
         });
     }
-    getTaskList(name = "default") {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
+    getTaskList() {
+        return __awaiter(this, arguments, void 0, function* (name = "default") {
+            var _a;
             try {
                 const body = {
                     taskList: name

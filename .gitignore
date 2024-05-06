@@ -2,3 +2,6 @@ node_modules
 package-lock.json
 /server/taskManager/*.json
 .venv
+venv
+/logs
+out/

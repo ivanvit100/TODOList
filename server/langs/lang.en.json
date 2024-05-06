@@ -6,5 +6,6 @@
     "save-error": "Error saving",
     "delete-success": "Data deleted",
     "delete-error": "Error deleting",
-    "unknoown-url": "You have reached URL:"
+    "unknoown-url": "You have reached URL:",
+    "empty-login": "Authorize"
 }

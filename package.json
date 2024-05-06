@@ -1,15 +1,31 @@
 {
-    "name": "todo-list-skizo",
-    "version": "0.8.0",
-    "description": "Web interface written in TypeScript with a server-side component built using Flask",
-    "main": "electron.js",
-    "scripts": {
-        "start": "electron --trace-warnings ."
-    },
-    "keywords": [],
-    "author": "ivanvit100",
-    "license": "MIT",
-    "devDependencies": {
-        "electron": "^29.3.0"
-    }
+  "name": "todo-list-skizo",
+  "version": "0.8.0",
+  "description": "Web interface written in TypeScript with a server-side component built using Flask",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "ivanvit100",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "body-parser": "^1.20.2",
+    "electron": "^29.3.0",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  }
 }
