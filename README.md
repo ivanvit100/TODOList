@@ -24,7 +24,6 @@ Example of config structure:
 {
     /*App settings*/
     "todo": {
-        "enabled": true, /*For use as part of Skizo: whether to include the module functionality in the overall build*/
         "color-date-alert": true, /*Whether to include styles for expired date of task notification*/
         "lang": "ru", /*Language of the interface*/
         "rewrite-config": true, /*Whether to overwrite log file*/

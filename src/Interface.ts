@@ -147,9 +147,9 @@ export class Interface {
             </div>
             <div class="task-bottom">
                 <div class="task-icons">
-                    <button onclick="done()" class="task-icon"><img src="./public/icons/done.png" alt="Отметить"></button>
-                    <button onclick="editTask()" class="task-icon"><img src="./public/icons/edit.png" alt="Редактировать"></button>
-                    <button onclick="deleteTask()" class="task-icon"><img src="./public/icons/delete.png" alt="Удалить"></button>
+                    <button onclick="done()" class="task-icon"><img src="./icons/done.png" alt="Отметить"></button>
+                    <button onclick="editTask()" class="task-icon"><img src="./icons/edit.png" alt="Редактировать"></button>
+                    <button onclick="deleteTask()" class="task-icon"><img src="./icons/delete.png" alt="Удалить"></button>
                 </div>
                 <div class="task-details">
                     <span class="task-importance">${this.lang["lvl"]}: ${this.task!.lvl}</span>
