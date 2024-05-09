@@ -6,8 +6,6 @@ The TODO List module allows users to manage their tasks effectively. It provides
 HTML/CSS support: style and structure your notes.
 Browser mode: some links inserted as task descriptions can be opened and viewed directly from the application's web interface.
 
-In development: possibility to use HTML, standalone mode.
-
 There are plans to add multi-user capability, different encryption methods, registration in UI.
 
 ## 📥 Installation
@@ -34,6 +32,12 @@ Example of config structure:
 }
 ```
 
+Avaliable langs:
+- Russian - ru
+- English - us
+
+Also you can left login and password empty to use app without authtorisation.
+
 ## ❗️ Future changes
 
 Here you can see a list of TODO changes expected in upcoming commits:
@@ -44,18 +48,9 @@ Here you can see a list of TODO changes expected in upcoming commits:
 - json to jsonl
 - Sort task on server
 - Send one task instead of a full dump
-- Standalone app
-
 
 ## 💼 Usage
 
-1. Clone repo
-2. Change configuration file
-3. Install requarements from package.json
-```sh
-cd directory_name
-npm install
-```
 This part is coming soon...
 
 ---

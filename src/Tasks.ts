@@ -6,7 +6,7 @@
 // TaskManager - class for managing lists of tasks, have methods
 //               for working with lists of tasks
 //               It is assumed that there is one manager per user  
-// This file is part of the "Todo" module for "Skizo" project
+// This file is part of the "Todo app" project
 // Author: ivanvit100 @ GitHub
 // Licence: MIT
 

@@ -1,6 +1,6 @@
 // Description: File with class for working with requests to the server
 // All methods are asynchronous and use the fetch API
-// This file is part of the "Todo" module for "Skizo" project
+// This file is part of the "Todo app" project
 // Author: ivanvit100 @ GitHub
 // Licence: MIT
 

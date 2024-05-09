@@ -1,10 +1,11 @@
 // Description: Main file for start server
-// This file is part of the "Todo" module for "Skizo" project
+// This file is part of the "Todo app" project
 // Author: ivanvit100 @ GitHub
 // Licence: MIT
 
 const { app, BrowserWindow } = require('electron');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const session = require('express-session');
 const express = require('express');
@@ -12,6 +13,30 @@ const bodyParser = require('body-parser');
 
 // TODO: logging
 
+let user;
+let programFilesPath;
+let lang;
+let clientLang;
+
+// Prepare directories and files
+// If the directories and files are not found, they will be created
+// Input: none
+// Output: none
+if (os.platform() === 'win32') 
+    programFilesPath = 'C:\\Program Files\\.todo\\';
+else if (os.platform() === 'linux')
+    programFilesPath = path.join(os.homedir(), '.todo/');
+
+const filePath = path.join(programFilesPath, 'taskManager/default.json');
+const fileDir = path.dirname(filePath);
+if (!fs.existsSync(programFilesPath))
+    fs.mkdirSync(programFilesPath, { recursive: true });
+if (!fs.existsSync(fileDir))
+    fs.mkdirSync(fileDir, { recursive: true });
+
+if (!fs.existsSync(filePath))
+    fs.writeFileSync(filePath, '{"data":[{"name":"GitHub","done":false,"description":"https://github.com/ivanvit100/TODOList","date":null,"lvl":9}]}', 'utf8');
+    
 // Load config or create new one
 // Input: config.json
 // Output: user = {
@@ -22,9 +47,8 @@ const bodyParser = require('body-parser');
 //   'password': string,
 //   'key': string
 // }
-let user;
 try {
-    const data = JSON.parse(fs.readFileSync('config.json'));
+    const data = JSON.parse(fs.readFileSync(path.join(programFilesPath, 'config.json')));
     user = data['todo'];
     if (!['color-date-alert', 'lang', 'rewrite-config', 'login', 'password', 'key'].every(key => key in user)) {
         throw new Error();
@@ -38,7 +62,7 @@ try {
         'password': 'admin',
         'key': 'secret'
     };
-    fs.writeFileSync('config.json', JSON.stringify({todo: user}));
+    fs.writeFileSync(path.join(programFilesPath, 'config.json'), JSON.stringify({todo: user}));
     console.error('Error reading config file, default settings are used');
 }
     
@@ -47,8 +71,6 @@ try {
 // Default language is "ru"
 // Input: /server/langs/lang.{user["lang"]}.json
 // Output: lang = {...}
-let lang;
-let clientLang;
 try {
     lang = JSON.parse(fs.readFileSync(`${__dirname}/server/langs/lang.${user["lang"]}.json`));
     clientLang = JSON.parse(fs.readFileSync(`${__dirname}/server/langs/client.${user["lang"]}.json`));
@@ -133,7 +155,7 @@ expressApp.post('/api/getTaskList', (req, res) => {
     let response;
     if (getCookie(req, 'login')) {
         try {
-            const data = JSON.parse(fs.readFileSync(`./server/taskManager/${requestData["taskList"]}.json`));
+            const data = JSON.parse(fs.readFileSync(path.join(programFilesPath, `taskManager/${requestData["taskList"]}.json`)));
             response = {
                 'status': 'success',
                 'message': data
@@ -163,7 +185,7 @@ expressApp.post('/api/getTaskListList', (req, res) => {
     let response;
     if(getCookie(req, 'login')){
         try {
-            const files = fs.readdirSync('./server/taskManager');
+            const files = fs.readdirSync(path.join(programFilesPath, 'taskManager'));
             const data = files.filter(file => file.endsWith('.json')).map(file => path.basename(file, '.json'));
             response = {
                 'status': 'success',
@@ -194,15 +216,16 @@ expressApp.post('/api/getTaskListList', (req, res) => {
 expressApp.post('/api/saveTaskList', (req, res) => {
     const requestData = req.body;
     let response;
+    console.log(requestData["data"]);
     if (getCookie(req, 'login')) {
         try {
-            fs.writeFileSync(`./server/taskManager/${requestData["taskList"]}.json`, JSON.stringify(requestData["data"]));
+            fs.writeFileSync(`${programFilesPath}/taskManager/${requestData["taskList"]}.json`, JSON.stringify(requestData["data"]));
             response = {
                 'status': 'success',
                 'message': lang['save-success']
             };
         } catch (error) {
-            console.error(`[saveTaskList]: Error saving file "${requestData["taskList"]}.json"`);
+            console.error(`[saveTaskList]: Error saving file "${requestData["taskList"]}.json because of "${error}"`);
             response = {
                 'status': 'error',
                 'message': lang['save-error']
@@ -219,7 +242,7 @@ expressApp.post('/api/saveTaskList', (req, res) => {
 });
 
 // Function to delete taskList
-// Its will delete /server/taskManager/{taskList}.json
+// Its will delete /taskManager/{taskList}.json
 // Input: login: string, password: string, taskList: string
 // Output: status: string, message: string
 expressApp.post('/api/deleteList', (req, res) => {
@@ -228,7 +251,7 @@ expressApp.post('/api/deleteList', (req, res) => {
     if (req.session && req.session.login === user['login']) {
         const taskList = data['taskList'];
         try {
-            fs.unlinkSync(`./server/taskManager/${taskList}.json`);
+            fs.unlinkSync(path.join(programFilesPath,`taskManager/${taskList}.json`));
             response = {
                 'status': 'success',
                 'message': lang['delete-success']

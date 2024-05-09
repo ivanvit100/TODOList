@@ -1,5 +1,5 @@
 // Description: Main web script for the "Todo" module
-// This file is part of the "Todo" module for "Skizo" project
+// This file is part of the "Todo app" project
 // Author: ivanvit100 @ GitHub
 // Licence: MIT
 
