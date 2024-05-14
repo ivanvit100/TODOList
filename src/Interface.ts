@@ -97,8 +97,8 @@ export class Interface {
     updateListUI() {
         const listUI = document.querySelector("#list") as HTMLUListElement;
         listUI.innerHTML = "";
-        if (!this.taskList) throw new Error(`[updateListUI]: TaskList not found`);
-        else{
+        if (!this.taskList) (document.querySelector("#list-name") as HTMLSpanElement).innerText = "";
+        else {
             for (let task of this.taskList!.getTasks()){
                 const {date} = this.getDate(task);
                 const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
@@ -110,7 +110,7 @@ export class Interface {
             const title = document.querySelector("#list-name") as HTMLSpanElement;
             title.innerText = this.taskList.name;
             this.updateManagerUI();
-        }
+        } 
     }
     // Function for updating the interface of the task
     // This method affects the column with the Task description output 
@@ -166,10 +166,8 @@ export class Interface {
     // Input: none
     // Output: none
     editTaskUI() {
-        //Редактирование задачи
         const taskUI = document.querySelector("#task") as HTMLDivElement;
         const {formattedDate, date} = this.getDate(this.task!);
-        const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
         taskUI.innerHTML = `<div class="task-view">
                 <div class="inner-header done" id="task-title">
                     <span class="inner-header-title">${this.lang["editTask"]} <b>${this.task!.name}</b></span>
@@ -181,7 +179,7 @@ export class Interface {
             </div>
             <div class="task-bottom">
                 <div class="task-icons">
-                    <button onclick="editTask()" class="task-icon"><img src="./public/icons/edit.png" alt="Сохранить"></button>
+                    <button onclick="editTask()" class="task-icon"><img src="./icons/edit.png" alt="Сохранить"></button>
                 </div>
                 <div class="task-tag">
                     <span class="tag">${this.taskList!.name}</span>

@@ -151,6 +151,12 @@ export class Request {
                 taskList: name
             };
             const data = yield this.response('/api/deleteList', body);
+            const taskManager = this.UI.getTaskManager();
+            const taskList = taskManager.getList(name);
+            taskManager.removeList(taskList);
+            yield this.UI.setTaskList(undefined);
+            this.UI.updateManagerUI();
+            this.UI.updateListUI();
             return data.message === "success";
         });
     }

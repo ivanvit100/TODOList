@@ -8,6 +8,10 @@ Browser mode: some links inserted as task descriptions can be opened and viewed 
 
 There are plans to add multi-user capability, different encryption methods, registration in UI.
 
+## Overview
+
+This part is coming soon...
+
 ## 📥 Installation
 
 This part is coming soon...
@@ -24,7 +28,6 @@ Example of config structure:
     "todo": {
         "color-date-alert": true, /*Whether to include styles for expired date of task notification*/
         "lang": "ru", /*Language of the interface*/
-        "rewrite-config": true, /*Whether to overwrite log file*/
         "login": "login", /*User loging to protect your data*/
         "password": "password", /*User password to protect your data*/
         "key": "key" /*Secret key to hash password*/
@@ -43,8 +46,6 @@ Also you can left login and password empty to use app without authtorisation.
 Here you can see a list of TODO changes expected in upcoming commits:
 
 - New interface design
-- Mobile version
-- Error pages
 - json to jsonl
 - Sort task on server
 - Send one task instead of a full dump

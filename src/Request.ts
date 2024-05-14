@@ -163,6 +163,12 @@ export class Request {
             taskList: name
         }
         const data = await this.response('/api/deleteList', body);
+        const taskManager = this.UI.getTaskManager();
+        const taskList = taskManager.getList(name) as TaskList;
+        taskManager.removeList(taskList);
+        await this.UI.setTaskList(undefined);
+        this.UI.updateManagerUI();
+        this.UI.updateListUI();
         return data.message === "success";
     }
 }

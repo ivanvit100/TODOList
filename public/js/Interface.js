@@ -60,7 +60,7 @@ export class Interface {
         const listUI = document.querySelector("#list");
         listUI.innerHTML = "";
         if (!this.taskList)
-            throw new Error(`[updateListUI]: TaskList not found`);
+            document.querySelector("#list-name").innerText = "";
         else {
             for (let task of this.taskList.getTasks()) {
                 const { date } = this.getDate(task);
@@ -123,7 +123,6 @@ export class Interface {
     editTaskUI() {
         const taskUI = document.querySelector("#task");
         const { formattedDate, date } = this.getDate(this.task);
-        const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
         taskUI.innerHTML = `<div class="task-view">
                 <div class="inner-header done" id="task-title">
                     <span class="inner-header-title">${this.lang["editTask"]} <b>${this.task.name}</b></span>
@@ -135,7 +134,7 @@ export class Interface {
             </div>
             <div class="task-bottom">
                 <div class="task-icons">
-                    <button onclick="editTask()" class="task-icon"><img src="./public/icons/edit.png" alt="Сохранить"></button>
+                    <button onclick="editTask()" class="task-icon"><img src="./icons/edit.png" alt="Сохранить"></button>
                 </div>
                 <div class="task-tag">
                     <span class="tag">${this.taskList.name}</span>

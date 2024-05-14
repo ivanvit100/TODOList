@@ -151,6 +151,10 @@ document.addEventListener("DOMContentLoaded", () => {
       UI.updateListUI();
       req.saveTaskList();
     }
+    name.value = "";
+    description.value = "";
+    lvl.value = "";
+    date.value = "";
   });
 
   // Function what called when user create new TaskList
@@ -160,8 +164,11 @@ document.addEventListener("DOMContentLoaded", () => {
   newTaskList.addEventListener("click", () => {
     const name = document.querySelector("#tasklist-name") as HTMLInputElement;
     const taskListN = new TaskList(name.value);
+    name.value = "";
     UI.getTaskManager()!.addList(taskListN);
     UI.updateManagerUI();
+    UI.setTaskList(taskListN);
+    UI.updateListUI();
     req.saveTaskList();
   });
 

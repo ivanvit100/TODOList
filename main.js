@@ -11,8 +11,6 @@ const session = require('express-session');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-// TODO: logging
-
 let user;
 let programFilesPath;
 let lang;
@@ -23,9 +21,29 @@ let clientLang;
 // Input: none
 // Output: none
 if (os.platform() === 'win32') 
-    programFilesPath = 'C:\\Program Files\\.todo\\';
+programFilesPath = 'C:\\Program Files\\.todo\\';
 else if (os.platform() === 'linux')
-    programFilesPath = path.join(os.homedir(), '.todo/');
+programFilesPath = path.join(os.homedir(), '.todo/');
+
+// Create log file
+// Input: none
+// Output: log.txt
+const logPath = path.join(programFilesPath, 'log.txt');
+fs.open(logPath, 'w', (err, file) => {
+    if (err) throw err;
+    console.log('[server] Logging started');
+});
+
+// Function to write logs
+// Input: message: string, type: string
+// Output: none
+function setLog(message, caller = 'server', type = 'info') {
+    const time = new Date().toISOString();
+    const content = `[${time}][${type}][${caller}] ${message}\n`;
+    fs.appendFile(logPath, content, (err) => {
+        if (err) throw err;
+    });
+}
 
 const filePath = path.join(programFilesPath, 'taskManager/default.json');
 const fileDir = path.dirname(filePath);
@@ -50,20 +68,19 @@ if (!fs.existsSync(filePath))
 try {
     const data = JSON.parse(fs.readFileSync(path.join(programFilesPath, 'config.json')));
     user = data['todo'];
-    if (!['color-date-alert', 'lang', 'rewrite-config', 'login', 'password', 'key'].every(key => key in user)) {
+    if (!['color-date-alert', 'lang', 'login', 'password', 'key'].every(key => key in user)) {
         throw new Error();
     }
 } catch (error) {
     user = {
         'color-date-alert': true,
         'lang': 'ru',
-        'rewrite-config': true,
         'login': 'admin',
         'password': 'admin',
         'key': 'secret'
     };
     fs.writeFileSync(path.join(programFilesPath, 'config.json'), JSON.stringify({todo: user}));
-    console.error('Error reading config file, default settings are used');
+    setLog('Error reading config file, default settings are used', "Error");
 }
     
 // Load language file
@@ -77,7 +94,7 @@ try {
 } catch (error) {
     lang = JSON.parse(fs.readFileSync(`${__dirname}/server/langs/lang.ru.json`));
     clientLang = JSON.parse(fs.readFileSync(`${__dirname}/server/langs/client.ru.json`));
-    console.error('Error reading lang file, default settings are used');
+    setLog('Error reading lang file, default settings are used', "Error");
 }
 
 // Create an express application
@@ -97,7 +114,7 @@ expressApp.use(session({
 expressApp.get('/public/:filename', encoder, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', req.params.filename), err => {
         if (err) {
-            console.error(`[path]: Error reading file "${req.params.filename}"`);
+            setLog(`Error reading file "${req.params.filename}"`, "filepath", "Error");
             res.sendFile(path.join(__dirname, 'public', '404.html'));
         }
     });
@@ -161,7 +178,7 @@ expressApp.post('/api/getTaskList', (req, res) => {
                 'message': data
             };
         } catch (error) {
-            console.error(`[getTaskList]: Error reading file "${requestData["taskList"]}.json"`);
+            setLog(`Error reading file "${requestData["taskList"]}.json"`, "getTaskList", "Error");
             response = {
                 'status': 'error',
                 'message': lang['file-error']
@@ -172,7 +189,7 @@ expressApp.post('/api/getTaskList', (req, res) => {
             'status': 'error',
             'message': lang['auth-error']
         };
-        console.warn('[getTaskList]: Error authentication');
+        setLog('Error authentication', "Warning");
     }
     res.json(response);
 });
@@ -192,7 +209,7 @@ expressApp.post('/api/getTaskListList', (req, res) => {
                 'message': data
             };
         } catch (error) {
-            console.error('[getTaskListList]: Error reading files');
+            setLog('Error reading files', "getTaskListList", "Error");
             response = {
                 'status': 'error',
                 'message': lang['file-error']
@@ -203,7 +220,7 @@ expressApp.post('/api/getTaskListList', (req, res) => {
             'status': 'error',
             'message': lang['auth-error']
         };
-        console.warn('[getTaskListList]: Error authentication');
+        setLog('Error authentication', "Warning");
     }
     res.json(response);
 });
@@ -216,7 +233,6 @@ expressApp.post('/api/getTaskListList', (req, res) => {
 expressApp.post('/api/saveTaskList', (req, res) => {
     const requestData = req.body;
     let response;
-    console.log(requestData["data"]);
     if (getCookie(req, 'login')) {
         try {
             fs.writeFileSync(`${programFilesPath}/taskManager/${requestData["taskList"]}.json`, JSON.stringify(requestData["data"]));
@@ -225,7 +241,7 @@ expressApp.post('/api/saveTaskList', (req, res) => {
                 'message': lang['save-success']
             };
         } catch (error) {
-            console.error(`[saveTaskList]: Error saving file "${requestData["taskList"]}.json because of "${error}"`);
+            setLog(`Error saving file "${requestData["taskList"]}.json because of "${error}"`, "saveTaskList", "Error");
             response = {
                 'status': 'error',
                 'message': lang['save-error']
@@ -236,7 +252,7 @@ expressApp.post('/api/saveTaskList', (req, res) => {
             'status': 'error',
             'message': lang['auth-error']
         };
-        console.warn('[saveTaskList]: Error authentication');
+        setLog('Error authentication', "Warning");
     }
     res.json(response);
 });
@@ -248,7 +264,7 @@ expressApp.post('/api/saveTaskList', (req, res) => {
 expressApp.post('/api/deleteList', (req, res) => {
     const data = req.body;
     let response;
-    if (req.session && req.session.login === user['login']) {
+    if (getCookie(req, 'login')) {
         const taskList = data['taskList'];
         try {
             fs.unlinkSync(path.join(programFilesPath,`taskManager/${taskList}.json`));
@@ -257,7 +273,7 @@ expressApp.post('/api/deleteList', (req, res) => {
                 'message': lang['delete-success']
             };
         } catch (error) {
-            console.error(`[deleteList]: Error deleting file "${taskList}.json"`);
+            setLog(`Error deleting file "${taskList}.json"`, "deleteList", "Error");
             response = {
                 'status': 'error',
                 'message': lang['delete-error']
@@ -268,7 +284,7 @@ expressApp.post('/api/deleteList', (req, res) => {
             'status': 'error',
             'message': lang['auth-error']
         };
-        console.warn('[deleteList]: Error authentication');
+        setLog('Error authentication', "Warning");
     }
     res.json(response);
 });
@@ -277,7 +293,7 @@ expressApp.post('/api/deleteList', (req, res) => {
 // Input: none
 // Output: 404.html
 expressApp.get('*', (req, res) => {
-    console.warn(`[path]: Unknown path "${req.path}" catched`);
+    setLog(`Unknown path "${req.path}" catched`, "Warning");
     res.sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
@@ -285,7 +301,7 @@ expressApp.get('*', (req, res) => {
 // The server is started on port 3000
 // Input: none
 // Output: none
-const server = expressApp.listen(3000, () => console.log('Server started on port 3000'));
+const server = expressApp.listen(3000, () => setLog('Server started on port 3000'));
 app.whenReady().then(() => {
     const window = new BrowserWindow({
         width: 1280,
@@ -298,7 +314,6 @@ app.whenReady().then(() => {
             enableRemoteModule: true
         }
     });
-    
     window.loadFile("./public/index.html");
 });
 

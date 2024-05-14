@@ -124,12 +124,19 @@ document.addEventListener("DOMContentLoaded", () => {
             UI.updateListUI();
             req.saveTaskList();
         }
+        name.value = "";
+        description.value = "";
+        lvl.value = "";
+        date.value = "";
     });
     newTaskList.addEventListener("click", () => {
         const name = document.querySelector("#tasklist-name");
         const taskListN = new TaskList(name.value);
+        name.value = "";
         UI.getTaskManager().addList(taskListN);
         UI.updateManagerUI();
+        UI.setTaskList(taskListN);
+        UI.updateListUI();
         req.saveTaskList();
     });
     const modal = document.querySelector("#modal-enter");
