@@ -8,16 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Task, TaskList } from "./Tasks.js";
+const { ipcRenderer } = require('electron');
 export class Request {
     constructor(UI) {
         this.login = "";
         this.password = "";
+        this.port = "";
         this.UI = UI;
-        this.check();
+        ipcRenderer.on('config', (event, data) => {
+            this.port = data.port;
+            ipcRenderer.send('set-cookie', { url: `http://127.0.0.1:${this.port}`, name: 'login', value: 'value' });
+            if (data["color-date-alert"]) {
+                let link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = './css/color-date-alert.css';
+                document.head.appendChild(link);
+            }
+            this.check();
+            this.UI.setLang(data.lang);
+        });
     }
     response(path, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`http://127.0.0.1:3000${path}`, {
+            const response = yield fetch(`http://127.0.0.1:${this.port}${path}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,24 +44,6 @@ export class Request {
                 typeof data.message == "string" && this.UI.notification(data.message, data.status);
                 return data;
             }
-        });
-    }
-    getConfig() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield this.response('/api/config', {});
-            if (data.status === "success" && data["message"]["color-date-alert"]) {
-                let link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = './css/color-date-alert.css';
-                document.head.appendChild(link);
-            }
-            if (data.login) {
-                const hide = document.querySelector(".modal");
-                hide.style.display = "none";
-                this.login = data.login;
-                this.getTaskListList();
-            }
-            this.UI.setLang(data.message.lang);
         });
     }
     check() {
@@ -129,9 +124,7 @@ export class Request {
         return __awaiter(this, arguments, void 0, function* (name = "default") {
             var _a;
             try {
-                const body = {
-                    taskList: name
-                };
+                const body = { taskList: name };
                 const data = yield this.response('/api/getTaskList', body);
                 let ar = data.message.data;
                 console.log(data);

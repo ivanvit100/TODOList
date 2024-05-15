@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let req = new Request(UI);
     const newTask = document.querySelector("#new-task");
     const newTaskList = document.querySelector("#new-tasklist");
-    req.getConfig();
     window.editTask = function (nameTask) {
         let name = document.querySelector("#task-name-edit");
         let description = document.querySelector("#task-description-edit");
@@ -92,6 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
     newTask.addEventListener("click", () => {
+        if (UI.getTaskList() === undefined)
+            return;
         const name = document.querySelector("#task-name");
         const description = document.querySelector("#task-description");
         const lvl = document.querySelector("#task-lvl");

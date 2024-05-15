@@ -1,72 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/index.css" />
-    <link rel="stylesheet" href="./css/Task.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="./css/modal.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&family=Roboto:wght@100;300;400;500;700;900&family=Source+Code+Pro:wght@200;400;600;800&display=swap"
       rel="stylesheet"
     />
-    <title>TODOList</title>
+    <title>TODOList | Settings</title>
   </head>
   <body>
-    <div id="app">
-      <div class="header">
-        <div class="header-title">
-          <span class="header-title-text"><img src="./icons/todo.png"></span>
-        </div>
-        <button onclick="switchTheme()" id="switch">C</button>
-      </div>
-
-      <div class="app-body">
-        <div class="taskmanager">
-          <div class="inner-header">
-            <span class="inner-header-title" id="manager-title"></span>
-          </div>
-          <div class="new-interface">
-            <input type="text" id="tasklist-name" />
-            <button id="new-tasklist">-></button>
-          </div>
-          <hr>
-          <ul id="manager"></ul>
-        </div>
-
-        <div class="tasklist">
-          <div class="inner-header">
-            <span class="inner-header-title" id="list-title"></span>
-            <span id="list-name"></span>
-            <button onclick="deleteList()" class="list-icon">
-              <img src="./icons/delete.png">
-            </button>
-          </div>
-          <div id="new-tasklist-id" class="new-interface">
-            <input type="text" id="task-name"/>
-            <textarea id="task-description"></textarea>
-            <input type="number" id="task-lvl" placeholder="0" />
-            <input type="date" id="task-date"/>
-            <button id="new-task">-></button>
-          </div>
-          <hr>
-          <ul id="list"></ul>
-        </div>
-
-        <div class="task-viewer">
-          <div id="task">
-            <div class="task-view">
-              <div class="inner-header" id="task-title">
-                <span class="inner-header-title" id="view-title"></span>
-              </div>
-              <p class="task-description"></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    Settings
     <div class="modal">
       <div class="modal-content">
         <span class="modal-decorate">TODOList</span>
@@ -95,6 +42,6 @@
         </div>
       </div>
     </div>
-    <script type="module" src="./js/index.js"></script>
+    <script type="module" src="./js/settings.js"></script>
   </body>
 </html>

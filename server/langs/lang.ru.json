@@ -7,5 +7,13 @@
     "delete-success": "Данные удалены",
     "delete-error": "Ошибка удаления",
     "unknoown-url": "Вы попали на URL:",
-    "empty-login": "Авторизуйтесь"
+    "empty-login": "Авторизуйтесь",
+    "developer": "Разработчик",
+    "logout": "Выйти",
+    "reload": "Обновить",
+    "files": "Файлы",
+    "settings": "Настройки",
+    "menu": "Меню",
+    "help": "Помощь",
+    "home": "Главная"
 }

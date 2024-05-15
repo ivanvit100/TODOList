@@ -6,16 +6,38 @@
 
 import { Task, TaskList } from "./Tasks.js";
 import { Interface } from "./Interface.js";
+const { ipcRenderer } = require('electron');
 
 export class Request {
-    private login: string;
-    private password: string;
+    private login: string = "";
+    private password: string = "";
     private UI: Interface;
+    private port: string = "";
     constructor(UI: Interface) {
-        this.login = "";
-        this.password = "";
         this.UI = UI;
-        this.check();
+        ipcRenderer.on('config', (event: Event, data: {
+            "port": string, 
+            // 'login': string,
+            "color-date-alert": string, 
+            "lang": Record<string, string>
+        }) => {
+            this.port = data.port;
+            ipcRenderer.send('set-cookie', { url: `http://127.0.0.1:${this.port}`, name: 'login', value: 'value' });
+            if (data["color-date-alert"]) {
+                let link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = './css/color-date-alert.css';
+                document.head.appendChild(link);
+            }
+            // if(data.login){
+            //     const hide = document.querySelector(".modal") as HTMLDivElement;
+            //     hide.style.display = "none";
+            //     this.login = data.login;
+            //     this.getTaskListList();
+            // }
+            this.check();
+            this.UI.setLang(data.lang);
+        });
     }
     // Function for sending a request to the server
     // Also displays a notification if the request has correct message
@@ -24,7 +46,7 @@ export class Request {
     // Output: json object with the server response
     //         If the request fails, an error is thrown
     async response(path: string, data: object){
-        const response = await fetch(`http://127.0.0.1:3000${path}`, {
+        const response = await fetch(`http://127.0.0.1:${this.port}${path}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,26 +60,6 @@ export class Request {
             typeof data.message == "string" && this.UI.notification(data.message, data.status);
             return data;
         }
-    }
-    // Function for getting the configuration from the server
-    // Executes scripts that depend on the contents of the config
-    // Input: none
-    // Output: none
-    async getConfig() {
-        const data = await this.response('/api/config', {});
-        if (data.status === "success" && data["message"]["color-date-alert"]) {
-            let link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = './css/color-date-alert.css';
-            document.head.appendChild(link);
-        }
-        if(data.login){
-            const hide = document.querySelector(".modal") as HTMLDivElement;
-            hide.style.display = "none";
-            this.login = data.login;
-            this.getTaskListList();
-        }
-        this.UI.setLang(data.message.lang);
     }
     // Function for check login and password
     // TaskList and TaskManager are loaded only after successful authentication
@@ -140,9 +142,7 @@ export class Request {
     // Output: none
     async getTaskList(name: string = "default") {
         try{
-            const body = {
-                taskList: name
-            }
+            const body = { taskList: name }
             const data = await this.response('/api/getTaskList', body);
             let ar = data.message.data;
             console.log(data);

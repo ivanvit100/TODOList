@@ -27,6 +27,7 @@ Example of config structure:
     /*App settings*/
     "todo": {
         "color-date-alert": true, /*Whether to include styles for expired date of task notification*/
+        "custom-menu": true, /*Using default electron menu or custom, written on html*/
         "lang": "ru", /*Language of the interface*/
         "login": "login", /*User loging to protect your data*/
         "password": "password", /*User password to protect your data*/
@@ -47,7 +48,6 @@ Here you can see a list of TODO changes expected in upcoming commits:
 
 - New interface design
 - json to jsonl
-- Sort task on server
 - Send one task instead of a full dump
 
 ## 💼 Usage

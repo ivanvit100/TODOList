@@ -7,5 +7,13 @@
     "delete-success": "Data deleted",
     "delete-error": "Error deleting",
     "unknoown-url": "You have reached URL:",
-    "empty-login": "Authorize"
+    "empty-login": "Authorize",
+    "developer": "Developer",
+    "logout": "Log out",
+    "reload": "Reload",
+    "files": "Files",
+    "settings": "Settings",
+    "menu": "Menu",
+    "help": "Help",
+    "home": "Home"
 }

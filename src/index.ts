@@ -7,8 +7,6 @@ import { Task, TaskList } from "./Tasks.js";
 import { Interface } from "./Interface.js";
 import { Request } from "./Request.js";
 
-// if (require('electron-squirrel-startup')) app.quit();
-
 document.addEventListener("DOMContentLoaded", () => {
   // Start application
   // Initialization of the main classes 
@@ -19,8 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let req = new Request(UI);
   const newTask = document.querySelector("#new-task") as HTMLButtonElement;
   const newTaskList = document.querySelector("#new-tasklist") as HTMLButtonElement;
-
-  req.getConfig();
   
   // Function what called when user click on "edit" button
   // This function open interface for editing task
@@ -121,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Input: none
   // Output: none
   newTask.addEventListener("click", () => {
+    if(UI.getTaskList() === undefined) return;
     const name = document.querySelector("#task-name") as HTMLInputElement;
     const description = document.querySelector("#task-description") as HTMLInputElement;
     const lvl = document.querySelector("#task-lvl") as HTMLInputElement;
