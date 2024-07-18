@@ -61,6 +61,8 @@ if (!fs.existsSync(filePath))
 //   'color-date-alert': bool,
 //   'custom-menu': bool,
 //   'lang': string,
+//   'theme': string,
+//   'sort-order': string,
 //   'login': string,
 //   'password': string,
 //   'key': string
@@ -68,13 +70,15 @@ if (!fs.existsSync(filePath))
 try {
     const data = JSON.parse(fs.readFileSync(path.join(programFilesPath, 'config.json')));
     user = data['todo'];
-    if (!['color-date-alert', 'lang', 'login', 'password', 'key'].every(key => key in user)) {
+    if (!['color-date-alert', 'lang', 'theme', 'sort-order', 'login', 'password', 'key'].every(key => key in user)) {
         throw new Error();
     }
 } catch (error) {
     user = {
         'color-date-alert': true,
         'lang': 'ru',
+        'theme': 'light',
+        'sort-order': 'alphabet',
         'login': 'admin',
         'password': 'admin',
         'key': 'secret'
@@ -381,7 +385,9 @@ app.whenReady().then(() => {
         const data = {
             'port': server.address().port,
             'color-date-alert': user['color-date-alert'],
-            'lang': clientLang
+            'lang': clientLang,
+            'theme': user['theme'],
+            'sort-order': user['sort-order']
         };
         window.webContents.send('config', data);
         ipcMain.on('set-cookie', (event, data) => {

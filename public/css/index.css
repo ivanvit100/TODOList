@@ -12,6 +12,9 @@ html {
   font-family: "Roboto", sans-serif;
   font-family: "Source Code Pro", monospace;
 }
+body, #app {
+  overflow: hidden;
+}
 button{
   transition: all 0.1s ease-in-out;
 }

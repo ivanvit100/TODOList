@@ -14,12 +14,15 @@ export class Request {
     private UI: Interface;
     private port: string = "";
     constructor(UI: Interface) {
+        // TODO: fix login
         this.UI = UI;
         ipcRenderer.on('config', (event: Event, data: {
             "port": string, 
             // 'login': string,
             "color-date-alert": string, 
-            "lang": Record<string, string>
+            "lang": Record<string, string>,
+            "theme": string,
+            "sort-order": string
         }) => {
             this.port = data.port;
             ipcRenderer.send('set-cookie', { url: `http://127.0.0.1:${this.port}`, name: 'login', value: 'value' });
@@ -29,6 +32,7 @@ export class Request {
                 link.href = './css/color-date-alert.css';
                 document.head.appendChild(link);
             }
+            if (data.theme === "dark") document.body.classList.add("dark");
             // if(data.login){
             //     const hide = document.querySelector(".modal") as HTMLDivElement;
             //     hide.style.display = "none";
@@ -146,7 +150,6 @@ export class Request {
             const body = { taskList: name }
             const data = await this.response('/api/getTaskList', body);
             let ar = data.message.data;
-            console.log(data);
             for(let i = 0; i < ar.length; i++){
                 let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);
                 this.UI.getTaskList()?.addTask(newTask);

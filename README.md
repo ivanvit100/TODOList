@@ -26,11 +26,13 @@ Example of config structure:
 {
     /*App settings*/
     "todo": {
-        "color-date-alert": true, /*Whether to include styles for expired date of task notification*/
-        "lang": "ru", /*Language of the interface*/
-        "login": "login", /*User loging to protect your data*/
-        "password": "password", /*User password to protect your data*/
-        "key": "key" /*Secret key to hash password*/
+        "color-date-alert": true, /* Whether to include styles for expired date of task notification */
+        "lang": "ru", /* Language of the interface */
+        "theme": "light", /* Application start theme, supports “light” and “dark” variants */
+        "sort-order": "alphabet", /* Sort order of task list, supports “alphabet”, “count”, “date” options */
+        "login": "login", /* User loging to protect your data */
+        "password": "password", /* User password to protect your data */
+        "key": "key" /* Secret key to hash password */
     }
 }
 ```

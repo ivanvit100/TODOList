@@ -7,134 +7,150 @@
 
 @import url('status.css');
 
+iframe {
+  border: none;
+  width: calc(100% + 10px);
+  height: calc(100vh - 200px);
+}
 #task{
-    height: 100vh;
-    position: relative;
+  height: 100vh;
+  position: relative;
 }
 .task-icon{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 .task-icon img{
-    height: 30px;
-    width: auto;
-    margin-left: 15px;
+  height: 30px;
+  width: auto;
+  margin-left: 15px;
 }
 .task-bottom{
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 .task-title {
-    font-family: "PT Sans", sans-serif;
-    font-size: 24px;
-    margin-bottom: 10px;
+  font-family: "PT Sans", sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
 }
 .task-description {
-    font-family: "Roboto", sans-serif;
-    font-size: 16px;
-    margin-bottom: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 .task-icons {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 .edit-task, .delete-task {
-    cursor: pointer;
-    margin-left: 10px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 .task-details {
-    font-family: "Source Code Pro", monospace;
-    font-size: 14px;
-    margin-bottom: 10px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 .task-importance, .task-deadline {
-    display: block;
+  display: block;
 }
 .task-tag {
-    font-family: "Source Code Pro", monospace;
-    font-size: 14px;
-    background-color: #f0f0f0;
-    padding: 5px;
-    border-radius: 3px;
+  font-family: "Source Code Pro", monospace;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  padding: 5px;
+  border-radius: 3px;
+}
+.taskmanager, .tasklist, .tasl-viewer{
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100vh;
 }
 .taskmanager, .tasklist {
-    font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #f7f7f7;
-    padding: 20px;
-    border-radius: 5px;
-    width: calc(100% - 40px);
-    margin: 0 auto;
-  }
-  .inner-header {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    position: relative;
-  }
-  .inner-header-title {
-    font-size: 20px;
-  }
-  .new-interface {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  #task-description {
-    grid-column: 2;
-    grid-row: 1/3;
-  }
-  #task-lvl{
-    margin-right: 0;
-  }
-  .new-interface button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .new-interface button:hover {
-    background-color: #0056b3;
-    color: #fff;
-  }
-  #manager, #list {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 20px;
-  }
-  .tasklist li, .taskmanager li {
-    margin-bottom: 10px;
-  }
-  #list-name {
-    font-weight: bolder;
-    font-size: larger;
-  }
-  #new-tasklist-id{
-    display: grid;
-    grid-template-columns: 45% 45% 8%;
-    grid-row-gap: 15px;
-  }
-  .list-icon img, .list-icon{
-    width: 30px;
-    height: 30px;
-  }
-  .list-icon {
-    background-color: transparent;
-    display: inline;
-    cursor: pointer;
-    filter: invert(1);
-    border: none;
-    position: absolute;
-    right: 15px;
-    top: 0;
-    transform: translateY(25%);
-  }
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 5px;
+  width: calc(100% - 40px);
+  margin: 0 auto;
+}
+.inner-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+.inner-header-title {
+  font-size: 20px;
+}
+.new-interface {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+#task-description {
+  grid-column: 2;
+  grid-row: 1/3;
+}
+#task-lvl{
+  margin-right: 0;
+}
+.new-interface button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.new-interface button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+#manager, #list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px;
+}
+.tasklist li, .taskmanager li {
+  margin-bottom: 10px;
+}
+#app {
+  user-select: none;
+}
+.task-viewer {
+  user-select: text;
+}
+#list-name {
+  font-weight: bolder;
+  font-size: larger;
+}
+#new-tasklist-id{
+  display: grid;
+  grid-template-columns: 45% 45% 8%;
+  grid-row-gap: 15px;
+}
+.list-icon img, .list-icon{
+  width: 30px;
+  height: 30px;
+}
+.list-icon {
+  background-color: transparent;
+  display: inline;
+  cursor: pointer;
+  filter: invert(1);
+  border: none;
+  position: absolute;
+  right: 15px;
+  top: 0;
+  transform: translateY(25%);
+}

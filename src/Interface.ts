@@ -141,7 +141,7 @@ export class Interface {
                     <span class="inner-header-title">${this.task!.name}</span>
                 </div>
                 <p class="task-description">${regex.test(this.task!.description) ? 
-                    "<iframe height='1000'  width='800' src='" + this.task!.description + "'></iframe>": 
+                    "<iframe src='" + this.task!.description + "'></iframe>": 
                     this.task!.description}
                 </p>
             </div>

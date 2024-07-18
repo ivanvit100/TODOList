@@ -24,6 +24,8 @@ export class Request {
                 link.href = './css/color-date-alert.css';
                 document.head.appendChild(link);
             }
+            if (data.theme === "dark")
+                document.body.classList.add("dark");
             this.check();
             this.UI.setLang(data.lang);
         });
@@ -128,7 +130,6 @@ export class Request {
                 const body = { taskList: name };
                 const data = yield this.response('/api/getTaskList', body);
                 let ar = data.message.data;
-                console.log(data);
                 for (let i = 0; i < ar.length; i++) {
                     let newTask = new Task(ar[i].name, ar[i].description, ar[i].done, ar[i].date, ar[i].lvl);
                     (_a = this.UI.getTaskList()) === null || _a === void 0 ? void 0 : _a.addTask(newTask);

@@ -1,0 +1,12 @@
+{
+    "todo": {
+        "color-date-alert": true,
+        "custom-menu": false,
+        "lang": "ru",
+        "theme": "light",
+        "sort-order": "alphabet",
+        "login": "",
+        "password": "",
+        "key": "secret"
+    }
+}
