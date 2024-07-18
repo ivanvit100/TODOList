@@ -6,6 +6,14 @@ export class Task {
         this.date = date;
         this.lvl = lvl;
     }
+    getColor() {
+        if (this.date === null)
+            return 0;
+        const now = new Date();
+        const date = new Date(this.date);
+        const diff = date.getTime() - now.getTime();
+        return diff < 604800000 ? 2 : diff < 2678400000 ? 1 : 0;
+    }
     changeName(name) {
         this.name = name;
     }
@@ -17,6 +25,16 @@ export class TaskList {
     constructor(name) {
         this.name = name;
         this.tasks = [];
+    }
+    getColor() {
+        let max = 0;
+        for (let i = 0; i < this.tasks.length; i++) {
+            if (this.tasks[i].getColor() === 2)
+                return 2;
+            else
+                max = Math.max(max, this.tasks[i].getColor());
+        }
+        return max;
     }
     addTask(task) {
         this.tasks.push(task);
@@ -36,6 +54,9 @@ export class TaskList {
             const dateComparison = dateB.getTime() - dateA.getTime();
             return dateComparison;
         });
+    }
+    getUncheckedTasks() {
+        return this.tasks.filter((t) => !t.done);
     }
     getTask(name) {
         return this.tasks.find((t) => t.name === name);

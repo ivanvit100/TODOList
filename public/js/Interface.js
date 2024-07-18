@@ -52,9 +52,11 @@ export class Interface {
     updateManagerUI() {
         const managerUI = document.querySelector("#manager");
         managerUI.innerHTML = "";
-        for (let taskList of this.taskManager.getLists())
+        for (let taskList of this.taskManager.getLists()) {
+            const color = taskList.getColor();
             managerUI.innerHTML += `<li><button onclick="changeTaskList('${taskList.name}')">${taskList.name} 
-            <span class="notification">${taskList.getTasks().length}</span></button></li>`;
+            <span class="notification ${color == 2 ? "expired" : color === 1 ? "date" : ""}">${taskList.getUncheckedTasks().length}</span></button></li>`;
+        }
     }
     updateListUI() {
         const listUI = document.querySelector("#list");
@@ -63,11 +65,10 @@ export class Interface {
             document.querySelector("#list-name").innerText = "";
         else {
             for (let task of this.taskList.getTasks()) {
-                const { date } = this.getDate(task);
-                const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
+                const color = task.getColor();
                 listUI.innerHTML += `<li><button onclick="changeTask('${task.name}')">
                     ${task.name} <span class="notification ${task.done ? "done" : ""}
-                    ${dateABS < 7 ? "expired" : dateABS < 31 ? "date" : ""}">${task.lvl}</span>
+                    ${color == 2 ? "expired" : color === 1 ? "date" : ""}">${task.lvl}</span>
                 </button></li>`;
             }
             const title = document.querySelector("#list-name");
@@ -79,14 +80,11 @@ export class Interface {
         const taskUI = document.querySelector("#task");
         if (!this.taskList || !this.task) {
             taskUI.innerHTML = `
-            <div class="task-viewer">
-                <div id="task">
-                    <div class="task-view">
-                        <div class="inner-header" id="task-title">
-                        <span class="inner-header-title">${this.lang["taskView"]}</span>
-                    </div>
-                    <p class="task-description">${this.lang["taskViewDescription"]}</p>
+            <div class="task-view">
+                <div class="inner-header" id="task-title">
+                    <span class="inner-header-title">${this.lang["taskView"]}</span>
                 </div>
+                <p class="task-description">${this.lang["taskViewDescription"]}</p>
             </div>`;
             console.error(`[updateTaskUI]: Task not found`);
         }
@@ -94,7 +92,8 @@ export class Interface {
             const { formattedDate, date } = this.getDate(this.task);
             const dateABS = Math.abs(date.getTime() - new Date().getTime()) / (1000 * 3600 * 24);
             const regex = new RegExp("https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$");
-            taskUI.innerHTML = `<div class="task-view">
+            taskUI.innerHTML = `
+            <div class="task-view">
                 <div class="inner-header ${this.task.done ? "done" : ""}
                 ${dateABS < 7 ? "expired" : dateABS < 31 ? "date" : ""}" 
                 id="task-title">
@@ -102,7 +101,8 @@ export class Interface {
                 </div>
                 <p class="task-description">${regex.test(this.task.description) ?
                 "<iframe height='1000'  width='800' src='" + this.task.description + "'></iframe>" :
-                this.task.description}</p>
+                this.task.description}
+                </p>
             </div>
             <div class="task-bottom">
                 <div class="task-icons">

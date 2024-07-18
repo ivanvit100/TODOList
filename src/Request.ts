@@ -76,6 +76,7 @@ export class Request {
                 const hide = document.querySelector(".modal") as HTMLDivElement;
                 hide.style.display = "none";
                 this.getTaskListList();
+                this.UI.updateTaskUI();
             }
         } catch(e: any) {
             console.error(`[check]: ${e.message}`);

@@ -52,6 +52,8 @@ class Settings {
                     const hide = document.querySelector(".modal");
                     hide.style.display = "none";
                 }
+                const html = yield this.getSettings();
+                document.querySelector("#settings").innerHTML = html;
             }
             catch (e) {
                 console.error(`[check]: ${e.message}`);
@@ -88,7 +90,59 @@ class Settings {
             notification.remove();
         }, 2000);
     }
+    auth() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const loginInp = document.querySelector("#modal-login");
+                const passwordInp = document.querySelector("#modal-password");
+                this.login = loginInp.value.trim();
+                this.password = passwordInp.value.trim();
+                if (this.login === "" || this.password === "") {
+                    this.notification("Заполните поля", "error");
+                    throw new Error(`Login or password is empty`);
+                }
+                else {
+                    this.check();
+                }
+            }
+            catch (error) {
+                console.error(`[auth]: ${error.message}`);
+            }
+        });
+    }
+    getSettings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const json = (yield this.response('/api/getSettings', {})).message;
+            let html = '';
+            console.log(json);
+            for (let key in json) {
+                if (typeof json[key] === 'string')
+                    html += `<label for="${key}">${key}</label><input type="text" id="${key}" name="${key}" value="${json[key]}"><br>`;
+                else if (typeof json[key] === 'boolean') {
+                    let checked = json[key] ? 'checked' : '';
+                    html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${checked}><br>`;
+                }
+            }
+            return html;
+        });
+    }
+    saveSettings() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let data = {};
+            document.querySelectorAll('#settings input').forEach((input) => {
+                data[input.id] = input.type === 'checkbox' ? input.checked : input.value;
+            });
+            const ans = yield this.response('/api/setSettings', data);
+            this.notification(ans.message, ans.status);
+        });
+    }
 }
 document.addEventListener("DOMContentLoaded", () => {
+    const settings = new Settings();
+    const modal = document.querySelector("#modal-enter");
+    modal.addEventListener("click", () => settings.auth());
+    window.save = function () {
+        return __awaiter(this, void 0, void 0, function* () { settings.saveSettings(); });
+    };
 });
 //# sourceMappingURL=settings.js.map

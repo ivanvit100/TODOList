@@ -56,6 +56,8 @@ class Settings {
                 const hide = document.querySelector(".modal") as HTMLDivElement;
                 hide.style.display = "none";
             }
+            const html = await this.getSettings();
+            (document.querySelector("#settings") as HTMLDivElement).innerHTML = html;
         } catch(e: any) {
             console.error(`[check]: ${e.message}`);
         }
@@ -89,8 +91,49 @@ class Settings {
             notification.remove();
         }, 2000);
     }
+    public async auth() {
+        try {
+            const loginInp = document.querySelector("#modal-login") as HTMLInputElement;
+            const passwordInp = document.querySelector("#modal-password") as HTMLInputElement;
+            this.login = loginInp.value.trim();
+            this.password = passwordInp.value.trim();
+            if(this.login === "" || this.password === ""){
+                this.notification("Заполните поля", "error");
+                throw new Error(`Login or password is empty`);
+            }else{
+                this.check();
+            }
+        } catch (error: any) {
+            console.error(`[auth]: ${error.message}`);
+        }
+    }
+    private async getSettings(){
+        const json = (await this.response('/api/getSettings', {})).message as Record<string, string | boolean>;
+        let html = '';
+        console.log(json);
+        for (let key in json) {
+            if (typeof json[key] === 'string')
+                html += `<label for="${key}">${key}</label><input type="text" id="${key}" name="${key}" value="${json[key]}"><br>`;
+            else if (typeof json[key] === 'boolean') {
+                let checked = json[key] ? 'checked' : '';
+                html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${checked}><br>`;
+            }
+        }
+        return html;
+    }
+    public async saveSettings(){
+        let data: Record<string, string | boolean> = {};
+        (document.querySelectorAll('#settings input') as NodeListOf<HTMLInputElement>).forEach((input) => {
+            data[input.id] = input.type === 'checkbox' ? input.checked : input.value;
+        });
+        const ans = await this.response('/api/setSettings', data);
+        this.notification(ans.message, ans.status);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    
+    const settings = new Settings();
+    const modal = document.querySelector("#modal-enter") as HTMLButtonElement;
+    modal.addEventListener("click", () => settings.auth());
+    (window as any).save = async function () {settings.saveSettings()};
 });

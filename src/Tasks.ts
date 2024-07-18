@@ -29,6 +29,20 @@ export class Task {
     this.date = date;
     this.lvl = lvl;
   }
+  // Get the color of the task
+  // The color depends on the date of the task
+  // Color used in the task list UI
+  // Input: none
+  // Output: 0 - default color
+  //         1 - yellow color
+  //         2 - red color
+  getColor() {
+    if (this.date === null) return 0;
+    const now = new Date();
+    const date = new Date(this.date as unknown as string);
+    const diff = date.getTime() - now.getTime();
+    return diff < 604800000 ? 2 : diff < 2678400000 ? 1 : 0;
+  }
   // Change task name
   // Input: name - new name of the task
   // Output: none
@@ -49,6 +63,21 @@ export class TaskList {
   constructor(name: string) {
     this.name = name;
     this.tasks = [];
+  }
+  // Get the color of the nerby task in the task list
+  // The color depends on the date of the task
+  // Color used in the task list UI
+  // Input: none
+  // Output: 0 - default color
+  //         1 - yellow color
+  //         2 - red color
+  getColor(){
+    let max = 0;
+    for (let i = 0; i < this.tasks.length; i++){
+      if (this.tasks[i].getColor() === 2) return 2;
+      else max = Math.max(max, this.tasks[i].getColor());
+    }
+    return max;
   }
   // Add a new task to the list
   // Input: task - the task to be added
@@ -84,6 +113,12 @@ export class TaskList {
       const dateComparison = dateB.getTime() - dateA.getTime();
       return dateComparison;
     });
+  }
+  // Get all tasks from the list which are not done
+  // Input: none
+  // Output: array of tasks
+  getUncheckedTasks() {
+    return this.tasks.filter((t) => !t.done);
   }
   // Get a task by its name
   // Input: name - the name of the task

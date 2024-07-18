@@ -58,6 +58,7 @@ export class Request {
                     const hide = document.querySelector(".modal");
                     hide.style.display = "none";
                     this.getTaskListList();
+                    this.UI.updateTaskUI();
                 }
             }
             catch (e) {

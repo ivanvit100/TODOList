@@ -68,13 +68,12 @@ if (!fs.existsSync(filePath))
 try {
     const data = JSON.parse(fs.readFileSync(path.join(programFilesPath, 'config.json')));
     user = data['todo'];
-    if (!['color-date-alert', 'custom-menu', 'lang', 'login', 'password', 'key'].every(key => key in user)) {
+    if (!['color-date-alert', 'lang', 'login', 'password', 'key'].every(key => key in user)) {
         throw new Error();
     }
 } catch (error) {
     user = {
         'color-date-alert': true,
-        'custom-menu': false,
         'lang': 'ru',
         'login': 'admin',
         'password': 'admin',
@@ -145,6 +144,49 @@ expressApp.post('/api/auth', encoder, (req, res) => {
         };
     }
     res.send(response);
+});
+
+// Get settings of user
+// Input: login: string, password: string
+// Output: status: string, message: object
+expressApp.post('/api/getSettings', (req, res) => {
+    let response;
+    if (getCookie(req, 'login')) {
+        response = {
+            'status': 'success',
+            'message': user
+        };
+    } else {
+        response = {
+            'status': 'error',
+            'message': lang['auth-error']
+        };
+        setLog('Error authentication', "Warning");
+    }
+    res.json(response);
+});
+
+// Set settings of user
+// Input: login: string, password: string, settings: object
+// Output: status: string, message: string
+expressApp.post('/api/setSettings', (req, res) => {
+    const data = req.body;
+    let response;
+    if (getCookie(req, 'login')) {
+        user = data;
+        fs.writeFileSync(path.join(programFilesPath, 'config.json'), JSON.stringify({todo: data}));
+        response = {
+            'status': 'success',
+            'message': lang['save-success']
+        };
+    } else {
+        response = {
+            'status': 'error',
+            'message': lang['auth-error']
+        };
+        setLog('Error authentication', "Warning");
+    }
+    res.json(response);
 });
 
 // Get data of taskList (array of tasks)
@@ -300,36 +342,40 @@ app.whenReady().then(() => {
             enableRemoteModule: true
         }
     });
-    if (!user['custom-menu']) {
-        const menu = Menu.buildFromTemplate([
-            {
-                label: lang['menu'],
-                icon: nativeImage.createFromPath(path.join(__dirname, './public/icons/todo.png')),
-                submenu: [
-                    { label: lang['home'], click: () => { window.loadFile("./public/index.html"); } },
-                    { label: lang['settings'], click: () => { window.loadFile("./public/settings.html"); } },
-                    { label: lang['files'], click: () => { shell.openPath(programFilesPath); } },
-                    { label: lang['reload'], click: () => { window.reload(); } },
-                    { label: lang['logout'], click: () => {
-                        server.close();
-                        app.quit();
-                    } }
-                ]
-            }, {
-                label: lang['help'],
-                submenu: [
-                    { label: 'Q&A', click: () => { shell.openExternal('https://github.com/ivanvit100/TODOList/discussions/categories/q-a'); } },
-                    { label: 'GitHub', click: () => { shell.openExternal('https://github.com/ivanvit100/TODOList'); } },
-                    { label: lang['developer'], click: () => { shell.openExternal('https://ivanvit.ru'); } }
-                ]
-            }
-        ]);
-        Menu.setApplicationMenu(menu);
-    } else {
-        window.setMenuBarVisibility(false);
-        // TODO: Add custom menu
-    }
     window.loadFile("./public/index.html");
+    Menu.setApplicationMenu(null);
+    let isMenuVisible = false;
+    const menu = Menu.buildFromTemplate([
+        {
+            label: lang['menu'],
+            icon: nativeImage.createFromPath(path.join(__dirname, './public/icons/todo.png')),
+            submenu: [
+                { label: lang['home'], click: () => { window.loadFile("./public/index.html"); } },
+                { label: lang['settings'], click: () => { window.loadFile("./public/settings.html"); } },
+                { label: lang['files'], click: () => { shell.openPath(programFilesPath); } },
+                { label: lang['reload'], click: () => { window.reload(); } },
+                { label: lang['logout'], click: () => {
+                    server.close();
+                    app.quit();
+                } }
+            ]
+        }, {
+            label: lang['help'],
+            submenu: [
+                { label: 'Q&A', click: () => { shell.openExternal('https://github.com/ivanvit100/TODOList/discussions/categories/q-a'); } },
+                { label: 'GitHub', click: () => { shell.openExternal('https://github.com/ivanvit100/TODOList'); } },
+                { label: lang['developer'], click: () => { shell.openExternal('https://ivanvit.ru'); } }
+            ]
+        }
+    ]);
+    window.webContents.on('before-input-event', (event, input) => {
+        if (input.key === 'Alt' && input.type === 'keyDown') {
+            isMenuVisible = !isMenuVisible;
+            if (isMenuVisible) Menu.setApplicationMenu(menu);
+            else Menu.setApplicationMenu(null);
+            event.preventDefault();
+        }
+    });
     // window.webContents.openDevTools();
     window.webContents.on('did-finish-load', () => {
         const data = {
@@ -344,8 +390,10 @@ app.whenReady().then(() => {
             .catch(error => console.log(`Failed to set cookie: ${error}`));
         });
     });
+    window.on('blur', () => {
+        Menu.setApplicationMenu(null)
+    })
 });
-
 
 // Closing the application
 // Input: none
