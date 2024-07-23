@@ -2,6 +2,7 @@ import { TaskManager } from "./Tasks.js";
 export class Interface {
     constructor() {
         this.lang = {};
+        this.state = 0;
         this.taskManager = new TaskManager();
         this.taskList = undefined;
         this.task = undefined;
@@ -122,7 +123,7 @@ export class Interface {
     }
     editTaskUI() {
         const taskUI = document.querySelector("#task");
-        const { formattedDate, date } = this.getDate(this.task);
+        const { formattedDate } = this.getDate(this.task);
         taskUI.innerHTML = `<div class="task-view">
                 <div class="inner-header done" id="task-title">
                     <span class="inner-header-title">${this.lang["editTask"]} <b>${this.task.name}</b></span>
@@ -142,6 +143,10 @@ export class Interface {
             </div>`;
         const description = document.querySelector("#task-description-edit");
         description.innerText = this.task.description;
+    }
+    state_switch() {
+        if (window.innerWidth < 1080)
+            document.querySelector(".app-body").style.transform = `translateX(calc(-100vw * ${this.state}))`;
     }
     getTask() {
         return this.task;

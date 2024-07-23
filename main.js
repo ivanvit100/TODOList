@@ -135,7 +135,7 @@ expressApp.get('/public/:filename', encoder, (req, res) => {
 expressApp.post('/api/auth', encoder, (req, res) => {
     const data = req.body;
     let response;
-    if ((data['login'] == user['login'] && data['password'] == user['password']) || (user['login'].length == 0) || getCookie(req, 'login')){
+    if ((data['login'] == user['login'] && data['password'] == user['password']) || (user['login'].length == 0)){
         res.setHeader('Set-Cookie', `login=${data['login']}; Max-Age=900000; HttpOnly; SameSite=None; Secure`);
         response = {
             'status': 'success',

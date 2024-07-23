@@ -11,6 +11,7 @@ export class Interface {
     private taskManager: TaskManager;
     private static noDate: string;
     private lang: Record<string, string> = {};
+    public state: number = 0;
     constructor() {
         this.taskManager = new TaskManager();
         this.taskList = undefined;
@@ -167,7 +168,7 @@ export class Interface {
     // Output: none
     editTaskUI() {
         const taskUI = document.querySelector("#task") as HTMLDivElement;
-        const {formattedDate, date} = this.getDate(this.task!);
+        const {formattedDate} = this.getDate(this.task!);
         taskUI.innerHTML = `<div class="task-view">
                 <div class="inner-header done" id="task-title">
                     <span class="inner-header-title">${this.lang["editTask"]} <b>${this.task!.name}</b></span>
@@ -187,6 +188,11 @@ export class Interface {
             </div>`;
         const description = document.querySelector("#task-description-edit") as HTMLTextAreaElement;
         description.innerText = this.task!.description;
+    }
+    // TODO: documentation
+    state_switch(){
+        if (window.innerWidth < 1080)
+            (document.querySelector(".app-body") as HTMLDivElement).style.transform = `translateX(calc(-100vw * ${this.state}))`;
     }
     // Function for getting the active task
     // Input: none

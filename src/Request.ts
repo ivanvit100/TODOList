@@ -14,11 +14,9 @@ export class Request {
     private UI: Interface;
     private port: string = "";
     constructor(UI: Interface) {
-        // TODO: fix login
         this.UI = UI;
         ipcRenderer.on('config', (event: Event, data: {
-            "port": string, 
-            // 'login': string,
+            "port": string,
             "color-date-alert": string, 
             "lang": Record<string, string>,
             "theme": string,
@@ -33,12 +31,6 @@ export class Request {
                 document.head.appendChild(link);
             }
             if (data.theme === "dark") document.body.classList.add("dark");
-            // if(data.login){
-            //     const hide = document.querySelector(".modal") as HTMLDivElement;
-            //     hide.style.display = "none";
-            //     this.login = data.login;
-            //     this.getTaskListList();
-            // }
             this.check();
             this.UI.setLang(data.lang);
         });

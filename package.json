@@ -1,7 +1,7 @@
 {
   "name": "todo-list",
-  "version": "0.9.4",
-  "description": "TODO application using OOP principles, built with TypeScript, Electron and Express ",
+  "version": "0.9.5",
+  "description": "TODO application using OOP principles, built with TypeScript, Electron and Express",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",

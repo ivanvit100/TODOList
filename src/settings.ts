@@ -13,18 +13,10 @@ class Settings {
     constructor() {
         ipcRenderer.on('config', (event: Event, data: {
             "port": string, 
-            // 'login': string,
             "color-date-alert": string, 
             "lang": Record<string, string>
         }) => {
             this.port = data.port;
-            ipcRenderer.send('set-cookie', { url: `http://127.0.0.1:${this.port}`, name: 'login', value: 'value' });
-            // if(data.login){
-            //     const hide = document.querySelector(".modal") as HTMLDivElement;
-            //     hide.style.display = "none";
-            //     this.login = data.login;
-            //     this.getTaskListList();
-            // }
             this.check();
             this.setLang(data.lang);
         });
@@ -55,23 +47,15 @@ class Settings {
             if(data.status === "success"){
                 const hide = document.querySelector(".modal") as HTMLDivElement;
                 hide.style.display = "none";
+                const html = await this.getSettings();
+                (document.querySelector("#settings") as HTMLDivElement).innerHTML = html;
             }
-            const html = await this.getSettings();
-            (document.querySelector("#settings") as HTMLDivElement).innerHTML = html;
         } catch(e: any) {
             console.error(`[check]: ${e.message}`);
         }
     }
     setLang(lang: Record<string, string>){
         this.lang = lang;
-        document.querySelector("#manager-title")!.textContent = lang["taskManager"];
-        document.querySelector("#list-title")!.textContent = lang["taskList"];
-        document.querySelector("#task-title")!.textContent = lang["taskView"];
-        document.querySelector(".task-description")!.textContent = lang["taskViewDescription"];
-        (document.querySelector("#tasklist-name") as HTMLInputElement).placeholder = lang["createListPlaceholder"];
-        (document.querySelector("#task-name") as HTMLInputElement).placeholder = lang["createTaskPlaceholder"];
-        (document.querySelector("#task-description") as HTMLInputElement).placeholder = lang["descriptionPlaceholder"];
-        (document.querySelector(".list-icon img") as HTMLImageElement).alt = lang["deleteAltText"];
         try{
             document.querySelector(".modal-title")!.textContent = lang["modalTitle"];
             document.querySelector("#modal-enter")!.textContent = lang["modalEnter"];

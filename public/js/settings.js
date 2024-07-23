@@ -17,7 +17,6 @@ class Settings {
         this.lang = {};
         ipcRenderer.on('config', (event, data) => {
             this.port = data.port;
-            ipcRenderer.send('set-cookie', { url: `http://127.0.0.1:${this.port}`, name: 'login', value: 'value' });
             this.check();
             this.setLang(data.lang);
         });
@@ -51,9 +50,9 @@ class Settings {
                 if (data.status === "success") {
                     const hide = document.querySelector(".modal");
                     hide.style.display = "none";
+                    const html = yield this.getSettings();
+                    document.querySelector("#settings").innerHTML = html;
                 }
-                const html = yield this.getSettings();
-                document.querySelector("#settings").innerHTML = html;
             }
             catch (e) {
                 console.error(`[check]: ${e.message}`);
@@ -62,14 +61,6 @@ class Settings {
     }
     setLang(lang) {
         this.lang = lang;
-        document.querySelector("#manager-title").textContent = lang["taskManager"];
-        document.querySelector("#list-title").textContent = lang["taskList"];
-        document.querySelector("#task-title").textContent = lang["taskView"];
-        document.querySelector(".task-description").textContent = lang["taskViewDescription"];
-        document.querySelector("#tasklist-name").placeholder = lang["createListPlaceholder"];
-        document.querySelector("#task-name").placeholder = lang["createTaskPlaceholder"];
-        document.querySelector("#task-description").placeholder = lang["descriptionPlaceholder"];
-        document.querySelector(".list-icon img").alt = lang["deleteAltText"];
         try {
             document.querySelector(".modal-title").textContent = lang["modalTitle"];
             document.querySelector("#modal-enter").textContent = lang["modalEnter"];

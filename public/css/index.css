@@ -12,6 +12,9 @@ html {
   font-family: "Roboto", sans-serif;
   font-family: "Source Code Pro", monospace;
 }
+body {
+  margin: 0;
+}
 body, #app {
   overflow: hidden;
 }
@@ -61,7 +64,6 @@ li button:hover {
   grid-template-columns: 25% 30% 45%;
   background-color: #f7f7f7;
   position: relative;
-  top: -10px;
 }
 .app-body > div {
   border-left: 1px solid #a4a4a4;

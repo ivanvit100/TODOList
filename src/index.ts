@@ -61,7 +61,11 @@ document.addEventListener("DOMContentLoaded", () => {
     UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
     if (!UI.getTaskList())
       throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
-    else UI.updateListUI();
+    else {
+      UI.updateListUI();
+      UI.state = 1;
+      UI.state_switch();
+    }
   };
 
   // Function what called when user click on different Task in TaskList
@@ -73,6 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
     else{
       UI.setTask(UI.getTaskList()!.getTasks().find((t) => t.name === name));
       UI.updateTaskUI();
+      UI.state = 2;
+      UI.state_switch();
     }
   };
 
@@ -110,6 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
       UI.getTask()!.doneTask();
       req.saveTaskList();
     }
+  };
+
+  // TODO: documentation
+  (window as any).state_switch = function (mode: number = 0) {
+    UI.state = mode ? 
+        UI.state === 2 ? 2 : UI.state + 1 :
+        UI.state === 0 ? 0 : UI.state - 1;
+    UI.state_switch();   
   };
 
   // Function what called when user create new Task

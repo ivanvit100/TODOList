@@ -49,8 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
         UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
         if (!UI.getTaskList())
             throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
-        else
+        else {
             UI.updateListUI();
+            UI.state = 1;
+            UI.state_switch();
+        }
     };
     window.changeTask = function (name) {
         if (!UI.getTaskList())
@@ -58,6 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
         else {
             UI.setTask(UI.getTaskList().getTasks().find((t) => t.name === name));
             UI.updateTaskUI();
+            UI.state = 2;
+            UI.state_switch();
         }
     };
     window.deleteTask = function () {
@@ -89,6 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 req.saveTaskList();
             }
         });
+    };
+    window.state_switch = function (mode = 0) {
+        UI.state = mode ?
+            UI.state === 2 ? 2 : UI.state + 1 :
+            UI.state === 0 ? 0 : UI.state - 1;
+        UI.state_switch();
     };
     newTask.addEventListener("click", () => {
         if (UI.getTaskList() === undefined)

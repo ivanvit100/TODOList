@@ -68,10 +68,13 @@ iframe {
   padding: 5px;
   border-radius: 3px;
 }
-.taskmanager, .tasklist, .tasl-viewer{
-  overflow-y: auto;
-  overflow-x: hidden;
+.taskmanager, .tasklist, .task-viewer {
+  overflow: hidden;
   max-height: 100vh;
+}
+ul {
+  overflow-y: auto;
+  max-height: 100%;
 }
 .taskmanager, .tasklist {
   font-family: Arial, sans-serif;
@@ -153,4 +156,15 @@ iframe {
   right: 15px;
   top: 0;
   transform: translateY(25%);
+}
+
+@media (max-width: 1079px) {
+  .app-body {
+    grid-template-columns: repeat(3, calc(100vw - 10px));
+  }
+  .taskmanager, .tasklist, .task-viewer {
+    width: calc(100vw - 90px);
+    position: relative;
+    left: -20px;
+  }
 }
