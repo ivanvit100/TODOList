@@ -26,13 +26,27 @@ export class TaskList {
         this.name = name;
         this.tasks = [];
     }
+    get date() {
+        const dates = this.tasks
+            .filter(task => !task.done && task.date)
+            .map(task => new Date(task.date));
+        return dates.length ? new Date(Math.min(...dates.map(date => date.getTime()))) : null;
+    }
+    get lvl() {
+        const priorities = this.tasks
+            .filter(task => !task.done)
+            .map(task => task.lvl);
+        return priorities.length ? Math.max(...priorities) : 0;
+    }
     getColor() {
         let max = 0;
         for (let i = 0; i < this.tasks.length; i++) {
-            if (this.tasks[i].getColor() === 2)
-                return 2;
-            else
-                max = Math.max(max, this.tasks[i].getColor());
+            if (!this.tasks[i].done) {
+                if (this.tasks[i].getColor() === 2)
+                    return 2;
+                else
+                    max = Math.max(max, this.tasks[i].getColor());
+            }
         }
         return max;
     }
@@ -55,6 +69,9 @@ export class TaskList {
             return dateComparison;
         });
     }
+    getUnreachTasks() {
+        return this.tasks.filter((t) => !t.done);
+    }
     getUncheckedTasks() {
         return this.tasks.filter((t) => !t.done);
     }
@@ -75,8 +92,25 @@ export class TaskManager {
     removeList(list) {
         this.lists = this.lists.filter((l) => l !== list);
     }
-    getLists() {
-        return this.lists.sort((a, b) => a.name.localeCompare(b.name));
+    getLists(order = "alphabet") {
+        return this.lists.sort((a, b) => {
+            switch (order) {
+                case 'alphabet':
+                    return a.name.localeCompare(b.name);
+                case 'date':
+                    if (!a.date)
+                        return 1;
+                    if (!b.date)
+                        return -1;
+                    return (Number(a.date || 0)) - Number((b.date || 0));
+                case 'priority':
+                    return b.lvl - a.lvl;
+                case 'count':
+                    return b.getUnreachTasks().length - a.getUnreachTasks().length;
+                default:
+                    return 0;
+            }
+        });
     }
     getList(name) {
         return this.lists.find((l) => l.name === name);

@@ -64,6 +64,7 @@ li button:hover {
   grid-template-columns: 25% 30% 45%;
   background-color: #f7f7f7;
   position: relative;
+  transition: transform .3s ease-in-out;
 }
 .app-body > div {
   border-left: 1px solid #a4a4a4;
@@ -75,9 +76,42 @@ li button:hover {
   top: -10px;
   right: 10px;
   width: 50px;
+  z-index: 2;
 }
-.header-title-text img{
+.header-title-text img {
   width: 80%;
-  background-color: #007bff;
+  background-color: #cce2f9;
   padding: 10%;
+  left: 5px;
+  top: 5px;
+  position: relative;
+  scale: .8;
+  border-bottom: 2px solid #007bff;
+}
+.header_button {
+  width: calc(100% - 10px);
+  height: 40px;
+  left: 10px;
+  top: calc(50vh - 120px);
+  position: relative;
+  border: none;
+  background-color: transparent;
+  transition: .7s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.header_button:hover {
+  scale: 1.1;
+  left: 9px;
+}
+#openMenu{
+  position: relative;
+  top: calc(100vh - 150px);
+}
+
+@media(min-width: 1000px) {
+  .mobile {
+    display: none;
+  }
+  #switch {
+    top: calc(100vh - 150px);
+  }
 }

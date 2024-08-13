@@ -64,6 +64,26 @@ export class TaskList {
     this.name = name;
     this.tasks = [];
   }
+  // Get the closest day of unreached task in the list
+  // Support getter for list sorting
+  // Input: none
+  // Output: Date | null
+  get date(): Date | null {
+    const dates = this.tasks
+      .filter(task => !task.done && task.date)
+      .map(task => new Date(task.date as unknown as string));
+    return dates.length ? new Date(Math.min(...dates.map(date => date.getTime()))) : null;
+  }
+  // Get the high priority of the task in the list
+  // Support getter for list sorting
+  // Input: none
+  // Output: number
+  get lvl(): number {
+    const priorities = this.tasks
+      .filter(task => !task.done)
+      .map(task => task.lvl);
+    return priorities.length ? Math.max(...priorities) : 0;
+  }
   // Get the color of the nerby task in the task list
   // The color depends on the date of the task
   // Color used in the task list UI
@@ -74,8 +94,10 @@ export class TaskList {
   getColor(){
     let max = 0;
     for (let i = 0; i < this.tasks.length; i++){
-      if (this.tasks[i].getColor() === 2) return 2;
-      else max = Math.max(max, this.tasks[i].getColor());
+      if (!this.tasks[i].done) {
+        if (this.tasks[i].getColor() === 2) return 2;
+        else max = Math.max(max, this.tasks[i].getColor());
+      }
     }
     return max;
   }
@@ -113,6 +135,12 @@ export class TaskList {
       const dateComparison = dateB.getTime() - dateA.getTime();
       return dateComparison;
     });
+  }
+  // Get list of all unreached tasks
+  // Input: none
+  // Output: list of Tasks
+  getUnreachTasks() {
+    return this.tasks.filter((t) => !t.done);
   }
   // Get all tasks from the list which are not done
   // Input: none
@@ -152,11 +180,25 @@ export class TaskManager {
     this.lists = this.lists.filter((l) => l !== list);
   }
   // Get array of all lists
-  // Input: none
+  // Input: order - the criteria to sort by ('alphabet', 'date', 'priority', 'count')
   // Output: array of lists
-  //         sorted by name
-  getLists() {
-    return this.lists.sort((a, b) => a.name.localeCompare(b.name));
+  getLists(order: string = "alphabet") {
+    return this.lists.sort((a, b) => {
+      switch (order) {
+        case 'alphabet':
+          return a.name.localeCompare(b.name);
+        case 'date':
+          if (!a.date) return 1;
+          if (!b.date) return -1;
+          return (Number(a.date || 0)) - Number((b.date || 0));
+        case 'priority':
+          return b.lvl - a.lvl;
+        case 'count':
+          return b.getUnreachTasks().length - a.getUnreachTasks().length;
+        default:
+          return 0;
+      }
+    });
   }
   // Get a list by its name
   // Input: name - the name of the list

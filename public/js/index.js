@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             UI.updateListUI();
     };
     window.changeTaskList = function (name) {
-        UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
+        UI.setTaskList(UI.getTaskManager().getLists(UI.order).find((l) => l.name === name));
         if (!UI.getTaskList())
             throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
         else {

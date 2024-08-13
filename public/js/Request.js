@@ -28,6 +28,7 @@ export class Request {
                 document.body.classList.add("dark");
             this.check();
             this.UI.setLang(data.lang);
+            this.UI.order = data["sort-order"];
         });
     }
     response(path, data) {

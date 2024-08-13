@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Input: name - name of the TaskList
   // Output: none
   (window as any).changeTaskList = function (name: string) {
-    UI.setTaskList(UI.getTaskManager().getLists().find((l) => l.name === name));
+    UI.setTaskList(UI.getTaskManager().getLists(UI.order).find((l) => l.name === name));
     if (!UI.getTaskList())
       throw new Error(`[changeTaskList]: TaskList with name ${name} not found`);
     else {
@@ -118,7 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // TODO: documentation
+  // Function what called when user click on arrow to chenge view area
+  // Input: none
+  // Output: none
   (window as any).state_switch = function (mode: number = 0) {
     UI.state = mode ? 
         UI.state === 2 ? 2 : UI.state + 1 :

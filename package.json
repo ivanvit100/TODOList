@@ -1,12 +1,16 @@
 {
   "name": "todo-list",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "TODO application using OOP principles, built with TypeScript, Electron and Express",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "make-zip": "electron-forge make",
+    "make-linux": "npm run make -- --platform linux",
+    "make-darwin": "npm run make -- --platform darwin",
+    "make-windows": "npm run make -- --platform win32"
   },
   "keywords": [],
   "author": "ivanvit100",
@@ -31,21 +35,5 @@
   "files": [
     "/server/langs/**",
     "/public/**"
-  ],
-  "config": {
-    "forge": {
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin",
-            "linux"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-squirrel"
-        }
-      ]
-    }
-  }
+  ]
 }

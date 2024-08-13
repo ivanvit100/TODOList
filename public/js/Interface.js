@@ -3,6 +3,7 @@ export class Interface {
     constructor() {
         this.lang = {};
         this.state = 0;
+        this.order = "alphabet";
         this.taskManager = new TaskManager();
         this.taskList = undefined;
         this.task = undefined;
@@ -53,7 +54,7 @@ export class Interface {
     updateManagerUI() {
         const managerUI = document.querySelector("#manager");
         managerUI.innerHTML = "";
-        for (let taskList of this.taskManager.getLists()) {
+        for (let taskList of this.taskManager.getLists(this.order)) {
             const color = taskList.getColor();
             managerUI.innerHTML += `<li><button onclick="changeTaskList('${taskList.name}')">${taskList.name} 
             <span class="notification ${color == 2 ? "expired" : color === 1 ? "date" : ""}">${taskList.getUncheckedTasks().length}</span></button></li>`;
@@ -146,7 +147,9 @@ export class Interface {
     }
     state_switch() {
         if (window.innerWidth < 1080)
-            document.querySelector(".app-body").style.transform = `translateX(calc(-100vw * ${this.state}))`;
+            document.querySelector(".app-body").style.transform = `translateX(calc(-100vw * ${this.state} + 10px * ${this.state}))`;
+        else
+            document.querySelector(".app-body").style.transform = "initial";
     }
     getTask() {
         return this.task;

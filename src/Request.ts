@@ -33,6 +33,7 @@ export class Request {
             if (data.theme === "dark") document.body.classList.add("dark");
             this.check();
             this.UI.setLang(data.lang);
+            this.UI.order = data["sort-order"];
         });
     }
     // Function for sending a request to the server

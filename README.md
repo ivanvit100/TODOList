@@ -12,7 +12,27 @@ This part is coming soon...
 
 ## 📥 Installation
 
-This part is coming soon...
+### Complete package
+
+Visit [Releases](https://github.com/ivanvit100/TODOList/releases) page and download app image for your OS. It may be deb or rpm package or zip/tar archive.
+
+### From source
+
+First of all, clone this repo
+
+```sh
+git clone https://github.com/ivanvit100/TODOList.git
+```
+
+Commands for compiling projects you can see in [package.json](/package.json):
+```sh
+npm run make
+npm run make-zip
+npm run make-linux
+npm run make-darwin
+npm run make-windows
+```
+
 
 ## 🛠️ Configuration
 
@@ -62,7 +82,7 @@ To setup your task list as you wish you can follow these steps:
 - alphabet
 - priority
 - date
-- count
+- count (in development)
 
 Also you can left login and password empty to use app without authtorisation.
 

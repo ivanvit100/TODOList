@@ -12,6 +12,7 @@ export class Interface {
     private static noDate: string;
     private lang: Record<string, string> = {};
     public state: number = 0;
+    public order: string = "alphabet";
     constructor() {
         this.taskManager = new TaskManager();
         this.taskList = undefined;
@@ -82,7 +83,7 @@ export class Interface {
     updateManagerUI() {
         const managerUI = document.querySelector("#manager") as HTMLUListElement;
         managerUI.innerHTML = "";
-        for (let taskList of this.taskManager.getLists()){
+        for (let taskList of this.taskManager.getLists(this.order)){
             const color = taskList!.getColor();
             managerUI.innerHTML += `<li><button onclick="changeTaskList('${
                 taskList.name
@@ -189,10 +190,15 @@ export class Interface {
         const description = document.querySelector("#task-description-edit") as HTMLTextAreaElement;
         description.innerText = this.task!.description;
     }
-    // TODO: documentation
+    // Function for adaptive design
+    // It switch view area for small screens
+    // Input: none
+    // Output: none
     state_switch(){
         if (window.innerWidth < 1080)
-            (document.querySelector(".app-body") as HTMLDivElement).style.transform = `translateX(calc(-100vw * ${this.state}))`;
+            (document.querySelector(".app-body") as HTMLDivElement).style.transform = `translateX(calc(-100vw * ${this.state} + 10px * ${this.state}))`;
+        else 
+            (document.querySelector(".app-body") as HTMLDivElement).style.transform = "initial";
     }
     // Function for getting the active task
     // Input: none
