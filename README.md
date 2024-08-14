@@ -82,7 +82,7 @@ To setup your task list as you wish you can follow these steps:
 - alphabet
 - priority
 - date
-- count (in development)
+- count
 
 Also you can left login and password empty to use app without authtorisation.
 
@@ -94,8 +94,12 @@ Here you can see a list of TODO changes expected in upcoming commits:
 - json to jsonl
 - Send one task instead of a full dump
 - Multi-user capability
-- Different encryption methods, 
+- Different encryption methods 
 - Registration in UI
+- New HTML editor
+- Improving web performance
+
+You can also implement these points in your pull request, it will help the project a lot. 
 
 ## 💼 Usage
 

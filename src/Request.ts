@@ -34,6 +34,9 @@ export class Request {
             this.check();
             this.UI.setLang(data.lang);
             this.UI.order = data["sort-order"];
+            (document.getElementById('openMenu') as HTMLButtonElement).addEventListener('click', () => {
+                ipcRenderer.send('toggle-menu');
+            });
         });
     }
     // Function for sending a request to the server

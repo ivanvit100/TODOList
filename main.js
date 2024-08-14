@@ -372,14 +372,17 @@ app.whenReady().then(() => {
             ]
         }
     ]);
-    window.webContents.on('before-input-event', (event, input) => {
-        if (input.key === 'Alt' && input.type === 'keyDown') {
-            isMenuVisible = !isMenuVisible;
-            if (isMenuVisible) Menu.setApplicationMenu(menu);
-            else Menu.setApplicationMenu(null);
-            event.preventDefault();
-        }
-    });
+    // Function to open and close the menu
+    // Input: event: object
+    // Output: none
+    function switchMenu(event = none) {
+        isMenuVisible = !isMenuVisible;
+        if (isMenuVisible) Menu.setApplicationMenu(menu);
+        else Menu.setApplicationMenu(null);
+        event.preventDefault();
+    }
+    window.webContents.on('before-input-event', (event, input) => input.key === 'Alt' && input.type === 'keyDown' && switchMenu(event));
+    ipcMain.on('toggle-menu', (event) => switchMenu(event));
     // window.webContents.openDevTools();
     window.webContents.on('did-finish-load', () => {
         const data = {

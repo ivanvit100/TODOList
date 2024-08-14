@@ -29,6 +29,9 @@ export class Request {
             this.check();
             this.UI.setLang(data.lang);
             this.UI.order = data["sort-order"];
+            document.getElementById('openMenu').addEventListener('click', () => {
+                ipcRenderer.send('toggle-menu');
+            });
         });
     }
     response(path, data) {

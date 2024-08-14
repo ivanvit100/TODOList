@@ -1,19 +1,55 @@
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/index.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&family=Roboto:wght@100;300;400;500;700;900&family=Source+Code+Pro:wght@200;400;600;800&display=swap"
-      rel="stylesheet"
-    />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODOList</title>
-  </head>
-  <body>
-    Error 404 - Page not found
-    Work in progress...
-  </body>
+    <style>
+        .error-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f7f7f7;
+            text-align: center;
+        }
+        .error-page h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .error-page p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .error-page .back-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .error-page .back-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .error-page .back-button:active {
+            background-color: #003f7f;
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <h1>404</h1>
+        <p>Page Not Found</p>
+        <button class="back-button" onclick="window.location.href='/'">Go Back Home</button>
+    </div>
+</body>
 </html>

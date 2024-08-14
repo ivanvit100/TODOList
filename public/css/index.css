@@ -103,8 +103,23 @@ li button:hover {
   left: 9px;
 }
 #openMenu{
-  position: relative;
-  top: calc(100vh - 150px);
+  position: absolute;
+  top: calc(100vh - 40px);
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+  border: 3px solid #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
 }
 
 @media(min-width: 1000px) {
@@ -112,6 +127,6 @@ li button:hover {
     display: none;
   }
   #switch {
-    top: calc(100vh - 150px);
+    top: calc(100vh - 135px);
   }
 }

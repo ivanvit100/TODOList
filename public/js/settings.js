@@ -108,10 +108,10 @@ class Settings {
             console.log(json);
             for (let key in json) {
                 if (typeof json[key] === 'string')
-                    html += `<label for="${key}">${key}</label><input type="text" id="${key}" name="${key}" value="${json[key]}"><br>`;
+                    html += `<label for="${key}">${key}</label><input type="text" id="${key}" name="${key}" value="${json[key]}" placeholder="Void">`;
                 else if (typeof json[key] === 'boolean') {
                     let checked = json[key] ? 'checked' : '';
-                    html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${checked}><br>`;
+                    html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${checked}>`;
                 }
             }
             return html;
