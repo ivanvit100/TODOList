@@ -1,0 +1,125 @@
+/* Адаптивная верстка */
+@media (min-width: 1080px) {
+    .mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --taskmanager-width: 30%;
+        --tasklist-width: 35%;
+        --taskviewer-width: 35%;
+    }
+}
+
+@media (max-width: 1079px) {
+    :root {
+        --header-width: 60px;
+    }
+    .app-body {
+        grid-template-columns: repeat(3, calc(100vw - var(--header-width) / 3 - 40px));
+        width: calc(100vw - var(--header-width));
+        display: flex;
+        flex-direction: column;
+        transform: none !important;
+    }
+
+    .taskmanager, .tasklist, .task-viewer {
+        position: relative;
+        width: calc(100vw - 60px);
+        height: 100vh;
+        display: none;
+    }
+
+    .taskmanager.active, .tasklist.active, .task-viewer.active {
+        display: block;
+    }
+
+    .mobile {
+        display: flex !important;
+    }
+
+    #new-tasklist-id {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto auto;
+    }
+
+    #task-description {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .task-view {
+        height: auto;
+        min-height: 300px;
+    }
+
+    .task-bottom {
+        position: relative;
+        bottom: auto;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-icons {
+        order: 3;
+        margin-top: var(--spacing-sm);
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .task-details {
+        order: 1;
+        width: 100%;
+    }
+
+    .task-tag {
+        order: 2;
+        margin-top: var(--spacing-sm);
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    #settings {
+        grid-template-columns: 1fr;
+        padding: 0 var(--spacing-md) var(--spacing-lg);
+    }
+
+    .settings-page .inner-header {
+        padding: var(--spacing-md);
+    }
+
+    .save-button {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media(max-width: 600px) {
+    :root {
+        --header-width: 50px;
+        --spacing-lg: 16px;
+    }
+    
+    .header_button {
+        width: 36px;
+        height: 36px;
+        font-size: var(--font-size-md);
+    }
+    
+    .header-title-text img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .new-interface {
+        padding: var(--spacing-md);
+    }
+
+    .task-view {
+        margin-bottom: var(--spacing-lg);
+    }
+}

@@ -1,0 +1,414 @@
+@import url('variables.css');
+@import url('status.css');
+@import url('modal.css');
+@import url('dark.css');
+@import url('keyframes.css');
+@import url('media.css');
+@import url('settings.css');
+
+/* ======== ОСНОВНЫЕ КОНТЕЙНЕРЫ ======== */
+.taskmanager, .tasklist, .task-viewer {
+  padding: var(--spacing-lg);
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral-400) transparent;
+  backdrop-filter: blur(10px);
+}
+
+.taskmanager {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.tasklist {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.task-viewer {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* ======== ЗАГОЛОВКИ СЕКЦИЙ ======== */
+.inner-header {
+  display: block ruby;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid transparent;
+  background-image: var(--gradient-main);
+  background-size: 100% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: var(--spacing-md) 0;
+}
+
+.inner-header-title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--neutral-900);
+}
+
+#list-name {
+  font-weight: 600;
+  font-size: var(--font-size-lg);
+  color: var(--neutral-400);
+  margin-left: var(--spacing-sm);
+}
+
+/* ======== СПИСКИ ЗАДАЧ И СПИСКОВ ======== */
+#manager, #list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+#manager {
+  max-height: calc(100vh - 150px);
+}
+
+#manager li button, #list li button {
+  width: 100%;
+  background-color: white;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  color: var(--neutral-800);
+  font-weight: 500;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+#manager li button:hover, #list li button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+#manager li button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-left: 4px solid var(--primary-light);
+  padding: var(--spacing-md);
+  gap: var(--spacing-xs);
+}
+
+#manager li button img {
+  width: 18px;
+  height: 18px;
+  margin-right: var(--spacing-sm);
+  object-fit: contain;
+  vertical-align: middle;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+#manager li button:hover img {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.list-name {
+  flex-grow: 1;
+  margin-right: var(--spacing-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#manager li button .notification {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.list-title-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: var(--spacing-sm);
+  vertical-align: middle;
+  display: inline-block;
+}
+
+#list li button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 4px solid var(--primary-mid);
+  padding: var(--spacing-md);
+  position: relative;
+  z-index: 1; 
+  will-change: transform; 
+  transition: background-color 0.3s ease; 
+}
+
+#list li button[data-task-name] {
+  animation-fill-mode: both;
+}
+
+#list {
+  position: relative;
+}
+
+/* ======== ПРОСМОТР ЗАДАЧИ ======== */
+#task {
+  height: 100vh;
+  position: relative;
+}
+
+.task-view {
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  height: calc(100vh - 2 * var(--spacing-xl) - 2 * var(--spacing-md));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: -10px;
+}
+
+.task-view .inner-header {
+  padding: var(--spacing-lg);
+  margin-bottom: 0;
+}
+
+.task-view .inner-header.done {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.task-view .inner-header.expired {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.task-view .inner-header.date {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.task-title {
+  font-family: "PT Sans", sans-serif;
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-sm);
+  color: var(--neutral-900);
+  font-weight: 600;
+}
+
+.task-description {
+  padding: var(--spacing-lg);
+  margin: 0;
+  color: var(--neutral-700);
+  line-height: 1.6;
+  font-family: "Roboto", sans-serif;
+  font-size: var(--font-size-md);
+  overflow-y: auto;
+}
+
+.task-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--neutral-600);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  top: -5px;
+}
+
+.task-icons {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.task-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.task-icon:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.task-icon img {
+  height: 20px;
+  width: auto;
+  margin-left: 0;
+}
+
+.task-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  color: var(--neutral-600);
+  font-size: var(--font-size-sm);
+  font-family: "Source Code Pro", monospace;
+}
+
+.task-importance, .task-deadline {
+  display: block;
+}
+
+.task-tag {
+  display: flex;
+  align-items: center;
+}
+
+.tag {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--gradient-main);
+  color: white;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  font-family: "Source Code Pro", monospace;
+}
+
+/* ======== ИНТЕРФЕЙС СОЗДАНИЯ ======== */
+.new-interface {
+  display: grid;
+  grid-template-columns: 75% 20%;
+  grid-template-rows: auto auto;
+  gap: var(--spacing-md);
+  background-color: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: calc(var(--spacing-lg) + 3px);
+}
+
+.new-interface input,
+.new-interface textarea {
+  width: 100%;
+  margin-right: 0;
+}
+
+.new-interface textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.new-interface button {
+  align-self: flex-end;
+  background: var(--gradient-main);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+}
+
+.new-interface button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+#new-tasklist-id {
+  display: grid;
+  grid-template-columns: 35% 45% 15%;
+  grid-template-rows: auto auto;
+  grid-row-gap: var(--spacing-md);
+  grid-column-gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+#tasklist-name {
+  grid-column: 1/3;
+}
+
+#task-description {
+  grid-column: 2;
+  grid-row: 1/3;
+  resize: vertical;
+  min-height: 80px;
+}
+
+#task-lvl {
+  margin-right: 0;
+}
+
+#new-task, #new-tasklist {
+  height: 50px;
+}
+
+#nav-tasklist {
+  height: 50px;
+}
+
+/* ======== ВСПОМОГАТЕЛЬНЫЕ ЭЛЕМЕНТЫ ======== */
+iframe {
+  border: none;
+  width: 100%;
+  height: calc(100vh - 200px);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.list-icon {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  position: absolute;
+  right: var(--spacing-lg);
+  top: 0;
+  transform: translate(20px, 15px);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.list-icon:hover {
+  opacity: 1;
+  transform: translate(15px, 10px) scale(1.1);
+}
+
+.list-icon img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0.3);
+}
+
+/* ======== КЛАВИАТУРНАЯ НАВИГАЦИЯ ======== */
+.keyboard-focus {
+  outline: 2px solid var(--primary-mid);
+  outline-offset: -2px;
+  position: relative;
+  z-index: 1;
+  background-color: rgba(38, 198, 218, 0.1);
+}
+
+.section-focus {
+  border: 2px solid var(--primary-dark);
+}
+
+#list li button:focus, 
+#manager li button:focus,
+.task-viewer button:focus {
+  outline: 2px solid var(--primary-mid);
+}

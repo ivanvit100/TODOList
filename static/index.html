@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Эффективный менеджер задач для организации личных и рабочих дел. Простой, удобный, функциональный." />
+    <meta name="keywords" content="todolist, планировщик задач, управление задачами, органайзер, список дел, продуктивность, ivanvit, ivanvit100, иванвит" />
+    <meta name="author" content="ivanvit" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#64B5F6" />
+    <link rel="canonical" href="https://todo.ivanvit.ru" />
+    
+    <!-- Иконки и favicon -->
+    <link rel="icon" href="/icons/logo.webp" sizes="any" />
+    <link rel="apple-touch-icon" href="/icons/logo.webp" />
+    <!-- <link rel="manifest" href="/manifest.json" /> -->
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://todo.ivanvit.ru" />
+    <meta property="og:title" content="TODOList - Управление задачами" />
+    <meta property="og:description" content="Эффективный менеджер задач для организации личных и рабочих дел. Простой, удобный, функциональный." />
+    <meta property="og:image" content="https://todo.ivanvit.ru/icons/logo.webp" />
+    <meta property="og:site_name" content="TODOList" />
+    <meta property="og:locale" content="ru_RU" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://todo.ivanvit.ru" />
+    <meta name="twitter:title" content="TODOList - Управление задачами" />
+    <meta name="twitter:description" content="Эффективный менеджер задач для организации личных и рабочих дел. Простой, удобный, функциональный." />
+    <meta name="twitter:image" content="https://todo.ivanvit.ru/icons/logo.webp" />
+    
+    <!-- Стили -->
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/Task.css" media="print" onload="this.media='all'" />
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
+
+    <title>TODOList - Управление задачами</title>
+    
+    <!-- Микроразметка Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "TODOList",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      },
+      "description": "Эффективный менеджер задач для организации личных и рабочих дел. Простой, удобный, функциональный.",
+      "screenshot": "https://todo.ivanvit.ru/icons/preview.png",
+      "softwareVersion": "2.1.0",
+      "author": {
+        "@type": "Person",
+        "name": "ivanvit",
+        "url": "https://github.com/ivanvit100"
+      },
+      "url": "https://todo.ivanvit.ru"
+    }
+    </script>
+    
+    <!-- Микроразметка WebApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TODOList",
+      "url": "https://todo.ivanvit.ru",
+      "applicationCategory": "Productivity",
+      "operatingSystem": "All"
+    }
+    </script>
+  </head>
+  <body class="dark">
+    <!-- Контейнер для уведомлений -->
+    <div id="notifications" aria-live="polite"></div>
+    
+    <div id="app">
+      <header class="header">
+        <div class="header-title">
+          <a href="https://ivanvit.ru" class="header-title-text">
+            <img src="/icons/logo.webp" alt="TODOList логотип" width="32" height="32">
+            <span>TODOList</span>
+          </a>
+        </div>
+        
+        <nav class="header-controls">
+          <button 
+            onclick="state_switch(1)" 
+            class="header_button state_switcher mobile" 
+            id="next"
+            aria-label="Следующая секция"
+            title="Перейти к следующей секции"
+            tabindex="0">
+            <span aria-hidden="true">➤</span>
+          </button>
+          
+          <button 
+            onclick="switchTheme()" 
+            id="switch" 
+            class="header_button"
+            aria-label="Переключить тему"
+            title="Переключить светлую/темную тему"
+            tabindex="0">
+            <span aria-hidden="true">⇋</span>
+          </button>
+          
+          <button 
+            onclick="state_switch()" 
+            class="header_button state_switcher mobile" 
+            style="transform: rotate(180deg);" 
+            id="prev"
+            aria-label="Предыдущая секция"
+            title="Вернуться к предыдущей секции"
+            tabindex="0">
+            <span aria-hidden="true">➤</span>
+          </button>
+          
+          <button 
+            onclick="logout()" 
+            id="logout-button" 
+            class="header_button"
+            aria-label="Выйти из аккаунта"
+            title="Выйти из аккаунта"
+            tabindex="0">
+            <span aria-hidden="true">🔐</span>
+          </button>
+          
+          <button 
+            id="openMenu" 
+            class="header_button"
+            aria-label="Открыть меню"
+            title="Открыть меню"
+            tabindex="0">
+            <span aria-hidden="true">☰</span>
+          </button>
+        </nav>
+      </header>
+
+      <main class="app-body">
+        <section class="taskmanager" aria-labelledby="manager-title">
+          <div class="inner-header">
+            <h2 class="inner-header-title" id="manager-title">Менеджер списков</h2>
+            <button 
+              onclick="deleteList()" 
+              class="list-icon"
+              aria-label="Удалить текущий список"
+              title="Удалить текущий список"
+              tabindex="0">
+              <img src="/icons/delete.webp" alt="Удалить" width="16" height="16">
+            </button>
+          </div>
+          
+          <div class="new-interface" role="form" aria-label="Создать новый список задач">
+            <label for="tasklist-name" class="sr-only">Название нового списка задач</label>
+            <input 
+              type="text" 
+              id="tasklist-name" 
+              placeholder="Новый список" 
+              aria-label="Введите название нового списка задач" 
+              tabindex="0" />
+            <div class="icon-select-wrapper">
+              <label for="tasklist-icon" class="sr-only">Выберите иконку для списка</label>
+              <div class="custom-select-wrapper">
+                <div class="custom-select">
+                  <div class="custom-select__trigger">
+                    <img src="/icons/lists/head.webp" alt="" id="selected-icon" class="icon-preview">
+                    <span id="selected-text">Стандартная</span>
+                    <div class="arrow"></div>
+                  </div>
+                  <input type="hidden" id="tasklist-icon" value="head">
+                  <div class="custom-options">
+                    <span class="custom-option selected" data-value="head">
+                      <img src="/icons/lists/head.webp" alt="Список" class="option-icon">
+                      Список
+                    </span>
+                    <span class="custom-option" data-value="bookmark">
+                      <img src="/icons/lists/bookmark.webp" alt="Закладка" class="option-icon">
+                      Закладка
+                    </span>
+                    <span class="custom-option" data-value="camera">
+                      <img src="/icons/lists/camera.webp" alt="Камера" class="option-icon">
+                      Камера
+                    </span>
+                    <span class="custom-option" data-value="cart">
+                      <img src="/icons/lists/cart.webp" alt="Корзина" class="option-icon">
+                      Корзина
+                    </span>
+                    <span class="custom-option" data-value="chemical">
+                      <img src="/icons/lists/chemical.webp" alt="Опыты" class="option-icon">
+                      Опыты
+                    </span>
+                    <span class="custom-option" data-value="clock">
+                      <img src="/icons/lists/clock.webp" alt="Часы" class="option-icon">
+                      Часы
+                    </span>
+                    <span class="custom-option" data-value="compass">
+                      <img src="/icons/lists/compass.webp" alt="Компас" class="option-icon">
+                      Компас
+                    </span>
+                    <span class="custom-option" data-value="database">
+                      <img src="/icons/lists/database.webp" alt="База данных" class="option-icon">
+                      База данных
+                    </span>
+                    <span class="custom-option" data-value="directory">
+                      <img src="/icons/lists/directory.webp" alt="Файлы" class="option-icon">
+                      Файлы
+                    </span>
+                    <span class="custom-option" data-value="flag">
+                      <img src="/icons/lists/flag.webp" alt="Флаг" class="option-icon">
+                      Флаг
+                    </span>
+                    <span class="custom-option" data-value="geo">
+                      <img src="/icons/lists/geo.webp" alt="Метка" class="option-icon">
+                      Метка
+                    </span>
+                    <span class="custom-option" data-value="github">
+                      <img src="/icons/lists/github.webp" alt="GitHub" class="option-icon">
+                      GitHub
+                    </span>
+                    <span class="custom-option" data-value="heart">
+                      <img src="/icons/lists/heart.webp" alt="Сердце" class="option-icon">
+                      Сердце
+                    </span>
+                    <span class="custom-option" data-value="home">
+                      <img src="/icons/lists/home.webp" alt="Дом" class="option-icon">
+                      Дом
+                    </span>
+                    <span class="custom-option" data-value="info">
+                      <img src="/icons/lists/info.webp" alt="Информация" class="option-icon">
+                      Информация
+                    </span>
+                    <span class="custom-option" data-value="study">
+                      <img src="/icons/lists/learn.webp" alt="Учёба" class="option-icon">
+                      Учёба
+                    </span>
+                    <span class="custom-option" data-value="lock">
+                      <img src="/icons/lists/lock.webp" alt="Замок" class="option-icon">
+                      Замок
+                    </span>
+                    <span class="custom-option" data-value="music">
+                      <img src="/icons/lists/music.webp" alt="Музыка" class="option-icon">
+                      Музыка
+                    </span>
+                    <span class="custom-option" data-value="notebook">
+                      <img src="/icons/lists/notebook.webp" alt="Блокнот" class="option-icon">
+                      Блокнот
+                    </span>
+                    <span class="custom-option" data-value="notification">
+                      <img src="/icons/lists/notification.webp" alt="Уведомление" class="option-icon">
+                      Уведомление
+                    </span>
+                    <span class="custom-option" data-value="pc">
+                      <img src="/icons/lists/pc.webp" alt="Компьютер" class="option-icon">
+                      Компьютер
+                    </span>
+                    <span class="custom-option" data-value="phone">
+                      <img src="/icons/lists/phone.webp" alt="Телефон" class="option-icon">
+                      Телефон
+                    </span>
+                    <span class="custom-option" data-value="pizza">
+                      <img src="/icons/lists/pizza.webp" alt="Пицца" class="option-icon">
+                      Пицца
+                    </span>
+                    <span class="custom-option" data-value="frog">
+                      <img src="/icons/lists/frog.webp" alt="Лягушка" class="option-icon">
+                      Лягушка
+                    </span>
+                    <span class="custom-option" data-value="rabbit">
+                      <img src="/icons/lists/rabbit.webp" alt="Кролик" class="option-icon">
+                      Кролик
+                    </span>
+                    <span class="custom-option" data-value="raven">
+                      <img src="/icons/lists/raven.webp" alt="Ворон" class="option-icon">
+                      Ворон
+                    </span>
+                    <span class="custom-option" data-value="server">
+                      <img src="/icons/lists/server.webp" alt="Сервер" class="option-icon">
+                      Сервер
+                    </span>
+                    <span class="custom-option" data-value="shield">
+                      <img src="/icons/lists/shield.webp" alt="Щит" class="option-icon">
+                      Щит
+                    </span>
+                    <span class="custom-option" data-value="trash">
+                      <img src="/icons/lists/trash.webp" alt="Мусорка" class="option-icon">
+                      Мусорка
+                    </span>
+                    <span class="custom-option" data-value="warning">
+                      <img src="/icons/lists/warning.webp" alt="Предупреждение" class="option-icon">
+                      Предупреждение
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button 
+              id="new-tasklist" 
+              aria-label="Создать список задач" 
+              title="Создать список задач"
+              tabindex="0">
+              <span aria-hidden="true">➤</span>
+            </button>
+          </div>
+          
+          <hr aria-hidden="true">
+          
+          <ul id="manager" role="list" aria-label="Списки задач"></ul>
+        </section>
+
+        <section class="tasklist" aria-labelledby="list-title">
+          <div class="inner-header">
+            <h2 class="inner-header-title" id="list-title">Список задач</h2>
+            <span id="list-name" aria-live="polite"></span>
+            <button 
+              onclick="filterTasks()" 
+              class="list-icon"
+              aria-label="Фильтр задач"
+              title="Фильтр задач"
+              tabindex="0">
+              <img src="/icons/filter.webp" alt="Фильтр" width="16" height="16">
+            </button>
+          </div>
+          
+          <div id="new-tasklist-id" class="new-interface" role="form" aria-label="Создать новую задачу">
+            <label for="task-name" class="sr-only">Название задачи</label>
+            <input 
+              type="text" 
+              id="task-name" 
+              placeholder="Название задачи" 
+              aria-label="Введите название задачи"
+              tabindex="0" />
+              
+            <label for="task-description" class="sr-only">Описание задачи</label>
+            <textarea 
+              id="task-description" 
+              placeholder="Описание задачи" 
+              aria-label="Введите описание задачи"
+              tabindex="0"></textarea>
+              
+            <label for="task-lvl" class="sr-only">Приоритет задачи</label>
+            <input 
+              type="number" 
+              id="task-lvl" 
+              placeholder="lvl" 
+              min="0" 
+              max="9" 
+              aria-label="Установите приоритет задачи от 0 до 9"
+              tabindex="0" />
+              
+            <label for="task-date" class="sr-only">Срок выполнения</label>
+            <input 
+              type="date" 
+              id="task-date" 
+              aria-label="Выберите срок выполнения задачи"
+              tabindex="0" />
+              
+            <button 
+              id="new-task" 
+              aria-label="Создать задачу" 
+              title="Создать задачу"
+              tabindex="0">
+              <span aria-hidden="true">➤</span>
+            </button>
+          </div>
+          
+          <hr aria-hidden="true">
+          
+          <ul id="list" role="list" aria-label="Задачи"></ul>
+        </section>
+
+        <section class="task-viewer" aria-labelledby="view-title">
+          <div id="task">
+            <div class="task-view">
+              <div class="inner-header" id="task-title">
+                <h2 class="inner-header-title" id="view-title">Просмотр задачи</h2>
+              </div>
+              <p class="task-description" aria-live="polite">Выберите задачу для просмотра</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Модальное окно авторизации и регистрации -->
+    <div class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+      <div class="modal-content">
+        <span class="modal-decorate">TODOList</span>
+        
+        <a href="https://github.com/ivanvit100/TODOList" 
+           class="modal-github" 
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Перейти на GitHub проекта"
+           title="Посетите репозиторий проекта на GitHub">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              fill="#a4a4a4"
+            />
+          </svg>
+        </a>
+        
+        <h1 class="modal-title" id="modal-title">Авторизация</h1>
+        
+        <!-- Форма авторизации -->
+        <form class="login-form modal-inputs" aria-label="Форма авторизации">
+          <div class="input-group">
+            <label for="modal-login" class="sr-only">Логин</label>
+            <input 
+              class="modal-input" 
+              id="modal-login" 
+              type="text" 
+              placeholder="Логин"
+              required
+              aria-required="true"
+              autocomplete="username" 
+              tabindex="0" />
+          </div>
+          
+          <div class="input-group">
+            <label for="modal-password" class="sr-only">Пароль</label>
+            <input 
+              class="modal-input" 
+              id="modal-password" 
+              type="password" 
+              placeholder="Пароль"
+              required
+              aria-required="true"
+              autocomplete="current-password" 
+              tabindex="0" />
+          </div>
+          
+          <div class="modal-link">
+            <a href="#" id="register-link" class="switch-form-link" tabindex="0">
+              Нет аккаунта? Зарегистрироваться
+            </a>
+          </div>
+          
+          <div class="modal-buttons">
+            <button 
+              id="modal-enter" 
+              class="modal-button"
+              type="button"
+              aria-label="Войти в систему"
+              tabindex="0">
+              Войти
+            </button>
+          </div>
+        </form>
+        
+        <!-- Форма регистрации (изначально скрыта) -->
+        <form class="register-form modal-inputs" aria-label="Форма регистрации" style="display: none;">
+          <div class="input-group">
+            <label for="register-login" class="sr-only">Логин для регистрации</label>
+            <input 
+              class="modal-input" 
+              id="register-login" 
+              type="text" 
+              placeholder="Придумайте логин"
+              required
+              aria-required="true"
+              autocomplete="username" 
+              tabindex="0" />
+          </div>
+          
+          <div class="input-group">
+            <label for="register-password" class="sr-only">Пароль для регистрации</label>
+            <input 
+              class="modal-input" 
+              id="register-password" 
+              type="password" 
+              placeholder="Придумайте пароль"
+              required
+              aria-required="true"
+              autocomplete="new-password" 
+              tabindex="0" />
+          </div>
+          
+          <div class="input-group">
+            <label for="register-confirm-password" class="sr-only">Подтверждение пароля</label>
+            <input 
+              class="modal-input" 
+              id="register-confirm-password" 
+              type="password" 
+              placeholder="Повторите пароль"
+              required
+              aria-required="true"
+              autocomplete="new-password" 
+              tabindex="0" />
+          </div>
+          
+          <div class="modal-link">
+            <a href="#" id="login-link" class="switch-form-link" tabindex="0">
+              Уже есть аккаунт? Войти
+            </a>
+          </div>
+
+          <div class="modal-buttons">
+            <button 
+              id="register-button" 
+              class="modal-button"
+              type="button"
+              aria-label="Зарегистрироваться"
+              tabindex="0">
+              Зарегистрироваться
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="loading-spinner" class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="/js/index.js"></script>
+    <script type="module" src="/js/keyboard.js"></script>
+    
+  </body>
+</html>

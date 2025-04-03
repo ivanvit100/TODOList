@@ -1,0 +1,208 @@
+body.dark {
+    background-color: var(--neutral-900);
+    color: var(--neutral-200);
+}
+
+body.dark::before {
+    opacity: 0.15;
+}
+
+body.dark .taskmanager,
+body.dark .tasklist,
+body.dark .task-viewer {
+    backdrop-filter: blur(10px);
+}
+
+body.dark .taskmanager {
+    background-color: rgba(30, 41, 59, 0.7);
+}
+
+body.dark .tasklist {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark .task-viewer {
+    background-color: rgba(30, 41, 59, 0.9);
+}
+
+body.dark input, 
+body.dark textarea,
+body.dark .modal-input {
+    background-color: var(--neutral-800);
+    color: var(--neutral-200);
+    border-color: var(--neutral-700);
+}
+
+body.dark input:focus, 
+body.dark textarea:focus {
+    border-color: var(--primary-mid);
+    box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.3);
+}
+
+body.dark .new-interface,
+body.dark .task-view,
+body.dark .modal-content {
+    background-color: var(--neutral-800);
+}
+
+body.dark .new-interface {
+    box-shadow: var(--shadow-md);
+}
+
+body.dark #manager li button, 
+body.dark #list li button {
+    background-color: var(--neutral-800);
+    color: var(--neutral-200);
+}
+
+body.dark #manager li button:hover, 
+body.dark #list li button:hover {
+    background-color: var(--neutral-700);
+}
+
+body.dark .task-icon {
+    background-color: var(--neutral-700);
+}
+
+body.dark img:not(.no-invert) {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+body.dark .task-icon img,
+body.dark .list-icon {
+    filter: invert(1);
+}
+
+body.dark .list-icon img {
+    filter: brightness(2);
+}
+
+body.dark svg path {
+    fill: var(--neutral-200);
+}
+
+body.dark .inner-header-title,
+body.dark .task-description,
+body.dark .modal-title {
+    color: var(--neutral-200);
+}
+
+body.dark hr {
+    background-color: var(--neutral-700);
+}
+
+body.dark .switch-form-link {
+    color: var(--primary-light);
+}
+
+body.dark .switch-form-link:hover,
+body.dark .switch-form-link:focus {
+    color: var(--primary-mid);
+}
+
+body.dark .loading-spinner {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+body.dark .spinner {
+    border-color: rgba(0, 0, 0, 0.3);
+    border-top-color: var(--primary-light);
+}
+
+body.dark .settings-page {
+    background-color: var(--neutral-900);
+}
+
+body.dark .settings-card {
+    background-color: var(--neutral-800);
+}
+
+body.dark #settings h2 {
+    color: var(--neutral-200);
+}
+
+body.dark .settings-group label {
+    color: var(--neutral-300);
+}
+
+body.dark .settings-input {
+    background-color: var(--neutral-700);
+    color: var(--neutral-200);
+    border-color: var(--neutral-600);
+}
+
+body.dark .settings-input:focus {
+    border-color: var(--primary-mid);
+    box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.3);
+}
+
+body.dark .settings-group input[type="checkbox"] {
+    background-color: var(--neutral-700);
+}
+
+body.dark .admin-settings {
+    border-top-color: var(--neutral-700);
+}
+
+body.dark .filter-modal .modal-content {
+    background-color: var(--neutral-800);
+    color: var(--neutral-200);
+}
+
+body.dark .filter-modal .modal-title {
+    color: var(--primary-light);
+}
+
+body.dark .filter-modal .settings-group:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark .filter-modal .settings-group:last-child {
+    border-top-color: var(--neutral-700);
+}
+
+body.dark .filter-modal #priority-filter {
+    background-color: var(--neutral-700);
+    color: var(--neutral-200);
+    border-color: var(--neutral-600);
+}
+
+body.dark .filter-modal #reset-filters {
+    background-color: rgba(244, 67, 54, 0.2);
+    border-color: rgba(244, 67, 54, 0.4);
+}
+
+body.dark .filter-modal #close-filter-modal {
+    background-color: var(--neutral-700);
+    color: var(--neutral-300);
+}
+
+body.dark .custom-select__trigger {
+    background-color: var(--neutral-800);
+    border-color: var(--neutral-700);
+    color: var(--neutral-200);
+}
+
+body.dark .custom-options {
+    background-color: var(--neutral-800);
+    border-color: var(--neutral-700);
+}
+
+body.dark .custom-option {
+    background-color: var(--neutral-600);
+}
+
+body.dark .custom-option:hover {
+    background-color: var(--neutral-700);
+}
+
+body.dark .custom-option.selected {
+    color: var(--neutral-100);
+    background-color: var(--neutral-800);
+}
+
+.no-invert {
+    filter: none !important;
+}

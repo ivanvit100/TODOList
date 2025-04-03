@@ -1,0 +1,17 @@
+[Unit]
+Description=TODOList
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/todo.ivanvit.ru/html
+ExecStartPre=/bin/bash -c 'if [ -e todoapp.sock ]; then rm todoapp.sock; fi'
+ExecStart=/bin/bash -c 'source ./venv/bin/activate && gunicorn --bind unix:todoapp.sock --workers 4 --timeout 120 main:app'
+ExecStop=/bin/kill -s TERM $MAINPID
+ExecStopPost=/bin/bash -c 'if [ -e todoapp.sock ]; then rm todoapp.sock; fi'
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

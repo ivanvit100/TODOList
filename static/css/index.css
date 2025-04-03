@@ -1,0 +1,347 @@
+@import url(variables.css);
+
+/* Базовые стили */
+html {
+  font-family: "PT Sans Caption", sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--neutral-100);
+  color: var(--neutral-800);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--gradient-main);
+  opacity: 0.07;
+  z-index: -1;
+}
+
+/* Кастомный цвет выделения */
+::selection {
+  background-color: rgba(174, 0, 255, 0.589);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: rgba(174, 0, 255, 0.589);
+  color: white;
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neutral-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral-500);
+}
+
+/* Сброс стилей для кнопок и полей ввода */
+button {
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+input, textarea {
+  font-family: inherit;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--neutral-300);
+  background-color: white;
+  color: var(--neutral-800);
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-mid);
+  box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.2);
+}
+
+/* Скрытие стрелок у полей ввода с типом number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--neutral-300);
+  margin: var(--spacing-lg) 0;
+}
+
+/* Основная структура приложения */
+#app {
+  display: grid;
+  grid-template-columns: var(--header-width) 1fr;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.app-body {
+  display: grid;
+  grid-template-columns: var(--taskmanager-width) var(--tasklist-width) var(--taskviewer-width);
+  margin-left: var(--header-width);
+  transition: transform var(--transition-normal);
+  background-color: transparent;
+  width: calc(100vw - var(--header-width));
+  overflow-x: hidden;
+}
+
+/* Навигационная панель */
+.header {
+  background: var(--gradient-main);
+  width: var(--header-width);
+  height: calc(100vh - 2* var(--spacing-md));
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  box-shadow: var(--shadow-md);
+}
+
+.header-title {
+  margin-bottom: var(--spacing-xl);
+}
+
+.header-title-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-title-text img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: var(--spacing-sm);
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-bottom: var(--spacing-sm);
+  transition: transform var(--transition-normal);
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.header-title-text img:hover {
+  transform: scale(1.1);
+}
+
+.header-title-text span {
+  display: none;
+}
+
+.header-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.header_button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: var(--font-size-lg);
+  margin: var(--spacing-sm) 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-normal);
+}
+
+.header_button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+#logout-button {
+  margin-top: auto;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+#openMenu {
+  margin-top: var(--spacing-md);
+}
+
+/* Ссылки */
+.switch-form-link {
+  color: var(--primary-mid);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
+}
+
+.switch-form-link:hover,
+.switch-form-link:focus {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* Доступность */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Спиннер загрузки */
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.loading-spinner.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary-mid);
+  animation: spin 1s ease-in-out infinite;
+}
+
+
+
+.custom-select-wrapper {
+  position: relative;
+  user-select: none;
+  width: calc(100% - 20px);
+  height: 50px;
+}
+
+.custom-select {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-select__trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  font-size: 14px;
+  background-color: var(--white);
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+}
+
+.custom-select__trigger.open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.custom-options {
+  position: absolute;
+  display: block;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid var(--neutral-300);
+  border-top: none;
+  background-color: var(--white);
+  max-height: 200px;
+  width: calc(100% + 16px);
+  overflow-y: auto;
+  z-index: 10;
+  border-bottom-left-radius: var(--border-radius-md);
+  border-bottom-right-radius: var(--border-radius-md);
+  display: none;
+}
+
+.custom-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  gap: 8px;
+  background-color: var(--neutral-100);
+}
+
+.custom-option:hover {
+  background-color: var(--neutral-300);
+}
+
+.custom-option.selected {
+  color: var(--neutral-900);
+  background-color: var(--neutral-500);
+}
+
+.icon-preview, .option-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.arrow {
+  position: absolute;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--neutral-500);
+}
