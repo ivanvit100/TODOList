@@ -177,9 +177,9 @@ def save_task_list(tasklist_name, tasklist_data, username):
                         logger.warning(f"Имя задачи слишком длинное: {task['name']}")
                         raise ValueError(f"Имя задачи не должно превышать 20 символов: '{task['name'][:17]}...'")
                     
-                    if 'description' in task and task['description'] and len(task['description']) > 256:
-                        logger.warning(f"Описание задачи слишком длинное: {task['description'][:30]}...")
-                        raise ValueError(f"Описание задачи не должно превышать 256 символов")
+                    if 'description' in task and task['description'] and len(task['description']) > 2500:
+                        logger.warning(f"Описание задачи слишком длинное ({len(task['description'])}): {task['description'][:30]}...")
+                        raise ValueError(f"Описание задачи не должно превышать 2500 символов")
                     
                     if 'lvl' in task:
                         try:
@@ -204,9 +204,9 @@ def save_task_list(tasklist_name, tasklist_data, username):
                         logger.warning(f"Имя задачи слишком длинное: {task.name}")
                         raise ValueError(f"Имя задачи не должно превышать 20 символов: '{task.name[:17]}...'")
                     
-                    if hasattr(task, 'description') and task.description and len(task.description) > 256:
-                        logger.warning(f"Описание задачи слишком длинное: {task.description[:30]}...")
-                        raise ValueError(f"Описание задачи не должно превышать 256 символов")
+                    if hasattr(task, 'description') and task.description and len(task.description) > 2500:
+                        logger.warning(f"Описание задачи слишком длинное ({len(task['description'])}): {task['description'][:30]}...")
+                        raise ValueError(f"Описание задачи не должно превышать 2500 символов")
                     
                     if hasattr(task, 'lvl'):
                         try:

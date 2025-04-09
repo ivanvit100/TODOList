@@ -333,7 +333,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Делегирование событий
   function setupEventHandlers() {
     document.addEventListener('click', function(globalEvent) {
-      if (globalEvent.target && globalEvent.target.id === 'new-task') {
+      const newTaskButton = globalEvent.target.closest('#new-task');
+      if (newTaskButton) {
         globalEvent.preventDefault();
         
         if(UI.getTaskList() === undefined) {
@@ -437,8 +438,9 @@ document.addEventListener("DOMContentLoaded", () => {
             hideLoadingSpinner();
           });
       }
-      
-      else if (globalEvent.target && globalEvent.target.id === 'new-tasklist') {
+
+      const newTasklistButton = globalEvent.target.closest('#new-tasklist');
+      if (newTasklistButton) {
         globalEvent.preventDefault();
         globalEvent.stopPropagation();
         

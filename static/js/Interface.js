@@ -294,7 +294,6 @@ export class Interface {
     }
     
     state_switch() {
-        console.log(this.state);
         if (window.innerWidth < 1080)
             document.querySelector(".app-body").style.transform = `translateX(calc(-100vw * ${this.state} + 10px * ${this.state}))`;
         else 

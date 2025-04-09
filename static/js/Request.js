@@ -11,7 +11,7 @@ export class Request {
 
   async loadSettings() {
     try {
-      await this.response('/api/v1/getSettings', {})
+      await this.response('https://todo.ivanvit.ru/api/v1/getSettings', {})
       .then(data => {
         if (data["message"]["color-date-alert"]) {
           let link = document.createElement('link');
@@ -25,8 +25,6 @@ export class Request {
         
         this.UI.order = data["message"]["sort-order"];
 
-        console.log(this.UI.order);
-        
         document.getElementById('openMenu')?.addEventListener('click', () => {
           window.openSettings();
         });
@@ -62,7 +60,7 @@ export class Request {
   }
   
   async validateTokenAndLoadData() {
-    let data = await this.response('/api/v1/validateToken', {});
+    let data = await this.response('https://todo.ivanvit.ru/api/v1/validateToken', {});
     if (data.status === "success") {
       await this.loadSettings();
       this.getTaskListList();
@@ -131,7 +129,7 @@ export class Request {
         login: this.login,
         password: this.password
       }
-      const data = await this.response('/api/v1/auth', body);
+      const data = await this.response('https://todo.ivanvit.ru/api/v1/auth', body);
       if(data.status === "success") {
         await this.loadSettings();
         const hide = document.querySelector(".modal");
@@ -165,7 +163,7 @@ export class Request {
     
   async logout() {
     try {
-      await fetch('/api/v1/logout', {
+      await fetch('https://todo.ivanvit.ru/api/v1/logout', {
         method: 'POST',
         credentials: 'include'
       });
@@ -223,7 +221,7 @@ export class Request {
         password: password
       }
       
-      const data = await this.response('/api/v1/register', body);
+      const data = await this.response('https://todo.ivanvit.ru/api/v1/register', body);
       
       if(data.status === "success") {
         this.login = login;
@@ -258,7 +256,7 @@ export class Request {
         data: {"data": this.UI.getTaskList().getTasks()}
       };
       
-      const response = await this.response('/api/v1/saveTaskList', body);
+      const response = await this.response('https://todo.ivanvit.ru/api/v1/saveTaskList', body);
       
       this.UI.setTask(undefined);
       this.UI.updateTaskUI();
@@ -274,7 +272,7 @@ export class Request {
 
   async getTaskListList() {
     try {
-      const data = await this.response('/api/v1/getTaskListList', {});
+      const data = await this.response('https://todo.ivanvit.ru/api/v1/getTaskListList', {});
       this.UI.getTaskManager().lists = [];
       
       for (let i = 0; i < data.message.length; i++) {
@@ -332,7 +330,7 @@ export class Request {
   
   async loadTasksFromServer(listName, taskList) {
     const body = { taskList: listName };
-    const taskData = await this.response('/api/v1/getTaskList', body);
+    const taskData = await this.response('https://todo.ivanvit.ru/api/v1/getTaskList', body);
     
     if (taskData && taskData.message) {
       if (taskData.message.icon && 
@@ -398,7 +396,7 @@ export class Request {
       }
       
       const body = { taskList: name };
-      const data = await this.response('/api/v1/getTaskList', body);
+      const data = await this.response('https://todo.ivanvit.ru/api/v1/getTaskList', body);
       
       let list = taskList || new TaskList(name);
       if (!taskList) this.UI.getTaskManager().addList(list);
@@ -443,7 +441,7 @@ export class Request {
       const body = {
         taskList: name
       }
-      const data = await this.response('/api/v1/deleteList', body);
+      const data = await this.response('https://todo.ivanvit.ru/api/v1/deleteList', body);
       const taskManager = this.UI.getTaskManager();
       const taskList = taskManager.getList(name);
       

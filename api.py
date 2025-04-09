@@ -227,7 +227,7 @@ def register_api_routes(app):
                     token, 
                     httponly=True, 
                     secure=request.is_secure,
-                    samesite='Strict',
+                    samesite='None',
                     expires=expires
                 )
                 
@@ -297,7 +297,7 @@ def register_api_routes(app):
             default_tasklist = {
                 "data": [
                     {
-                        "name": "Добро пожаловать в TODOList!",
+                        "name": "Добро пожаловать",
                         "description": """
                             <div style='font-family: Arial, sans-serif; max-height: 100%; overflow-y: auto; padding: 0 15px;'>
                                 <h3 style='color: #4285f4; margin-top: 0; margin-bottom: 10px;'>Добро пожаловать в TODOList!</h3>
